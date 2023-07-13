@@ -38,6 +38,10 @@ public class Vector {
      * заполнение вектора значениями из массива. Если длина массива меньше n, то считать что в остальных компонентах 0
      */
     public Vector(int n, double[] array) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("Размер массива введен не верно.");
+        }
+
         if (array.length < n) {
             this.array = new double[n];
         } else {
