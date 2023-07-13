@@ -28,23 +28,23 @@ public class Vector {
     /**
      * заполнение вектора значениями из массива
      */
-    public Vector(double[] copyArray) {
-        this.array = new double[copyArray.length];
+    public Vector(double[] array) {
+        this.array = new double[array.length];
 
-        System.arraycopy(copyArray, 0, this.array, 0, this.array.length);
+        System.arraycopy(array, 0, this.array, 0, this.array.length);
     }
 
     /**
      * заполнение вектора значениями из массива. Если длина массива меньше n, то считать что в остальных компонентах 0
      */
-    public Vector(int n, double[] copyArray) {
-        if (copyArray.length < n) {
+    public Vector(int n, double[] array) {
+        if (array.length < n) {
             this.array = new double[n];
         } else {
-            this.array = new double[copyArray.length];
+            this.array = new double[array.length];
         }
 
-        System.arraycopy(copyArray, 0, this.array, 0, copyArray.length);
+        System.arraycopy(array, 0, this.array, 0, array.length);
     }
 
     /**
@@ -90,11 +90,11 @@ public class Vector {
         Arrays.setAll(this.array, i -> this.array[i] - vector.array[i]);
     }
 
-    private void copyArrayIfNeeded(double[] oneArray, double[] twoArray) {
-        if (oneArray.length > twoArray.length) {
-            copyArray(twoArray, oneArray.length);
-        } else if (oneArray.length < twoArray.length) {
-            copyArray(oneArray, twoArray.length);
+    private void copyArrayIfNeeded(double[] array1, double[] array2) {
+        if (array1.length > array2.length) {
+            copyArray(array2, array1.length);
+        } else if (array1.length < array2.length) {
+            copyArray(array1, array2.length);
         }
     }
 
@@ -138,9 +138,9 @@ public class Vector {
         return Arrays.hashCode(array);
     }
 
-    public static Vector add(Vector termOne, Vector termTwo) {
-        Vector result = new Vector(termOne);
-        result.add(termTwo);
+    public static Vector add(Vector vector1, Vector vector2) {
+        Vector result = new Vector(vector1);
+        result.add(vector2);
 
         return result;
     }
@@ -160,17 +160,17 @@ public class Vector {
         return result;
     }
 
-    public static double scalar(Vector vectorOne, Vector vectorTwo) {
-        if (vectorOne.getSize() > vectorTwo.getSize()) {
-            vectorTwo = duplicateVectorWithSize(vectorTwo, vectorOne.getSize());
-        } else if (vectorOne.getSize() < vectorTwo.getSize()) {
-            vectorOne = duplicateVectorWithSize(vectorOne, vectorTwo.getSize());
+    public static double scalar(Vector vector1, Vector vector2) {
+        if (vector1.getSize() > vector2.getSize()) {
+            vector2 = duplicateVectorWithSize(vector2, vector1.getSize());
+        } else if (vector1.getSize() < vector2.getSize()) {
+            vector1 = duplicateVectorWithSize(vector1, vector2.getSize());
         }
 
         double result = 0;
 
-        for (int i = 0; i < vectorOne.getSize(); i++) {
-            result += vectorOne.getElement(i) * vectorTwo.getElement(i);
+        for (int i = 0; i < vector1.getSize(); i++) {
+            result += vector1.getElement(i) * vector2.getElement(i);
         }
 
         return result;
