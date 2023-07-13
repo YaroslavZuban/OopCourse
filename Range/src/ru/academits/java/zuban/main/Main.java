@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         Range range1 = new Range(3, 9);
-        Range range2 = new Range(5, 12);
+        Range range2 = new Range(5, 1);
 
         Range result = range1.findIntersection(range2);
         System.out.println("intersections " + result);
