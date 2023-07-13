@@ -1,4 +1,4 @@
-package ru.academits.java.zuban.Vector;
+package ru.academits.java.zuban.vector;
 
 import java.util.Arrays;
 

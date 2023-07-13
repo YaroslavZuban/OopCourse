@@ -1,4 +1,6 @@
-package ru.academits.java.zuban.Vector;
+package ru.academits.java.zuban.main;
+
+import ru.academits.java.zuban.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {

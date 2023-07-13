@@ -1,4 +1,4 @@
-package ru.academits.java.zuban.Shape;
+package ru.academits.java.zuban.shape;
 
 public interface Shape {
     double getWidth();

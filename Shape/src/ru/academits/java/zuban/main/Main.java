@@ -1,4 +1,6 @@
-package ru.academits.java.zuban.Shape;
+package ru.academits.java.zuban.main;
+
+import ru.academits.java.zuban.shape.*;
 
 import java.util.Arrays;
 import java.util.Comparator;

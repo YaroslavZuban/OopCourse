@@ -1,6 +1,7 @@
 package ru.academits.java.zuban.main;
 
 import ru.academits.java.zuban.range.Range;
+
 import java.util.Arrays;
 
 public class Main {
