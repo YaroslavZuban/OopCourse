@@ -5,41 +5,29 @@ import java.util.Arrays;
 public class Vector {
     private double[] array;
 
-    /**
-     * размерность n, все компоненты равны 0
-     */
     public Vector(int n) {
         if (n <= 0) {
-            throw new IllegalArgumentException("Размер массива введен не верно.");
+            throw new IllegalArgumentException();
         }
 
         this.array = new double[n];
     }
 
-    /**
-     * конструктор копирования
-     */
     public Vector(Vector vector) {
         this.array = new double[vector.getSize()];
 
         System.arraycopy(vector.array, 0, this.array, 0, this.array.length);
     }
 
-    /**
-     * заполнение вектора значениями из массива
-     */
     public Vector(double[] array) {
         this.array = new double[array.length];
 
         System.arraycopy(array, 0, this.array, 0, this.array.length);
     }
 
-    /**
-     * заполнение вектора значениями из массива. Если длина массива меньше n, то считать что в остальных компонентах 0
-     */
     public Vector(int n, double[] array) {
         if (n <= 0) {
-            throw new IllegalArgumentException("Размер массива введен не верно.");
+            throw new IllegalArgumentException();
         }
 
         if (array.length < n) {
@@ -51,9 +39,6 @@ public class Vector {
         System.arraycopy(array, 0, this.array, 0, array.length);
     }
 
-    /**
-     * Метод getSize() для получения размерности вектора
-     */
     public int getSize() {
         return array.length;
     }
@@ -62,10 +47,6 @@ public class Vector {
         return array;
     }
 
-
-    /**
-     * Реализовать метод toString(), чтобы выдавал информацию о векторе в  формате { значения компонент через запятую }
-     */
     @Override
     public String toString() {
         StringBuffer infoArray = new StringBuffer("{");
