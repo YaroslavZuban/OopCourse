@@ -109,7 +109,7 @@ public class Vector {
         System.arraycopy(arrayTemp, 0, dest, 0, arrayTemp.length);
     }
 
-    public void multiplyVectorScalar(int scalar) {
+    public void multiplyVectorScalar(double scalar) {
         Arrays.setAll(this.array, i -> this.array[i] * scalar);
     }
 
