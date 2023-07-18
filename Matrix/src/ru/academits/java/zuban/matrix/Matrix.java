@@ -17,8 +17,8 @@ public class Matrix {
 
         matrix = new Vector[n];
 
-        for (Vector element : matrix) {
-            element = new Vector(m);
+        for (int i = 0; i < n; i++) {
+            matrix[i] = new Vector(m);
         }
     }
 
@@ -151,7 +151,9 @@ public class Matrix {
         Matrix trans = new Matrix(matrix[0].getSize(), matrix.length);
 
         for (int i = 0; i < matrix.length; i++) {
-            trans.setLine(matrix[i], i);
+            for (int j = 0; j < matrix[i].getSize(); j++) {
+                trans.matrix[j].setElement(i, matrix[i].getElement(j));
+            }
         }
 
         matrix = trans.getMatrix();
@@ -287,20 +289,20 @@ public class Matrix {
             throw new NullPointerException();
         }
 
-        int m = matrix1.matrix[0].getSize();
-        int n = matrix2.matrix.length;
+        int sizeLine = matrix1.matrix[0].getSize();
+        int sizeColumn = matrix2.matrix.length;
 
-        if (m != n) {
+        if (sizeLine != sizeColumn) {
             throw new Exception();
         }
 
-        Matrix result = new Matrix(n, m);
+        Matrix result = new Matrix(sizeLine, sizeColumn);
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
+        for (int i = 0; i < sizeLine; i++) {
+            for (int j = 0; j < sizeColumn; j++) {
                 double sum = 0;
 
-                for (int k = 0; k < n; k++) {
+                for (int k = 0; k < sizeColumn; k++) {
                     sum += matrix1.matrix[i].getElement(k) * matrix2.matrix[k].getElement(j);
                 }
 
