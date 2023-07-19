@@ -4,7 +4,8 @@ import java.util.Objects;
 
 public class Node<T> {
     private T value;
-    private Node<T> next;
+    private Node<T> next = null;
+
     public Node(T value) {
         this.value = value;
     }
@@ -29,6 +30,7 @@ public class Node<T> {
     public String toString() {
         return "{" + value + '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

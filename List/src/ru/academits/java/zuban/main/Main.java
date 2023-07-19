@@ -31,7 +31,7 @@ public class Main {
         System.out.println("insert start result: {{7},{6},{5},{4},{3},{2}} happened: " + list);
 
         Node<Integer> node10 = new Node<>(1);
-        list.add(1,node10);
+        list.add(1, node10);
 
         System.out.println("add result: {{7},{1},{6},{5},{4},{3},{2}} happened: " + list);
 
@@ -56,7 +56,7 @@ public class Main {
         list.revers();
         System.out.println("revers result: {{6},{5},{2}} happened: " + list);
 
-        List<Integer> copyList=list.copyList();
+        Node<Integer> copyList = list.copyList();
         System.out.println("copyList result: {{6},{5},{2}} happened: " + copyList);
 
     }

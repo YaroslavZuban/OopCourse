@@ -206,16 +206,19 @@ public class List<T> {
         list = pre;
     }
 
-    public List<T> copyList() {
+    public Node<T> copyList() {
         if (size <= 0) {
             return null;
         }
 
-        List<T> copyList = new List<>();
+        Node<T> copyList = new Node<>(list.getValue());
+        Node<T> tempCopyList = copyList;
         Node<T> temp = list;
 
         for (int i = 0; i < size; i++) {
-            copyList.add(i, new Node<>(temp.getValue()));
+            tempCopyList.setNext(new Node<>(temp.getValue()));
+            tempCopyList = tempCopyList.getNext();
+
             temp = temp.getNext();
         }
 
