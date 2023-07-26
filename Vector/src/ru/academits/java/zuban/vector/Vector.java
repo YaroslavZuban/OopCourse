@@ -3,106 +3,121 @@ package ru.academits.java.zuban.vector;
 import java.util.Arrays;
 
 public class Vector {
-    private double[] array;
+    private double[] elementData;
 
-    public Vector(int n) {
-        if (n <= 0) {
-            throw new IllegalArgumentException();
+    public Vector(int size) {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Размерность Vector может быть только положительна.");
         }
 
-        this.array = new double[n];
+        elementData = new double[size];
     }
 
     public Vector(Vector vector) {
-        this.array = new double[vector.getSize()];
-
-        System.arraycopy(vector.array, 0, this.array, 0, this.array.length);
-    }
-
-    public Vector(double[] array) {
-        this.array = new double[array.length];
-
-        System.arraycopy(array, 0, this.array, 0, this.array.length);
-    }
-
-    public Vector(int n, double[] array) {
-        if (n <= 0) {
-            throw new IllegalArgumentException();
+        if (vector == null) {
+            throw new NullPointerException("Объект Vector должен быть создан.");
         }
 
-        if (array.length < n) {
-            this.array = new double[n];
-        } else {
-            this.array = new double[array.length];
+        elementData = Arrays.copyOf(vector.elementData, vector.elementData.length);
+    }
+
+    public Vector(double[] elementData) {
+        if (elementData == null) {
+            throw new NullPointerException("Объект массива должен быть создан.");
         }
 
-        System.arraycopy(array, 0, this.array, 0, array.length);
+        if (elementData.length == 0) {
+            throw new IllegalArgumentException("Не возможно создать Vector размерностью 0.");
+        }
+
+        this.elementData = Arrays.copyOf(elementData, elementData.length);
+    }
+
+    public Vector(int size, double[] elementData) {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Размерность Vector может быть только положительна.");
+        }
+
+        if (elementData == null) {
+            throw new NullPointerException("Объект массива должен быть создан.");
+        }
+
+        if (elementData.length == 0) {
+            throw new IllegalArgumentException("Не возможно создать Vector размерностью 0.");
+        }
+
+        int maxSize = Math.max(size, elementData.length);
+
+        this.elementData = Arrays.copyOf(elementData, maxSize);
     }
 
     public int getSize() {
-        return array.length;
+        return elementData.length;
     }
 
-    public double[] getArray() {
-        return array;
+    public double getElement(int index) {
+        return elementData[index];
     }
 
-    @Override
-    public String toString() {
-        StringBuffer infoArray = new StringBuffer("{");
-
-
-        for (double number :
-                this.array) {
-            infoArray.append(number + ", ");
-        }
-
-        infoArray.delete(infoArray.length() - 2, infoArray.length());
-        infoArray.append("}");
-
-        return infoArray.toString();
+    public void setElement(int index, double element) {
+        elementData[index] = element;
     }
 
     public void add(Vector vector) {
-        copyArrayIfNeeded(vector.array, this.array);
+        if (vector == null) {
+            throw new NullPointerException("Объект Vector должен быть создан.");
+        }
 
-        Arrays.setAll(this.array, i -> this.array[i] + vector.array[i]);
-    }
+        elementData = copyArrayIfNeeded(elementData, vector.elementData.length);
 
-    public void subtraction(Vector vector) {
-        copyArrayIfNeeded(vector.array, this.array);
+        for (int i = 0; i < elementData.length; i++) {
+            if (i >= vector.elementData.length) {
+                break;
+            }
 
-        Arrays.setAll(this.array, i -> this.array[i] - vector.array[i]);
-    }
-
-    private void copyArrayIfNeeded(double[] array1, double[] array2) {
-        if (array1.length > array2.length) {
-            copyArray(array2, array1.length);
-        } else if (array1.length < array2.length) {
-            copyArray(array1, array2.length);
+            elementData[i] += vector.elementData[i];
         }
     }
 
-    private void copyArray(double[] dest, int size) {
-        double[] arrayTemp = dest;
-        dest = new double[size];
+    public void subtract(Vector vector) {
+        if (vector == null) {
+            throw new NullPointerException("Объект Vector должен быть создан.");
+        }
 
-        System.arraycopy(arrayTemp, 0, dest, 0, arrayTemp.length);
+        elementData = copyArrayIfNeeded(elementData, vector.elementData.length);
+
+        for (int i = 0; i < elementData.length; i++) {
+            if (i >= vector.elementData.length) {
+                break;
+            }
+
+            elementData[i] -= vector.elementData[i];
+        }
     }
 
-    public void multiplyVectorScalar(double scalar) {
-        Arrays.setAll(this.array, i -> this.array[i] * scalar);
+    public double[] copyArrayIfNeeded(double[] array, int newSize) {
+        if (array.length > newSize) {
+            return Arrays.copyOf(array, newSize);
+        }
+
+        return array;
     }
 
-    public void revers() {
-        multiplyVectorScalar(-1);
+    public void multiplyScalar(double scalar) {
+        for (int i = 0; i < elementData.length; i++) {
+            elementData[i] *= scalar;
+        }
     }
 
-    public double length() {
+    public void reverse() {
+        multiplyScalar(-1);
+    }
+
+    public double getLength() {
         double sum = 0;
 
-        for (double v : this.array) {
-            sum += Math.pow(v, 2);
+        for (double v : this.elementData) {
+            sum += v * v;
         }
 
         return Math.sqrt(sum);
@@ -110,60 +125,83 @@ public class Vector {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (this.array.length == ((Vector) o).array.length) return true;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Vector vector = (Vector) o;
-        return Arrays.equals(array, vector.array);
+        return Arrays.equals(elementData, vector.elementData);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(array);
+        return Arrays.hashCode(elementData);
     }
 
-    public static Vector add(Vector vector1, Vector vector2) {
+    @Override
+    public String toString() {
+        StringBuilder toString = new StringBuilder("{");
+
+        for (double number : elementData) {
+            toString.append(number).append(", ");
+        }
+
+        toString.delete(toString.length() - 2, toString.length());
+        toString.append("}");
+
+        return toString.toString();
+    }
+
+    public static Vector getAdd(Vector vector1, Vector vector2) {
+        if (vector1 == null || vector2 == null) {
+            throw new NullPointerException("Объект Vector должен быть создан.");
+        }
+
         Vector result = new Vector(vector1);
         result.add(vector2);
 
         return result;
     }
 
-    public double getElement(int index) {
-        return this.array[index];
-    }
+    public static Vector getSubtract(Vector minuend, Vector subtrahend) {
+        if (minuend == null || subtrahend == null) {
+            throw new NullPointerException("Объект Vector должен быть создан.");
+        }
 
-    public void setElement(int index, double element) {
-        this.array[index] = element;
-    }
-
-    public static Vector subtraction(Vector minuend, Vector subtrahend) {
         Vector result = new Vector(minuend);
-        result.subtraction(subtrahend);
+        result.subtract(subtrahend);
 
         return result;
     }
 
-    public static double scalar(Vector vector1, Vector vector2) {
-        if (vector1.getSize() > vector2.getSize()) {
-            vector2 = duplicateVectorWithSize(vector2, vector1.getSize());
-        } else if (vector1.getSize() < vector2.getSize()) {
-            vector1 = duplicateVectorWithSize(vector1, vector2.getSize());
+    public static double getDotProduct(Vector vector1, Vector vector2) {
+        if (vector1 == null || vector2 == null) {
+            throw new NullPointerException("Объект Vector должен быть создан.");
         }
+
+        int maxSize = Math.max(vector1.elementData.length, vector2.elementData.length);
 
         double result = 0;
 
-        for (int i = 0; i < vector1.getSize(); i++) {
-            result += vector1.getElement(i) * vector2.getElement(i);
+        for (int i = 0; i < maxSize; i++) {
+            double elementVector1 = 0;
+            double elementVector2 = 0;
+
+            if (i < vector1.elementData.length) {
+                elementVector1 = vector1.elementData[i];
+            }
+
+            if (i < vector2.elementData.length) {
+                elementVector2 = vector2.elementData[i];
+            }
+
+            result += elementVector1 * elementVector2;
         }
 
         return result;
-    }
-
-    private static Vector duplicateVectorWithSize(Vector vector, int newSize) {
-        double[] newArray = new double[newSize];
-        System.arraycopy(vector.getArray(), 0, newArray, 0, Math.min(vector.getSize(), newSize));
-        return new Vector(newArray);
     }
 }
