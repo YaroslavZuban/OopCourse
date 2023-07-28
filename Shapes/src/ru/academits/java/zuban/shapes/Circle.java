@@ -1,7 +1,5 @@
 package ru.academits.java.zuban.shapes;
 
-import java.util.Objects;
-
 public class Circle implements Shape {
     private final double radius;
 
@@ -48,11 +46,11 @@ public class Circle implements Shape {
     public int hashCode() {
         final int prime = 37;
 
-        return (int) (prime + radius);
+        return prime + Double.hashCode(radius);
     }
 
     @Override
     public String toString() {
-        return "Circle{ radius = " + radius + '}';
+        return "Circle {radius = " + radius + '}';
     }
 }

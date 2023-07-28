@@ -1,32 +1,30 @@
 package ru.academits.java.zuban.shapes;
 
-import java.util.Objects;
-
 public class Square implements Shape {
-    private final double length;
+    private final double sideLength;
 
-    public Square(double length) {
-        this.length = length;
+    public Square(double sideLength) {
+        this.sideLength = sideLength;
     }
 
     @Override
     public double getWidth() {
-        return length;
+        return sideLength;
     }
 
     @Override
     public double getHeight() {
-        return length;
+        return sideLength;
     }
 
     @Override
     public double getArea() {
-        return length * length;
+        return sideLength * sideLength;
     }
 
     @Override
     public double getPerimeter() {
-        return 4 * length;
+        return 4 * sideLength;
     }
 
     @Override
@@ -41,18 +39,18 @@ public class Square implements Shape {
 
         Square square = (Square) o;
 
-        return square.length==length;
+        return square.sideLength == sideLength;
     }
 
     @Override
     public String toString() {
-        return "Square{ length = " + length + '}';
+        return "Square{ sideLength = " + sideLength + '}';
     }
 
     @Override
     public int hashCode() {
         final int prime = 37;
 
-        return (int) (prime + length);
+        return prime + Double.hashCode(sideLength);
     }
 }

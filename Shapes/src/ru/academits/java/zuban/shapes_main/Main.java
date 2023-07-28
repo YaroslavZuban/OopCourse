@@ -1,15 +1,14 @@
 package ru.academits.java.zuban.shapes_main;
 
-import ru.academits.java.zuban.comparator.AreaComparator;
-import ru.academits.java.zuban.comparator.PerimeterComparator;
+import ru.academits.java.zuban.shapes_comparators.ShapeAreaComparator;
+import ru.academits.java.zuban.shapes_comparators.ShapePerimeterComparator;
 import ru.academits.java.zuban.shapes.*;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class Main {
     public static void main(String[] args) {
-        Shape[] listShapes = {
+        Shape[] figures = {
                 new Circle(200),
                 new Rectangle(10, 3),
                 new Square(8),
@@ -20,30 +19,30 @@ public class Main {
                 new Triangle(3, 1, 2, -4, 10, 15)
         };
 
-        Shape maxAreaShape = getShapeMaxArea(listShapes);
+        Shape maxAreaShape = getMaxAreaShape(figures);
         System.out.println("Вывод фигуры с максимальной площадью: " + maxAreaShape);
 
-        Shape maxSecondPerimeterShape = getShapeMaxSecondPerimeter(listShapes);
-        System.out.println("Вывод фигуры второй по величине периметру:" + maxSecondPerimeterShape);
+        Shape maxSecondPerimeterShape = getMaxSecondPerimeterShape(figures);
+        System.out.println("Вывести фигуру, у которой второй по величине периметр: " + maxSecondPerimeterShape);
     }
 
-    public static Shape getShapeMaxArea(Shape[] array) {
+    public static Shape getMaxAreaShape(Shape[] array) {
         if (array == null || array.length == 0) {
             return null;
         }
 
-        AreaComparator areaComparator=new AreaComparator();
+        ShapeAreaComparator areaComparator = new ShapeAreaComparator();
         Arrays.sort(array, areaComparator);
 
         return array[array.length - 1];
     }
 
-    public static Shape getShapeMaxSecondPerimeter(Shape[] array) {
-        if (array == null || array.length == 0 || array.length == 1) {
+    public static Shape getMaxSecondPerimeterShape(Shape[] array) {
+        if (array == null || array.length <= 1) {
             return null;
         }
 
-        PerimeterComparator perimeterComparator=new PerimeterComparator();
+        ShapePerimeterComparator perimeterComparator = new ShapePerimeterComparator();
         Arrays.sort(array, perimeterComparator);
 
         return array[array.length - 2];

@@ -1,7 +1,5 @@
 package ru.academits.java.zuban.shapes;
 
-import java.util.Objects;
-
 public class Rectangle implements Shape {
     private final double width;
     private final double height;
@@ -51,8 +49,8 @@ public class Rectangle implements Shape {
         final int prime = 37;
         int hash = 1;
 
-        hash = (int) (prime * hash + width);
-        hash = (int) (prime * hash + height);
+        hash = prime * hash + Double.hashCode(width);
+        hash = prime * hash + Double.hashCode(height);
 
         return hash;
     }

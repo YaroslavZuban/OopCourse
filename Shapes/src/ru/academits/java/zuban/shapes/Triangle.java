@@ -1,10 +1,5 @@
 package ru.academits.java.zuban.shapes;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.OptionalDouble;
-
 public class Triangle implements Shape {
     private final double x1;
     private final double y1;
@@ -26,18 +21,18 @@ public class Triangle implements Shape {
 
     @Override
     public double getWidth() {
-        double[] array = {x1, x2, x3};
-        Arrays.sort(array);
+        double minX = Math.min(x1, Math.min(x2, x3));
+        double maxX = Math.max(x1, Math.max(x2, x3));
 
-        return array[array.length - 1] - array[0];
+        return maxX - minX;
     }
 
     @Override
     public double getHeight() {
-        double[] array = {y1, y2, y3};
-        Arrays.sort(array);
+        double minY = Math.min(y1, Math.min(y2, y3));
+        double maxY = Math.max(y1, Math.max(y2, y3));
 
-        return array[array.length - 1] - array[0];
+        return maxY - minY;
     }
 
     @Override
@@ -47,14 +42,14 @@ public class Triangle implements Shape {
 
     @Override
     public double getPerimeter() {
-        double lengthAB = Triangle.getVectorLength(x1, y1, x2, y2);
-        double lengthBC = Triangle.getVectorLength(x2, y2, x3, y3);
-        double lengthCA = Triangle.getVectorLength(x3, y3, x1, y1);
+        double side1 = getVectorLength(x1, y1, x2, y2);
+        double side2 = getVectorLength(x2, y2, x3, y3);
+        double side3 = getVectorLength(x3, y3, x1, y1);
 
-        return lengthAB + lengthBC + lengthCA;
+        return side1 + side2 + side3;
     }
 
-    public static double getVectorLength(double x1, double y1, double x2, double y2) {
+    private static double getVectorLength(double x1, double y1, double x2, double y2) {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 
@@ -78,14 +73,14 @@ public class Triangle implements Shape {
         final int prime = 37;
         int hash = 1;
 
-        hash = (int) (prime * hash + x1);
-        hash = (int) (prime * hash + y1);
+        hash = prime * hash + Double.hashCode(x1);
+        hash = prime * hash + Double.hashCode(y1);
 
-        hash = (int) (prime * hash + x2);
-        hash = (int) (prime * hash + y2);
+        hash = prime * hash + Double.hashCode(x2);
+        hash = prime * hash + Double.hashCode(y2);
 
-        hash = (int) (prime * hash + x3);
-        hash = (int) (prime * hash + y3);
+        hash = prime * hash + Double.hashCode(x3);
+        hash = prime * hash + Double.hashCode(y3);
 
         return hash;
     }
