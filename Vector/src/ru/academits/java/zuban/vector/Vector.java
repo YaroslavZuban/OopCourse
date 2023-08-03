@@ -3,121 +3,111 @@ package ru.academits.java.zuban.vector;
 import java.util.Arrays;
 
 public class Vector {
-    private double[] elementData;
+    private double[] elements;
 
     public Vector(int size) {
         if (size <= 0) {
-            throw new IllegalArgumentException("Размерность Vector может быть только положительна.");
+            throw new IllegalArgumentException("Размерность вектора может быть только положительна. Переданный параметр равен: " + size);
         }
 
-        elementData = new double[size];
+        elements = new double[size];
     }
 
     public Vector(Vector vector) {
         if (vector == null) {
-            throw new NullPointerException("Объект Vector должен быть создан.");
+            throw new NullPointerException("Вектор не должен быть null.");
         }
 
-        elementData = Arrays.copyOf(vector.elementData, vector.elementData.length);
+        elements = Arrays.copyOf(vector.elements, vector.elements.length);
     }
 
-    public Vector(double[] elementData) {
-        if (elementData == null) {
-            throw new NullPointerException("Объект массива должен быть создан.");
+    public Vector(double[] elements) {
+        if (elements == null) {
+            throw new NullPointerException("Массив не должен быть null.");
         }
 
-        if (elementData.length == 0) {
-            throw new IllegalArgumentException("Не возможно создать Vector размерностью 0.");
+        if (elements.length == 0) {
+            throw new IllegalArgumentException("Не возможно создать вектор размерностью 0.");
         }
 
-        this.elementData = Arrays.copyOf(elementData, elementData.length);
+        this.elements = Arrays.copyOf(elements, elements.length);
     }
 
-    public Vector(int size, double[] elementData) {
-        if (size <= 0) {
-            throw new IllegalArgumentException("Размерность Vector может быть только положительна.");
+    public Vector(int size, double[] elements) {
+        if (size < 0) {
+            throw new IllegalArgumentException("Размерность вектора может быть только положительна. Переданный параметр равен: " + size);
         }
 
-        if (elementData == null) {
-            throw new NullPointerException("Объект массива должен быть создан.");
+        if (elements == null) {
+            throw new NullPointerException("Массив не должен быть null.");
         }
 
-        if (elementData.length == 0) {
-            throw new IllegalArgumentException("Не возможно создать Vector размерностью 0.");
+        if (elements.length == 0) {
+            throw new IllegalArgumentException("Не возможно создать вектор размерностью 0.");
         }
 
-        int maxSize = Math.max(size, elementData.length);
-
-        this.elementData = Arrays.copyOf(elementData, maxSize);
+        this.elements = Arrays.copyOf(elements, size);
     }
 
     public int getSize() {
-        return elementData.length;
+        return elements.length;
     }
 
     public double getElement(int index) {
-        return elementData[index];
+        return elements[index];
     }
 
     public void setElement(int index, double element) {
-        elementData[index] = element;
+        elements[index] = element;
     }
 
     public void add(Vector vector) {
         if (vector == null) {
-            throw new NullPointerException("Объект Vector должен быть создан.");
+            throw new NullPointerException("Вектор не должен быть null.");
         }
 
-        elementData = copyArrayIfNeeded(elementData, vector.elementData.length);
+        elements = copyArrayIfNeeded(elements, vector.elements.length);
 
-        for (int i = 0; i < elementData.length; i++) {
-            if (i >= vector.elementData.length) {
-                break;
-            }
-
-            elementData[i] += vector.elementData[i];
+        for (int i = 0; i < elements.length && i < vector.elements.length; i++) {
+            elements[i] += vector.elements[i];
         }
     }
 
     public void subtract(Vector vector) {
         if (vector == null) {
-            throw new NullPointerException("Объект Vector должен быть создан.");
+            throw new NullPointerException("Вектор не должен быть null.");
         }
 
-        elementData = copyArrayIfNeeded(elementData, vector.elementData.length);
+        elements = copyArrayIfNeeded(elements, vector.elements.length);
 
-        for (int i = 0; i < elementData.length; i++) {
-            if (i >= vector.elementData.length) {
-                break;
-            }
-
-            elementData[i] -= vector.elementData[i];
+        for (int i = 0; i < elements.length && i < vector.elements.length; i++){
+            elements[i] -= vector.elements[i];
         }
     }
 
-    public double[] copyArrayIfNeeded(double[] array, int newSize) {
-        if (array.length > newSize) {
-            return Arrays.copyOf(array, newSize);
+    private static double[] copyArrayIfNeeded(double[] array, int size) {
+        if (array.length < size) {
+            return Arrays.copyOf(array, size);
         }
 
         return array;
     }
 
-    public void multiplyScalar(double scalar) {
-        for (int i = 0; i < elementData.length; i++) {
-            elementData[i] *= scalar;
+    public void multiplyByScalar(double scalar) {
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] *= scalar;
         }
     }
 
     public void reverse() {
-        multiplyScalar(-1);
+        multiplyByScalar(-1);
     }
 
     public double getLength() {
         double sum = 0;
 
-        for (double v : this.elementData) {
-            sum += v * v;
+        for (double number : elements) {
+            sum += number * number;
         }
 
         return Math.sqrt(sum);
@@ -134,31 +124,35 @@ public class Vector {
         }
 
         Vector vector = (Vector) o;
-        return Arrays.equals(elementData, vector.elementData);
+        return Arrays.equals(elements, vector.elements);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(elementData);
+        return Arrays.hashCode(elements);
     }
 
     @Override
     public String toString() {
-        StringBuilder toString = new StringBuilder("{");
+        StringBuilder stringBuilder = new StringBuilder("{");
 
-        for (double number : elementData) {
-            toString.append(number).append(", ");
+        for (double number : elements) {
+            stringBuilder.append(number).append(", ");
         }
 
-        toString.delete(toString.length() - 2, toString.length());
-        toString.append("}");
+        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
+        stringBuilder.append('}');
 
-        return toString.toString();
+        return stringBuilder.toString();
     }
 
-    public static Vector getAdd(Vector vector1, Vector vector2) {
-        if (vector1 == null || vector2 == null) {
-            throw new NullPointerException("Объект Vector должен быть создан.");
+    public static Vector getSum(Vector vector1, Vector vector2) {
+        if (vector1 == null ) {
+            throw new NullPointerException("Первый вектор не должен быть null.");
+        }
+
+        if(vector2==null){
+            throw new NullPointerException("Второй вектор не должен быть null.");
         }
 
         Vector result = new Vector(vector1);
@@ -167,9 +161,9 @@ public class Vector {
         return result;
     }
 
-    public static Vector getSubtract(Vector minuend, Vector subtrahend) {
+    public static Vector getDifferentiate(Vector minuend, Vector subtrahend) {
         if (minuend == null || subtrahend == null) {
-            throw new NullPointerException("Объект Vector должен быть создан.");
+            throw new NullPointerException("Вектор не должен быть null.");
         }
 
         Vector result = new Vector(minuend);
@@ -180,26 +174,15 @@ public class Vector {
 
     public static double getDotProduct(Vector vector1, Vector vector2) {
         if (vector1 == null || vector2 == null) {
-            throw new NullPointerException("Объект Vector должен быть создан.");
+            throw new NullPointerException("Вектор не должен быть null.");
         }
 
-        int maxSize = Math.max(vector1.elementData.length, vector2.elementData.length);
+        int minSize = Math.min(vector1.elements.length, vector2.elements.length);
 
         double result = 0;
 
-        for (int i = 0; i < maxSize; i++) {
-            double elementVector1 = 0;
-            double elementVector2 = 0;
-
-            if (i < vector1.elementData.length) {
-                elementVector1 = vector1.elementData[i];
-            }
-
-            if (i < vector2.elementData.length) {
-                elementVector2 = vector2.elementData[i];
-            }
-
-            result += elementVector1 * elementVector2;
+        for (int i = 0; i < minSize; i++) {
+            result += vector1.elements[i] * vector2.elements[i];
         }
 
         return result;

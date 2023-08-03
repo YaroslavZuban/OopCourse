@@ -14,7 +14,7 @@ public class Main {
         vector1.subtract(vector2);
         System.out.println("vector1 subtraction: " + vector1);
 
-        vector2.multiplyScalar(2);
+        vector2.multiplyByScalar(2);
         System.out.println("vector2 multiplyVectorScalar: " + vector2);
 
         vector2.reverse();
@@ -22,10 +22,10 @@ public class Main {
 
         System.out.println("vector2 length: " + vector2.getLength());
 
-        Vector result = Vector.getAdd(vector1, vector2);
+        Vector result = Vector.getSum(vector1, vector2);
         System.out.println("static vector1 add: " + result);
 
-        result = Vector.getSubtract(vector1, vector2);
+        result = Vector.getDifferentiate(vector1, vector2);
         System.out.println("static vector1 subtraction: " + result);
 
         System.out.println("static vector1 scalar: " + Vector.getDotProduct(vector1, vector2));
