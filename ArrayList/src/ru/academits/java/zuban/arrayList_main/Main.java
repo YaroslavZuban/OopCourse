@@ -3,12 +3,10 @@ package ru.academits.java.zuban.arrayList_main;
 import ru.academits.java.zuban.arrayList.ArrayList;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         testArrayList(10);
-
     }
 
     public static void testArrayList(int size) {
@@ -128,5 +126,7 @@ public class Main {
         arrayList4.add(3,6);
 
         System.out.println("Проверим функцию добавления по индексу: " + Arrays.toString(arrayList4.toArray()));
+
+
     }
 }
