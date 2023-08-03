@@ -49,7 +49,7 @@ public class GraphicalInterface extends JFrame {
         panelIsTemperature = new JPanel(new FlowLayout());
         temperatureInterface = new TemperatureCelsius();
 
-        setIconImage(new ImageIcon("C:\\Users\\ben70\\IdeaProjects\\Popitka\\src\\termo.png").getImage());
+        setIconImage(new ImageIcon("...\\termo.png").getImage());
 
         try {
             number = Double.parseDouble(countLabel.getText());
