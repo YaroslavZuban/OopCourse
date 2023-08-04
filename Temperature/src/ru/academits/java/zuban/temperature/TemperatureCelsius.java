@@ -1,25 +1,25 @@
 package ru.academits.java.zuban.temperature;
 
 public class TemperatureCelsius implements Temperature {
-    private String meaning;
+    private String value;
 
     public double celsius(double temperature) {
-        meaning = " C";
+        value = " C";
         return temperature;
     }
 
     @Override
     public String format() {
-        return meaning;
+        return value;
     }
 
     public double fahrenheit(double temperature) {
-        meaning = " Ф";
+        value = " Ф";
         return (temperature * 9 / 5 + 32);
     }
 
     public double kelvin(double temperature) {
-        meaning = " K";
+        value = " K";
         return (temperature - 273.1);
     }
 }
