@@ -1,6 +1,7 @@
 package ru.academits.java.zuban.arrayList;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class ArrayList<E> implements List<E> {
     private static final int INITIAL_LENGTH = 16;
@@ -61,7 +62,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new IteratorArrayList();
     }
 
     @Override
@@ -318,13 +319,27 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
- /*   private void ensureCapacity(int size) {
-        for
-    }*/
+    private class IteratorArrayList implements Iterator<E>{
+        int position=0;
+        @Override
+        public boolean hasNext() {
+            return size != position;
+        }
+
+        @Override
+        public E next() {
+            if(!hasNext()){
+                throw new IndexOutOfBoundsException("Не существует элемента");
+            }
+
+            return (E)elementData[position++];
+        }
+    }
 
     /**
      * реализация не нужна
      **/
+
     @Override
     public ListIterator<E> listIterator() {
         return null;
