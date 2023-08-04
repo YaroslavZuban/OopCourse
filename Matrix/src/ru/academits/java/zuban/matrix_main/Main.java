@@ -10,7 +10,8 @@ public class Main {
                 {1, 1, 1, 1, 1},
                 {1, 1, 1, 1, 1},
                 {1, 1, 1, 1, 1},
-                {1, 1, 1, 1, 1}};
+                {1, 1, 1, 1, 1}
+        };
 
         Matrix matrix1 = new Matrix(array);
         Matrix matrix2 = new Matrix(array);
@@ -27,9 +28,9 @@ public class Main {
 
         Vector vector = new Vector(new double[]{2, 2, 2, 2, 2});
 
-        System.out.println("multiplication vector: " + matrix1.getMultiplyVector(vector));
+        System.out.println("multiplication vector: " + matrix1.getProduct(vector));
 
-        matrix1.multiplyScalar(10);
+        matrix1.multiplyByScalar(10);
         System.out.println("multiplication scalar: " + matrix1);
 
         Matrix matrixSum = Matrix.getSum(matrix1, matrix2);
@@ -38,7 +39,7 @@ public class Main {
         Matrix matrixSubtract = Matrix.getDifference(matrix1, matrix2);
         System.out.println("static matrix subtraction: " + matrixSubtract);
 
-        Matrix matrixMultiplication = Matrix.getWork(matrix1, matrix2);
+        Matrix matrixMultiplication = Matrix.getMultiplication(matrix1, matrix2);
         System.out.println("static matrix multiplication: " + matrixMultiplication);
 
         Matrix matrixTransposed = new Matrix(new double[][]{{2, 2, 2, 2, 2}});
