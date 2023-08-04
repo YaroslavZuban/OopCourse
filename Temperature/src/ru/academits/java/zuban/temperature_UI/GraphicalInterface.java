@@ -1,4 +1,4 @@
-package ru.academits.java.zuban.temperature_main;
+package ru.academits.java.zuban.temperature_UI;
 
 import ru.academits.java.zuban.temperature.Temperature;
 import ru.academits.java.zuban.temperature.TemperatureCelsius;
