@@ -7,9 +7,6 @@ import java.util.Comparator;
 public class ShapeAreaComparator implements Comparator<Shape> {
     @Override
     public int compare(Shape shape1, Shape shape2) {
-        double shapeArea1 = shape1.getArea();
-        double shapeArea2 = shape2.getArea();
-
-        return Double.compare(shapeArea1, shapeArea2);
+        return Double.compare(shape1.getArea(), shape2.getArea());
     }
 }

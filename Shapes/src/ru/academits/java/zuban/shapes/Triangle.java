@@ -21,18 +21,12 @@ public class Triangle implements Shape {
 
     @Override
     public double getWidth() {
-        double minX = Math.min(x1, Math.min(x2, x3));
-        double maxX = Math.max(x1, Math.max(x2, x3));
-
-        return maxX - minX;
+        return Math.max(x1, Math.max(x2, x3)) - Math.min(x1, Math.min(x2, x3));
     }
 
     @Override
     public double getHeight() {
-        double minY = Math.min(y1, Math.min(y2, y3));
-        double maxY = Math.max(y1, Math.max(y2, y3));
-
-        return maxY - minY;
+        return Math.max(y1, Math.max(y2, y3)) - Math.min(y1, Math.min(y2, y3));
     }
 
     @Override
@@ -42,11 +36,11 @@ public class Triangle implements Shape {
 
     @Override
     public double getPerimeter() {
-        double side1 = getVectorLength(x1, y1, x2, y2);
-        double side2 = getVectorLength(x2, y2, x3, y3);
-        double side3 = getVectorLength(x3, y3, x1, y1);
+        double sideLength1 = getVectorLength(x1, y1, x2, y2);
+        double sideLength2 = getVectorLength(x2, y2, x3, y3);
+        double sideLength3 = getVectorLength(x3, y3, x1, y1);
 
-        return side1 + side2 + side3;
+        return sideLength1 + sideLength2 + sideLength3;
     }
 
     private static double getVectorLength(double x1, double y1, double x2, double y2) {
@@ -88,12 +82,8 @@ public class Triangle implements Shape {
     @Override
     public String toString() {
         return "Triangle{ " +
-                "x1 = " + x1 +
-                ", y1 = " + y1 +
-                ", x2 = " + x2 +
-                ", y2 = " + y2 +
-                ", x3 = " + x3 +
-                ", y3 = " + y3 +
-                '}';
+                "(" + x1 + "; " + y1 + "), " +
+                "(" + x2 + "; " + y2 + "), " +
+                "(" + x3 + "; " + y3 + ')';
     }
 }

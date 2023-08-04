@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        Shape[] figures = {
+        Shape[] shapes = {
                 new Circle(200),
                 new Rectangle(10, 3),
                 new Square(8),
@@ -19,32 +19,30 @@ public class Main {
                 new Triangle(3, 1, 2, -4, 10, 15)
         };
 
-        Shape maxAreaShape = getMaxAreaShape(figures);
-        System.out.println("Вывод фигуры с максимальной площадью: " + maxAreaShape);
+        Shape maxAreaShape = getMaxAreaShape(shapes);
+        System.out.println("Фигура с максимальной площадью: " + maxAreaShape);
 
-        Shape maxSecondPerimeterShape = getMaxSecondPerimeterShape(figures);
-        System.out.println("Вывести фигуру, у которой второй по величине периметр: " + maxSecondPerimeterShape);
+        Shape seconMaxdPerimeterShape = getSecondMaxPerimeterShape(shapes);
+        System.out.println("Фигура с вторым по величине периметром: " + seconMaxdPerimeterShape);
     }
 
-    public static Shape getMaxAreaShape(Shape[] array) {
-        if (array == null || array.length == 0) {
+    public static Shape getMaxAreaShape(Shape[] shapes) {
+        if (shapes == null || shapes.length == 0) {
             return null;
         }
 
-        ShapeAreaComparator areaComparator = new ShapeAreaComparator();
-        Arrays.sort(array, areaComparator);
+        Arrays.sort(shapes, new ShapeAreaComparator());
 
-        return array[array.length - 1];
+        return shapes[shapes.length - 1];
     }
 
-    public static Shape getMaxSecondPerimeterShape(Shape[] array) {
-        if (array == null || array.length <= 1) {
+    public static Shape getSecondMaxPerimeterShape(Shape[] shapes) {
+        if (shapes == null || shapes.length <= 1) {
             return null;
         }
 
-        ShapePerimeterComparator perimeterComparator = new ShapePerimeterComparator();
-        Arrays.sort(array, perimeterComparator);
+        Arrays.sort(shapes, new ShapePerimeterComparator());
 
-        return array[array.length - 2];
+        return shapes[shapes.length - 2];
     }
 }
