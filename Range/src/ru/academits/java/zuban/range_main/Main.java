@@ -37,8 +37,8 @@ public class Main {
     }
 
     public static void printOperations(Range range1, Range range2) {
-        System.out.println("Первый диапозон: " + range1);
-        System.out.println("Второй диапозон: " + range2);
+        System.out.println("First range: " + range1);
+        System.out.println("Second range: " + range2);
 
         Range intersection = range1.getIntersection(range2);
         System.out.println("Intersection: " + intersection);
