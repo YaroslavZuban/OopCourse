@@ -1,7 +1,6 @@
-package ru.academits.java.zuban.arrayList;
+package ru.academits.java.zuban.array_list;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class ArrayList<E> implements List<E> {
     private static final int INITIAL_LENGTH = 16;

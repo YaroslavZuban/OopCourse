@@ -1,6 +1,6 @@
-package ru.academits.java.zuban.arrayList_main;
+package ru.academits.java.zuban.array_list_main;
 
-import ru.academits.java.zuban.arrayList.ArrayList;
+import ru.academits.java.zuban.array_list.ArrayList;
 import java.util.Arrays;
 
 public class Main {
