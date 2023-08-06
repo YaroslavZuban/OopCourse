@@ -1,8 +1,13 @@
-package ru.academits.java.zuban.singlyLinkedList;
+package ru.academits.java.zuban.singly_linked_list;
 
 class Node<E> {
     private E value;
     private Node<E> next;
+
+    public Node(E value, Node<E> next) {
+        this.value = value;
+        this.next = next;
+    }
 
     public Node(E value) {
         this.value = value;
