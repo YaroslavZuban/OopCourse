@@ -72,7 +72,15 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        if (a.length < size) {
+            a = Arrays.copyOf(a, size);
+        }
+
+        for (int i = 0; i < size; i++) {
+            a[i] = (T) elementData[i];
+        }
+
+        return a;
     }
 
     @Override
@@ -121,14 +129,14 @@ public class ArrayList<E> implements List<E> {
             elementData = Arrays.copyOf(elementData, (int) ((c.size() + size) * 1.5));
         }
 
-        Object[] copyCollectionArray = c.toArray();
+        Object[] arrayObjectCollection = c.toArray();
 
-        if (copyCollectionArray.length == 0) {
+        if (arrayObjectCollection.length == 0) {
             return false;
         }
 
-        System.arraycopy(copyCollectionArray, 0, elementData, size, copyCollectionArray.length);
-        size = size + copyCollectionArray.length;
+        System.arraycopy(arrayObjectCollection, 0, elementData, size, arrayObjectCollection.length);
+        size = size + arrayObjectCollection.length;
 
         return true;
     }
@@ -139,14 +147,14 @@ public class ArrayList<E> implements List<E> {
         validateIndex(index);
 
         growthArray(c.size());
-        Object[] copyCollectionArray = c.toArray();
+        Object[] arrayObjectCollection = c.toArray();
 
-        if (copyCollectionArray.length == 0) {
+        if (arrayObjectCollection.length == 0) {
             return false;
         }
 
         System.arraycopy(elementData, index, elementData, index + c.size(), size - index);
-        System.arraycopy(copyCollectionArray, 0, elementData, index, copyCollectionArray.length);
+        System.arraycopy(arrayObjectCollection, 0, elementData, index, arrayObjectCollection.length);
 
         size += c.size();
 
@@ -289,13 +297,13 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
-    private void checkNotCollectionNull(Collection<?> c, String nameFunction) {
+    private static void checkNotCollectionNull(Collection<?> c, String nameFunction) {
         if (c == null) {
             throw new NullPointerException("Переденное значение в " + nameFunction + " равно null.");
         }
     }
 
-    private void checkNotNull(Object value) {
+    private static void checkNotNull(Object value) {
         if (value == null) {
             throw new NullPointerException("Переданный объект равен null");
         }
@@ -319,8 +327,9 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
-    private class IteratorArrayList implements Iterator<E>{
-        int position=0;
+    private class IteratorArrayList implements Iterator<E> {
+        int position = 0;
+
         @Override
         public boolean hasNext() {
             return size != position;
@@ -328,11 +337,11 @@ public class ArrayList<E> implements List<E> {
 
         @Override
         public E next() {
-            if(!hasNext()){
+            if (!hasNext()) {
                 throw new IndexOutOfBoundsException("Не существует элемента");
             }
 
-            return (E)elementData[position++];
+            return (E) elementData[position++];
         }
     }
 

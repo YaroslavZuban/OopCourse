@@ -1,7 +1,6 @@
 package ru.academits.java.zuban.arrayList_main;
 
 import ru.academits.java.zuban.arrayList.ArrayList;
-
 import java.util.Arrays;
 
 public class Main {
@@ -94,9 +93,9 @@ public class Main {
         System.out.println("\n--------------------------------removeAll--------------------------------------");
         System.out.println("ArrayList содержит следующие элементы: " + Arrays.toString(arrayList1.toArray()));
 
-        java.util.ArrayList<Integer> arrayList3=new java.util.ArrayList<>();
+        java.util.ArrayList<Integer> arrayList3 = new java.util.ArrayList<>();
 
-        for (int i = 0; i < size; i+=2) {
+        for (int i = 0; i < size; i += 2) {
             arrayList3.add(i);
         }
 
@@ -107,7 +106,7 @@ public class Main {
 
         System.out.println("\n-------------------------------retainAll----------------------------------------");
 
-        ArrayList<Integer> arrayList4=new ArrayList<>();
+        ArrayList<Integer> arrayList4 = new ArrayList<>();
 
         for (int i = 0; i < size; i++) {
             arrayList4.add(i);
@@ -122,11 +121,24 @@ public class Main {
         System.out.println("\n-------------------------------add по index----------------------------------------");
         System.out.println("ArrayList содержит следующие элементы: " + Arrays.toString(arrayList4.toArray()));
 
-        arrayList4.add(0,5);
-        arrayList4.add(3,6);
+        arrayList4.add(0, 5);
+        arrayList4.add(3, 6);
 
         System.out.println("Проверим функцию добавления по индексу: " + Arrays.toString(arrayList4.toArray()));
 
+        System.out.println("\n-------------------------------toString(T[] a)----------------------------------------");
+        System.out.println("ArrayList содержит следующие элементы: " + Arrays.toString(arrayList4.toArray()));
 
+        Integer[] array1 = new Integer[4];
+        System.out.println("Размер массива array1: " + array1.length + " Элементы массива равны: " + Arrays.toString(array1));
+
+        array1 = arrayList4.toArray(array1);
+        System.out.println("После операции toString(T[] a) размер массива array1: " + array1.length + " Элементы массива равны: " + Arrays.toString(array1));
+
+        Integer[] array2 = new Integer[20];
+        System.out.println("Размер массива array1: " + array2.length + " Элементы массива равны: " + Arrays.toString(array2));
+
+        array2 = arrayList4.toArray(array2);
+        System.out.println("После операции toString(T[] a) размер массива array1: " + array2.length + " Элементы массива равны: " + Arrays.toString(array2));
     }
 }
