@@ -22,8 +22,8 @@ public class Main {
         Shape maxAreaShape = getMaxAreaShape(shapes);
         System.out.println("Фигура с максимальной площадью: " + maxAreaShape);
 
-        Shape seconMaxdPerimeterShape = getSecondMaxPerimeterShape(shapes);
-        System.out.println("Фигура с вторым по величине периметром: " + seconMaxdPerimeterShape);
+        Shape secondMaxdPerimeterShape = getSecondMaxPerimeterShape(shapes);
+        System.out.println("Фигура с вторым по величине периметром: " + secondMaxdPerimeterShape);
     }
 
     public static Shape getMaxAreaShape(Shape[] shapes) {
