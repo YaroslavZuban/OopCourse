@@ -4,7 +4,6 @@ import ru.academits.java.zuban.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
-
         Vector vector1 = new Vector(5);
         Vector vector2 = new Vector(new double[]{3, 4, 5, 6, 7, 8, 9});
 
@@ -25,7 +24,7 @@ public class Main {
         Vector result = Vector.getSum(vector1, vector2);
         System.out.println("static vector1 add: " + result);
 
-        result = Vector.getDifferentiate(vector1, vector2);
+        result = Vector.getDerivative(vector1, vector2);
         System.out.println("static vector1 subtraction: " + result);
 
         System.out.println("static vector1 scalar: " + Vector.getDotProduct(vector1, vector2));
