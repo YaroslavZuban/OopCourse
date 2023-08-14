@@ -188,6 +188,10 @@ public class Matrix {
             throw new IllegalArgumentException("Не является квадратной матрицей. Матрица размерностью " + getColumnsCount() + " * " + getRowCount());
         }
 
+        if(getColumnsCount()==1){
+            return rows[0].getElement(0);
+        }
+
         if (getColumnsCount() == 2) {
             return rows[0].getElement(0) * rows[1].getElement(1) - rows[0].getElement(1) * rows[1].getElement(0);
         }
