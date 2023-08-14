@@ -6,12 +6,12 @@ public class Main {
     public static void main(String[] args) {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
 
-        list.setFirst(2);
-        list.setFirst(3);
-        list.setFirst(4);
-        list.setFirst(5);
-        list.setFirst(6);
-        list.setFirst(7);
+        list.addFirst(2);
+        list.addFirst(3);
+        list.addFirst(4);
+        list.addFirst(5);
+        list.addFirst(6);
+        list.addFirst(7);
 
         System.out.println("setFirst  result: [7, 6, 5, 4, 3, 2] happened: " + list);
 
@@ -22,30 +22,30 @@ public class Main {
         System.out.println("deleteIndex result: [1, 6, 5, 4, 3, 2] happened: " + list);
 
         list.deleteByIndex(3);
-        System.out.println("deleteIndex result: [1, 6, 5, 3, 2] happened: " + list);
+        System.out.println("deleteIndex result: [1, 6, 4, 3, 2] happened: " + list);
 
         list.deleteByValue(1);
-        System.out.println("deleteValue result: [6, 5, 3, 2] happened: " + list);
+        System.out.println("deleteValue result: [6, 4, 3, 2] happened: " + list);
 
         list.deleteByValue(3);
-        System.out.println("deleteValue result: [6, 5, 2] happened: " + list);
+        System.out.println("deleteValue result: [6, 4, 2] happened: " + list);
 
-        list.setFirst(null);
-        System.out.println("setFirst  result: [null, 6, 5, 2] happened: " + list);
+        list.addFirst(null);
+        System.out.println("setFirst  result: [null, 6, 4, 2] happened: " + list);
 
         list.deleteByValue(null);
-        System.out.println("deleteValue result: [6, 5, 2] happened: " + list);
+        System.out.println("deleteValue result: [6, 4, 2] happened: " + list);
 
         list.deleteByValue(10);
-        System.out.println("deleteValue result: [6, 5, 2] happened: " + list);
+        System.out.println("deleteValue result: [6, 4, 2] happened: " + list);
 
         list.reverse();
-        System.out.println("revers result: [2, 5, 6] happened: " + list);
+        System.out.println("revers result: [2, 4, 6] happened: " + list);
 
         list.reverse();
-        System.out.println("revers result: [6, 5, 2] happened: " + list);
+        System.out.println("revers result: [6, 4, 2] happened: " + list);
 
-        System.out.println("copy list result: [6, 5, 2] happened: " + list.copy());
+        System.out.println("copy list result: [6, 4, 2] happened: " + list.copy());
 
         list.setNode(1, 3);
         System.out.println("set list result: [6, 3, 2] happened: " + list);

@@ -25,7 +25,7 @@ public class SinglyLinkedList<E> {
             return getFirst();
         }
 
-        Node<E> node = getNode(index);
+        Node<E> node = getNode(index + 1);
 
         return node.getValue();
     }
@@ -33,7 +33,7 @@ public class SinglyLinkedList<E> {
     public E setNode(int index, E value) {
         checkIndex(index);
 
-        Node<E> node = getNode(index);
+        Node<E> node = getNode(index + 1);
 
         E oldValueNode = node.getValue();
         node.setValue(value);
@@ -46,7 +46,7 @@ public class SinglyLinkedList<E> {
             throw new NoSuchElementException("Список пуст.");
         }
 
-        E deleteValuedNode  = head.getValue();
+        E deleteValuedNode = head.getValue();
         head = head.getNext();
 
         return deleteValuedNode;
@@ -61,32 +61,30 @@ public class SinglyLinkedList<E> {
             return deleteFirst();
         }
 
-        Node<E> node = getNode(index);
+        Node<E> node = getNode(index - 1);
 
-        E deleteValuedNode = node.getValue();
+        E deletedValue = node.getNext().getValue();
+
         node.setNext(node.getNext().getNext());
 
-        return deleteValuedNode;
+        return deletedValue;
     }
 
-    public E setFirst(E value) {
+    public void addFirst(E value) {
         size++;
 
         if (head == null) {
             head = new Node<>(value);
-            return null;
+        } else {
+            head = new Node<>(value, head);
         }
-
-        head = new Node<>(value, head);
-
-        return head.getNext().getValue();
     }
 
     public void insert(int index, E value) {
         checkIndex(index);
 
         if (index == 0) {
-            setFirst(value);
+            addFirst(value);
             return;
         }
 
@@ -103,22 +101,24 @@ public class SinglyLinkedList<E> {
     }
 
     public boolean deleteByValue(E value) {
-        if (head.getValue() == null || head.getValue().equals(value)) {
+        if (size == 0) {
+            throw new NoSuchElementException("Список пуст.");
+        }
+        if (head.getValue() == null ? value == null : head.getValue().equals(value)) {
             head = head.getNext();
             size--;
-
             return true;
         }
 
         Node<E> node = head;
 
         while (node.getNext() != null) {
-            if (node.getNext().getValue() == null || !node.getNext().getValue().equals(value)) {
-                node = node.getNext();
-            } else {
+            if (node.getNext().getValue() == null ? value == null : node.getNext().getValue().equals(value)) {
                 node.setNext(node.getNext().getNext());
                 size--;
                 return true;
+            } else {
+                node = node.getNext();
             }
         }
 
@@ -136,7 +136,7 @@ public class SinglyLinkedList<E> {
 
         Node<E> node = head;
 
-        for (int i = 0; i < size; i++) {
+        while (node != null) {
             stringBuilder.append(node.getValue()).append(", ");
             node = node.getNext();
         }
@@ -152,17 +152,17 @@ public class SinglyLinkedList<E> {
             return;
         }
 
-        Node<E> nodePrevious = null;
+        Node<E> previousNode = null;
         Node<E> node = head;
 
         while (node != null) {
             Node<E> nextNode = node.getNext();
-            node.setNext(nodePrevious);
-            nodePrevious = node;
+            node.setNext(previousNode);
+            previousNode = node;
             node = nextNode;
         }
 
-        head = nodePrevious;
+        head = previousNode;
     }
 
     public SinglyLinkedList<E> copy() {
@@ -171,21 +171,14 @@ public class SinglyLinkedList<E> {
         }
 
         SinglyLinkedList<E> singlyLinkedList = new SinglyLinkedList<>();
-
         Node<E> node = head;
-        Node<E> nodePrevCopy = null;
+        Node<E> previousCopied = new Node<>(node.getValue());
 
-        while (node != null) {
-            Node<E> copiedNode = new Node<>(node.getValue());
+        singlyLinkedList.head = head;
 
-            if (nodePrevCopy == null) {
-                singlyLinkedList.head = copiedNode;
-            } else {
-                nodePrevCopy.setNext(copiedNode);
-            }
-
-            nodePrevCopy = copiedNode;
-            node = node.getNext();
+        for (node = node.getNext(); node != null; node = node.getNext()) {
+            previousCopied.setNext(new Node<>(node.getValue()));
+            previousCopied = previousCopied.getNext();
         }
 
         singlyLinkedList.size = size;
@@ -196,7 +189,7 @@ public class SinglyLinkedList<E> {
     private Node<E> getNode(int index) {
         Node<E> node = head;
 
-        for (int i = 0; i < index; i++) {
+        for (int i = 1; i < index; i++) {
             node = node.getNext();
         }
 
