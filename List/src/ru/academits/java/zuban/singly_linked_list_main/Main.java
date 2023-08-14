@@ -47,13 +47,13 @@ public class Main {
 
         System.out.println("copy list result: [6, 5, 2] happened: " + list.copy());
 
-        list.set(1, 3);
+        list.setNode(1, 3);
         System.out.println("set list result: [6, 3, 2] happened: " + list);
 
-        list.set(0, 9);
+        list.setNode(0, 9);
         System.out.println("set list result: [9, 3, 2] happened: " + list);
 
-        list.set(list.getSize() - 1, 20);
+        list.setNode(list.getSize() - 1, 20);
         System.out.println("set list result: [9, 3, 20] happened: " + list);
 
         System.out.println("get(0)=9 list result: [9, 3, 20] happened: " + list.get(0));
