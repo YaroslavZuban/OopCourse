@@ -33,20 +33,20 @@ public class Main {
         matrix1.multiplyByScalar(10);
         System.out.println("multiplication scalar: " + matrix1);
 
-        Matrix matrixSum = Matrix.getSum(matrix1, matrix2);
-        System.out.println("static matrix add: " + matrixSum);
+        Matrix matrixSums = Matrix.getSum(matrix1, matrix2);
+        System.out.println("static matrix add: " + matrixSums);
 
-        Matrix matrixSubtract = Matrix.getDifference(matrix1, matrix2);
-        System.out.println("static matrix subtraction: " + matrixSubtract);
+        Matrix matrixDifference = Matrix.getDifference(matrix1, matrix2);
+        System.out.println("static matrix subtraction: " + matrixDifference);
 
-        Matrix matrixMultiplication = Matrix.getMultiplication(matrix1, matrix2);
-        System.out.println("static matrix multiplication: " + matrixMultiplication);
+        Matrix matrixProduct = Matrix.getProduct(matrix1, matrix2);
+        System.out.println("static matrix multiplication: " + matrixProduct);
 
-        Matrix matrixTransposed = new Matrix(new double[][]{{2, 2, 2, 2, 2}});
-        System.out.println("no transposition: " + matrixTransposed);
+        Matrix transposedMatrix = new Matrix(new double[][]{{2, 2, 2, 2, 2}});
+        System.out.println("no transposition: " + transposedMatrix);
 
-        matrixTransposed.transpose();
+        transposedMatrix.transpose();
 
-        System.out.println("transposition: " + matrixTransposed);
+        System.out.println("transposition: " + transposedMatrix);
     }
 }
