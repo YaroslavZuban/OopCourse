@@ -1,7 +1,6 @@
 package ru.academits.java.zuban.array_list;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class ArrayList<E> implements List<E> {
     private static final int INITIAL_CAPACITY = 16;
