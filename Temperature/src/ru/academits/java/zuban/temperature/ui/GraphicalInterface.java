@@ -89,37 +89,28 @@ public class GraphicalInterface {
     }
 
     private void actionListenerInput() {
-        celsiusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setButtonBackground(celsiusButton, kelvinButton, fahrenheitButton);
+        celsiusButton.addActionListener(e -> {
+            setButtonBackground(celsiusButton, kelvinButton, fahrenheitButton);
 
-                valueUniqueInput = 1;
-                translate();
-                resultCount();
-            }
+            valueUniqueInput = 1;
+            translate();
+            resultCount();
         });
 
-        kelvinButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setButtonBackground(kelvinButton, celsiusButton, fahrenheitButton);
+        kelvinButton.addActionListener(e -> {
+            setButtonBackground(kelvinButton, celsiusButton, fahrenheitButton);
 
-                valueUniqueInput = 2;
-                translate();
-                resultCount();
-            }
+            valueUniqueInput = 2;
+            translate();
+            resultCount();
         });
 
-        fahrenheitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setButtonBackground(fahrenheitButton, celsiusButton, kelvinButton);
+        fahrenheitButton.addActionListener(e -> {
+            setButtonBackground(fahrenheitButton, celsiusButton, kelvinButton);
 
-                valueUniqueInput = 3;
-                translate();
-                resultCount();
-            }
+            valueUniqueInput = 3;
+            translate();
+            resultCount();
         });
     }
 
@@ -140,42 +131,33 @@ public class GraphicalInterface {
         isFahrenheitButton.setBackground(Color.GRAY);
         panelResultButton.add(isFahrenheitButton);
 
-        isCelsiusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setButtonBackground(isCelsiusButton, isKelvinButton, isFahrenheitButton);
-                format = " C";
+        isCelsiusButton.addActionListener(e -> {
+            setButtonBackground(isCelsiusButton, isKelvinButton, isFahrenheitButton);
+            format = " C";
 
-                valueUniqueOutput = 1;
-                translate();
-                resultCount();
-            }
+            valueUniqueOutput = 1;
+            translate();
+            resultCount();
         });
 
-        isKelvinButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setButtonBackground(isKelvinButton, isCelsiusButton, isFahrenheitButton);
+        isKelvinButton.addActionListener(e -> {
+            setButtonBackground(isKelvinButton, isCelsiusButton, isFahrenheitButton);
 
-                format = " K";
+            format = " K";
 
-                valueUniqueOutput = 2;
-                translate();
-                resultCount();
-            }
+            valueUniqueOutput = 2;
+            translate();
+            resultCount();
         });
 
-        isFahrenheitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setButtonBackground(isFahrenheitButton, isCelsiusButton, isKelvinButton);
+        isFahrenheitButton.addActionListener(e -> {
+            setButtonBackground(isFahrenheitButton, isCelsiusButton, isKelvinButton);
 
-                format = " F";
+            format = " F";
 
-                valueUniqueOutput = 3;
-                translate();
-                resultCount();
-            }
+            valueUniqueOutput = 3;
+            translate();
+            resultCount();
         });
     }
 
@@ -199,7 +181,7 @@ public class GraphicalInterface {
                 translateNToFahrenheit();
             }
         } catch (NumberFormatException e) {
-            Error.errorConsole();
+            Error.getError();
         }
     }
 

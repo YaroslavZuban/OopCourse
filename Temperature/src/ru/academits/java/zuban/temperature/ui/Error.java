@@ -6,7 +6,7 @@ import java.awt.*;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class Error {
-    public static void errorConsole() {
+    public static void getError() {
         //noinspection DuplicatedCode
         JDialog dialog = createDialog();
         dialog.setLocationRelativeTo(null);
