@@ -23,6 +23,7 @@ public class GraphicalInterface {
         JFrame windowFrame = new JFrame("Перевод температуры");
         windowFrame.setVisible(true);
         windowFrame.setResizable(false);
+        windowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         windowFrame.pack();
 
         windowFrame.setSize(500, 300);

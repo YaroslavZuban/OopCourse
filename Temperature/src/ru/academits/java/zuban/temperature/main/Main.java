@@ -6,8 +6,6 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GraphicalInterface graphicalInterface = new GraphicalInterface();
-        });
+        SwingUtilities.invokeLater(GraphicalInterface::new);
     }
 }
