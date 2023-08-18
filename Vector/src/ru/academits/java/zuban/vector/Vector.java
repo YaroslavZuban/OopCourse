@@ -27,14 +27,14 @@ public class Vector {
         }
 
         if (elements.length == 0) {
-            throw new IllegalArgumentException("Не возможно создать вектор размерностью 0.");
+            throw new IllegalArgumentException("Невозможно создать вектор размерностью 0.");
         }
 
         this.elements = Arrays.copyOf(elements, elements.length);
     }
 
     public Vector(int size, double[] elements) {
-        if (size <= 0) {
+        if (size < 0) {
             throw new IllegalArgumentException("Размерность вектора может быть только положительна. Переданный параметр равен: " + size);
         }
 
@@ -43,7 +43,7 @@ public class Vector {
         }
 
         if (elements.length == 0) {
-            throw new IllegalArgumentException("Не возможно создать вектор размерностью 0.");
+            throw new IllegalArgumentException("Невозможно создать вектор размерностью 0.");
         }
 
         this.elements = Arrays.copyOf(elements, size);
@@ -66,9 +66,9 @@ public class Vector {
             throw new NullPointerException("Вектор не должен быть null.");
         }
 
-        elements = resizeArrayIfNeeded(elements, vector.elements.length);
+        resizeArrayIfNeeded(vector.elements.length);
 
-        for (int i = 0; i < elements.length && i < vector.elements.length; i++) {
+        for (int i = 0; i < Math.min(elements.length, vector.elements.length); i++) {
             elements[i] += vector.elements[i];
         }
     }
@@ -78,19 +78,17 @@ public class Vector {
             throw new NullPointerException("Вектор не должен быть null.");
         }
 
-        elements = resizeArrayIfNeeded(elements, vector.elements.length);
+        resizeArrayIfNeeded(vector.elements.length);
 
         for (int i = 0; i < Math.min(elements.length, vector.elements.length); i++) {
             elements[i] -= vector.elements[i];
         }
     }
 
-    private static double[] resizeArrayIfNeeded(double[] array, int size) {
-        if (array.length < size) {
-            return Arrays.copyOf(array, size);
+    private void resizeArrayIfNeeded(int size) {
+        if (elements.length < size) {
+            elements = Arrays.copyOf(elements, size);
         }
-
-        return array;
     }
 
     public void multiplyByScalar(double scalar) {
@@ -136,8 +134,8 @@ public class Vector {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder("{");
 
-        for (double number : elements) {
-            stringBuilder.append(number).append(", ");
+        for (double element : elements) {
+            stringBuilder.append(element).append(", ");
         }
 
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
@@ -161,17 +159,17 @@ public class Vector {
         return result;
     }
 
-    public static Vector getDerivative(Vector minuend, Vector subtrahend) {
-        if (minuend == null) {
+    public static Vector getDifferentiate(Vector vector1, Vector vector2) {
+        if (vector1 == null) {
             throw new NullPointerException("Первый вектор не должен быть null.");
         }
 
-        if (subtrahend == null) {
+        if (vector2 == null) {
             throw new NullPointerException("Второй вектор не должен быть null.");
         }
 
-        Vector result = new Vector(minuend);
-        result.subtract(subtrahend);
+        Vector result = new Vector(vector1);
+        result.subtract(vector2);
 
         return result;
     }
