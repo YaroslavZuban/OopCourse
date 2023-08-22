@@ -1,6 +1,7 @@
 package ru.academits.java.zuban.singly_linked_list;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SinglyLinkedList<E> {
     private int size;
@@ -25,20 +26,20 @@ public class SinglyLinkedList<E> {
             return getFirst();
         }
 
-        Node<E> node = getNode(index + 1);
+        Node<E> node = getNode(index);
 
         return node.getValue();
     }
 
-    public E setNode(int index, E value) {
+    public E set(int index, E value) {
         checkIndex(index);
 
-        Node<E> node = getNode(index + 1);
+        Node<E> node = getNode(index);
 
-        E oldValueNode = node.getValue();
+        E valueOld = node.getValue();
         node.setValue(value);
 
-        return oldValueNode;
+        return valueOld;
     }
 
     public E deleteFirst() {
@@ -46,10 +47,12 @@ public class SinglyLinkedList<E> {
             throw new NoSuchElementException("Список пуст.");
         }
 
-        E deleteValuedNode = head.getValue();
+        E valueDelete = head.getValue();
         head = head.getNext();
 
-        return deleteValuedNode;
+        size--;
+
+        return valueDelete;
     }
 
     public E deleteByIndex(int index) {
@@ -61,11 +64,11 @@ public class SinglyLinkedList<E> {
             return deleteFirst();
         }
 
-        Node<E> node = getNode(index - 1);
+        Node<E> previousNode = getNode(index - 1);
 
-        E deletedValue = node.getNext().getValue();
+        E deletedValue = previousNode.getNext().getValue();
 
-        node.setNext(node.getNext().getNext());
+        previousNode.setNext(previousNode.getNext().getNext());
 
         return deletedValue;
     }
@@ -73,15 +76,13 @@ public class SinglyLinkedList<E> {
     public void addFirst(E value) {
         size++;
 
-        if (head == null) {
-            head = new Node<>(value);
-        } else {
-            head = new Node<>(value, head);
-        }
+        head = new Node<>(value, head);
     }
 
     public void insert(int index, E value) {
-        checkIndex(index);
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
+        }
 
         if (index == 0) {
             addFirst(value);
@@ -95,15 +96,16 @@ public class SinglyLinkedList<E> {
     }
 
     private void checkIndex(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + (size - 1) + "]");
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
         }
     }
 
     public boolean deleteByValue(E value) {
         if (size == 0) {
-            throw new NoSuchElementException("Список пуст.");
+            return false;
         }
+
         if (head.getValue() == null ? value == null : head.getValue().equals(value)) {
             head = head.getNext();
             size--;
@@ -113,13 +115,13 @@ public class SinglyLinkedList<E> {
         Node<E> node = head;
 
         while (node.getNext() != null) {
-            if (node.getNext().getValue() == null ? value == null : node.getNext().getValue().equals(value)) {
+            if (Objects.equals(node.getNext().getValue(), value)) {
                 node.setNext(node.getNext().getNext());
                 size--;
                 return true;
-            } else {
-                node = node.getNext();
             }
+
+            node = node.getNext();
         }
 
         return false;
@@ -166,19 +168,21 @@ public class SinglyLinkedList<E> {
     }
 
     public SinglyLinkedList<E> copy() {
-        if (size <= 0) {
+        if (size == 0) {
             return new SinglyLinkedList<>();
         }
 
         SinglyLinkedList<E> singlyLinkedList = new SinglyLinkedList<>();
         Node<E> node = head;
-        Node<E> previousCopied = new Node<>(node.getValue());
+        Node<E> newHead = new Node<>(node.getValue());
+        Node<E> previousCopied = newHead;
 
-        singlyLinkedList.head = head;
+        singlyLinkedList.head = newHead;
 
         for (node = node.getNext(); node != null; node = node.getNext()) {
-            previousCopied.setNext(new Node<>(node.getValue()));
-            previousCopied = previousCopied.getNext();
+            Node<E> newNode = new Node<>(node.getValue());
+            previousCopied.setNext(newNode);
+            previousCopied = newNode;
         }
 
         singlyLinkedList.size = size;
@@ -189,7 +193,7 @@ public class SinglyLinkedList<E> {
     private Node<E> getNode(int index) {
         Node<E> node = head;
 
-        for (int i = 1; i < index; i++) {
+        for (int i = 1; i <= index; i++) {
             node = node.getNext();
         }
 

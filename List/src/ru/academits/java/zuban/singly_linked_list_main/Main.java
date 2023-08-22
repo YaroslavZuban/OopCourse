@@ -22,38 +22,38 @@ public class Main {
         System.out.println("deleteIndex result: [1, 6, 5, 4, 3, 2] happened: " + list);
 
         list.deleteByIndex(3);
-        System.out.println("deleteIndex result: [1, 6, 4, 3, 2] happened: " + list);
+        System.out.println("deleteIndex result: [1, 6, 5, 3, 2] happened: " + list);
 
         list.deleteByValue(1);
-        System.out.println("deleteValue result: [6, 4, 3, 2] happened: " + list);
+        System.out.println("deleteValue result: [6, 5, 3, 2] happened: " + list);
 
         list.deleteByValue(3);
-        System.out.println("deleteValue result: [6, 4, 2] happened: " + list);
+        System.out.println("deleteValue result: [6, 5, 2] happened: " + list);
 
         list.addFirst(null);
-        System.out.println("setFirst  result: [null, 6, 4, 2] happened: " + list);
+        System.out.println("setFirst  result: [null, 6, 5, 2] happened: " + list);
 
         list.deleteByValue(null);
-        System.out.println("deleteValue result: [6, 4, 2] happened: " + list);
+        System.out.println("deleteValue result: [6, 5, 2] happened: " + list);
 
         list.deleteByValue(10);
         System.out.println("deleteValue result: [6, 4, 2] happened: " + list);
 
         list.reverse();
-        System.out.println("revers result: [2, 4, 6] happened: " + list);
+        System.out.println("revers result: [2, 5, 6] happened: " + list);
 
         list.reverse();
-        System.out.println("revers result: [6, 4, 2] happened: " + list);
+        System.out.println("revers result: [6, 5, 2] happened: " + list);
 
-        System.out.println("copy list result: [6, 4, 2] happened: " + list.copy());
+        System.out.println("copy list result: [6, 5, 2] happened: " + list.copy());
 
-        list.setNode(1, 3);
+        list.set(1, 3);
         System.out.println("set list result: [6, 3, 2] happened: " + list);
 
-        list.setNode(0, 9);
+        list.set(0, 9);
         System.out.println("set list result: [9, 3, 2] happened: " + list);
 
-        list.setNode(list.getSize() - 1, 20);
+        list.set(list.getSize(), 20);
         System.out.println("set list result: [9, 3, 20] happened: " + list);
 
         System.out.println("get(0)=9 list result: [9, 3, 20] happened: " + list.get(0));
