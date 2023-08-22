@@ -6,11 +6,9 @@ import ru.academits.java.zuban.vector.Vector;
 public class Main {
     public static void main(String[] args) {
         double[][] array = {
-                {1, 1, 1, 1, 1},
-                {1, 1, 1, 1, 1},
-                {1, 1, 1, 1, 1},
-                {1, 1, 1, 1, 1},
-                {1, 1, 1, 1, 1}
+                {1, 1, 1},
+                {1, 1, 1},
+                {1, 1, 1},
         };
 
         Matrix matrix1 = new Matrix(array);
@@ -26,27 +24,29 @@ public class Main {
 
         System.out.println("determinant: " + matrix1.getDeterminant());
 
-        Vector vector = new Vector(new double[]{2, 2, 2, 2, 2});
+        Vector vector = new Vector(new double[]{2, 2, 2});
 
         System.out.println("multiplication vector: " + matrix1.getProduct(vector));
 
         matrix1.multiplyByScalar(10);
         System.out.println("multiplication scalar: " + matrix1);
 
-        Matrix matrixSums = Matrix.getSum(matrix1, matrix2);
-        System.out.println("static matrix add: " + matrixSums);
+        Matrix sumMatrix = Matrix.getSum(matrix1, matrix2);
+        System.out.println("static matrix add: " + sumMatrix);
 
-        Matrix matrixDifference = Matrix.getDifference(matrix1, matrix2);
-        System.out.println("static matrix subtraction: " + matrixDifference);
+        Matrix differenceMatrix = Matrix.getDifference(matrix1, matrix2);
+        System.out.println("static matrix subtraction: " + differenceMatrix);
 
-        Matrix matrixProduct = Matrix.getProduct(matrix1, matrix2);
-        System.out.println("static matrix multiplication: " + matrixProduct);
+        Matrix productMatrix = Matrix.getProduct(matrix1, matrix2);
+        System.out.println("static matrix multiplication: " + productMatrix);
 
-        Matrix transposedMatrix = new Matrix(new double[][]{{2, 2, 2, 2, 2}});
+        Matrix transposedMatrix = new Matrix(new double[][]{{2, 2, 2}});
         System.out.println("no transposition: " + transposedMatrix);
 
         transposedMatrix.transpose();
-
         System.out.println("transposition: " + transposedMatrix);
+
+        transposedMatrix.transpose();
+        System.out.println("no transposition: " + transposedMatrix);
     }
 }
