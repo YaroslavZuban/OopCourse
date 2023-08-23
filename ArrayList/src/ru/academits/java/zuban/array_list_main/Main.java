@@ -6,10 +6,6 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        testArrayList(10);
-    }
-
-    public static void testArrayList(int size) {
         ArrayList<Integer> arrayList1 = new ArrayList<>();
 
         System.out.println("-----------------------------------isEmpty and size------------------------------------");
@@ -18,7 +14,7 @@ public class Main {
         System.out.println("Проверка arrayList1 на пустоту, должно быть false. Результат равен isEmpty: " + arrayList1.isEmpty());
         System.out.println("Проверка размера ArrayList, должно быть 0. Результат равен size:  " + arrayList1.size());
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < 10; i++) {
             arrayList1.add(i);
         }
 
@@ -27,20 +23,20 @@ public class Main {
         System.out.println("ArrayList содержит следующие элементы: " + arrayList1);
 
         System.out.println("Проверка arrayList1 на пустоту, должно быть true. Результат равен isEmpty: " + arrayList1.isEmpty());
-        System.out.println("Проверка размера ArrayList, должно быть " + size + ". Результат равен size:  " + arrayList1.size());
+        System.out.println("Проверка размера ArrayList, должно быть " + 10 + ". Результат равен size:  " + arrayList1.size());
 
         System.out.println();
         System.out.println("------------------------------add-----------------------------------------");
         System.out.println("ArrayList содержит следующие элементы: " + arrayList1);
 
-        System.out.println("Проверка добавление элементов массива c помощью функции add и получения массива функций toArray : " +
+        System.out.println("Проверка добавление элементов массива c помощью функции add и получения массива функций toArray: " +
                 arrayList1);
 
         System.out.println();
         System.out.println("---------------------------------get--------------------------------------");
         System.out.println("ArrayList содержит следующие элементы: " + arrayList1);
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < 10; i++) {
             System.out.println("Получим элемент ArrayList по индексу get( " + i + " ) = " + i + ", результат равен get( " + i + " ) = " + i);
         }
 
@@ -48,8 +44,8 @@ public class Main {
         System.out.println("----------------------------------contains-------------------------------------");
         System.out.println("ArrayList содержит следующие элементы: " + arrayList1);
 
-        for (int i = 0; i < size + 3; i++) {
-            System.out.println("Проверка есть ли данный элемент в arrayList1. Элемент: " + i + " Результат:" + arrayList1.contains(i));
+        for (int i = 0; i < 10 + 3; i++) {
+            System.out.println("Проверка есть ли данный элемент в arrayList1. Элемент: " + i + " Результат: " + arrayList1.contains(i));
         }
 
         System.out.println();
@@ -57,10 +53,10 @@ public class Main {
         System.out.println("ArrayList содержит следующие элементы: " + arrayList1);
 
 
-        System.out.println("Проверка удаления элемента remove. Индекс: 0 Результат:" + arrayList1.remove(0));
-        System.out.println("Проверка удаления элемента remove. Индекс: 0 Результат:" + arrayList1.remove(0));
-        System.out.println("Проверка удаления элемента remove. Индекс: " + (arrayList1.size() - 1) + " Результат:" + arrayList1.remove(arrayList1.size() - 1));
-        System.out.println("Проверка удаления элемента remove. Индекс: " + (arrayList1.size() - 1) + " Результат:" + arrayList1.remove(arrayList1.size() - 1));
+        System.out.println("Проверка удаления элемента remove. Индекс: 0 Результат: " + arrayList1.remove(0));
+        System.out.println("Проверка удаления элемента remove. Индекс: 0 Результат: " + arrayList1.remove(0));
+        System.out.println("Проверка удаления элемента remove. Индекс: " + (arrayList1.size() - 1) + " Результат: " + arrayList1.remove(arrayList1.size() - 1));
+        System.out.println("Проверка удаления элемента remove. Индекс: " + (arrayList1.size() - 1) + " Результат: " + arrayList1.remove(arrayList1.size() - 1));
 
         System.out.println();
         System.out.println("-----------------------------------clear------------------------------------");
@@ -81,7 +77,7 @@ public class Main {
         System.out.println("-------------------------------addAll----------------------------------------");
         System.out.println("ArrayList содержит следующие элементы: " + arrayList1);
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < 10; i++) {
             arrayList2.add(i);
         }
 
@@ -106,7 +102,7 @@ public class Main {
 
         java.util.ArrayList<Integer> arrayList3 = new java.util.ArrayList<>();
 
-        for (int i = 0; i < size; i += 2) {
+        for (int i = 0; i < 10; i += 2) {
             arrayList3.add(i);
         }
 
@@ -117,10 +113,9 @@ public class Main {
 
         System.out.println();
         System.out.println("-------------------------------retainAll----------------------------------------");
-
         ArrayList<Integer> arrayList4 = new ArrayList<>();
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < 10; i++) {
             arrayList4.add(i);
         }
 
@@ -147,12 +142,12 @@ public class Main {
         System.out.println("Размер массива array1: " + array1.length + " Элементы массива равны: " + Arrays.toString(array1));
 
         array1 = arrayList4.toArray(array1);
-        System.out.println("После операции toString(T[] a) размер массива array1: " + array1.length + " Элементы массива равны: " + Arrays.toString(array1));
+        System.out.println("После операции toArray(T[] a) размер массива array1: " + array1.length + " Элементы массива равны: " + Arrays.toString(array1));
 
         Integer[] array2 = new Integer[20];
         System.out.println("Размер массива array1: " + array2.length + " Элементы массива равны: " + Arrays.toString(array2));
 
         array2 = arrayList4.toArray(array2);
-        System.out.println("После операции toString(T[] a) размер массива array1: " + array2.length + " Элементы массива равны: " + Arrays.toString(array2));
+        System.out.println("После операции toArray(T[] a) размер массива array1: " + array2.length + " Элементы массива равны: " + Arrays.toString(array2));
     }
 }
