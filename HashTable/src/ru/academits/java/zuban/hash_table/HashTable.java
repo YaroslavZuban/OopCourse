@@ -4,15 +4,21 @@ import java.util.*;
 
 public class HashTable<E> implements Collection<E> {
     private static final int INITIAL_LENGTH = 16;
-    private Object[] values;
-    private int size;
 
-    public HashTable(int sizeArray) {
-        values = new Object[sizeArray];
+    private ArrayList<E>[] elementLists;
+    private int size;
+    private int changeCounts;
+
+    public HashTable(int arraySize) {
+        if (arraySize <= 0) {
+            throw new NoSuchElementException("Не возможно создать HashTable размерностью: " + arraySize);
+        }
+
+        elementLists = new ArrayList[arraySize];
     }
 
     public HashTable() {
-        values = new Object[INITIAL_LENGTH];
+        elementLists = new ArrayList[INITIAL_LENGTH];
     }
 
     @Override
@@ -27,24 +33,16 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean contains(Object o) {
-        checkNotNull(o);
+        int index = getObjectByIndex(o);
 
-        int index = hashCode(o);
-
-        if (checkCellIndex(index)) {
+        if (elementLists[index] == null) {
             return false;
         }
 
         //noinspection rawtypes
-        List collision = (List) values[index];
+        List elementList = (List) elementLists[index];
 
-        for (Object object : collision) {
-            if (object.equals(o)) {
-                return true;
-            }
-        }
-
-        return false;
+        return elementList.contains(o);
     }
 
     @Override
@@ -52,14 +50,14 @@ public class HashTable<E> implements Collection<E> {
         Object[] array = new Object[size];
 
         //noinspection unchecked
-        fillingArray((E[]) array);
+        fillArray((E[]) array);
 
         return array;
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        checkNotNull(a);
+        checkArgumentNotNull(a, "toArray");
 
         if (a.length < size) {
             //noinspection unchecked
@@ -67,22 +65,25 @@ public class HashTable<E> implements Collection<E> {
         }
 
         //noinspection unchecked
-        fillingArray((E[]) a);
+        fillArray((E[]) a);
+
+        if (a.length > size) {
+            a[size] = null;
+        }
 
         return a;
     }
 
-    private void fillingArray(E[] array) {
-        int indexCurrentArray = 0;
+    private void fillArray(E[] array) {
+        int currentArrayIndex = 0;
 
-        for (Object value : values) {
-            if (value != null) {
-                //noinspection rawtypes
-                List collision = (List) value;
-
-                for (Object object : collision) {
+        //noinspection rawtypes
+        for (List list : elementLists) {
+            if (list != null) {
+                for (Object element : list) {
                     //noinspection unchecked
-                    array[indexCurrentArray++] = (E) object;
+                    array[currentArrayIndex] = (E) element;
+                    currentArrayIndex++;
                 }
             }
         }
@@ -90,40 +91,39 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean add(E e) {
-        checkNotNull(e);
+        resizeArray();
 
-        increasingArraySize();
+        int index = getObjectByIndex(e);
 
-        int index = hashCode(e);
-
-        if (checkCellIndex(index)) {
-            values[index] = new ArrayList<>();
+        if (elementLists[index] == null) {
+            elementLists[index] = new ArrayList<>();
         }
 
         //noinspection rawtypes
-        List collision = (List) values[index];
+        List collision = (List) elementLists[index];
         //noinspection unchecked
         collision.add(e);
         size++;
+        changeCounts++;
 
         return true;
     }
 
-    private void increasingArraySize() {
-        if (counterCellNull(values) == 0) {
-            Object[] arrayValue = values;
+    private void resizeArray() {
+        if (size == elementLists.length) {
+            //noinspection rawtypes
+            List[] arrayValue = elementLists;
 
-            values = new Object[values.length * 2];
+            //noinspection unchecked
+            elementLists = new ArrayList[elementLists.length * 2];
             size = 0;
 
-            for (Object o : arrayValue) {
-                if (o != null) {
-                    //noinspection rawtypes
-                    List collision = (List) o;
-
-                    for (Object object : collision) {
+            //noinspection rawtypes
+            for (List list : arrayValue) {
+                if (list != null) {
+                    for (Object element : list) {
                         //noinspection SingleStatementInBlock,unchecked
-                        add((E) object);
+                        add((E) element);
                     }
                 }
             }
@@ -132,20 +132,19 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean remove(Object o) {
-        checkNotNull(o);
+        int index = getObjectByIndex(o);
 
-        int index = hashCode(o);
-
-        if (checkCellIndex(index)) {
+        if (elementLists[index] == null) {
             return false;
         }
 
         //noinspection rawtypes
-        List collision = (List) values[index];
+        List collision = (List) elementLists[index];
         boolean isRemoveValue = collision.remove(o);
 
         if (isRemoveValue) {
             size--;
+            changeCounts++;
         }
 
         return isRemoveValue;
@@ -153,20 +152,27 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        checkNotCollectionNull(c, "containsAll");
+        checkArgumentNotNull(c, "containsAll");
 
-        return Arrays.equals(toArray(), c.toArray());
+        for (List list : elementLists) {
+            if (list != null) {
+                for (Object element : list) {
+                    if (!c.contains(element)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        checkNotCollectionNull(c, "addAll");
+        checkArgumentNotNull(c, "addAll");
 
-        Object[] arrayCollection = c.toArray();
-
-        for (Object object : arrayCollection) {
-            //noinspection unchecked
-            add((E) object);
+        for (E element : c) {
+            add(element);
         }
 
         return true;
@@ -174,14 +180,15 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        checkNotCollectionNull(c, "removeAll");
+        checkArgumentNotNull(c, "removeAll");
 
         int oldSize = size;
-        Object[] arrayCollection = c.toArray();
 
-        for (Object object : arrayCollection) {
-            while (contains(object)) {
-                remove(object);
+        for (Object element : c) {
+            boolean changed = remove(element);
+
+            while (changed) {
+                changed = remove(element);
             }
         }
 
@@ -190,14 +197,13 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        checkNotCollectionNull(c, "retainAll");
+        checkArgumentNotNull(c, "retainAll");
 
         int oldSize = size;
-        Object[] arrayTable = toArray();
 
-        for (Object object : arrayTable) {
-            while (!c.contains(object) && contains(object)) {
-                remove(object);
+        for (Object element : toArray(new Object[0])) {
+            if (!c.contains(element)) {
+                remove(element);
             }
         }
 
@@ -207,64 +213,62 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public void clear() {
         size = 0;
-        values = new Object[INITIAL_LENGTH];
+        Arrays.fill(elementLists, new ArrayList<>());
+        changeCounts++;
     }
 
-    private int hashCode(Object object) {
-        return Math.abs(object.hashCode() % values.length);
+    private int getObjectByIndex(Object object) {
+        return Math.abs((31 + (object == null ? 0 : object.hashCode())) % elementLists.length);
     }
 
-    private static void checkNotNull(Object value) {
-        if (value == null) {
-            throw new NullPointerException("Переданный объект равен null");
+    private static void checkArgumentNotNull(Object object, String name) {
+        if (object == null) {
+            throw new NullPointerException("Переданный объект " + name + " равен null");
         }
     }
 
-    private static int counterCellNull(Object[] array) {
-        int count = 0;
-
-        for (Object o : array) {
-            if (o == null) {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    private static void checkNotCollectionNull(Collection<?> c, String nameFunction) {
-        if (c == null) {
-            throw new NullPointerException("Переденное значение в " + nameFunction + " равно null.");
-        }
-    }
-
-    private boolean checkCellIndex(int index) {
-        return values[index] == null;
-    }
-
-    @SuppressWarnings("ClassEscapesDefinedScope")
     @Override
     public Iterator<E> iterator() {
-        return new Iterator<>();
+        return new HashTableIterator<>();
     }
 
-    class Iterator<T> implements java.util.Iterator<T> {
-        Object[] array = toArray();
-        int position = 0;
+    class HashTableIterator<T> implements Iterator<T> {
+        private int elementCount;
+        private int rowIndex;
+        private int columnIndex;
+        private final int modificationCount = changeCounts;
 
         @Override
         public boolean hasNext() {
-            return position != array.length;
+            return elementCount != size;
         }
 
         @Override
         public T next() {
+            if (modificationCount != changeCounts) {
+                throw new ConcurrentModificationException("Коллекция изменена.");
+            }
+
             if (!hasNext()) {
                 throw new IndexOutOfBoundsException("Не существует элемента");
             }
 
+            while (elementLists[rowIndex] == null) {
+                rowIndex++;
+            }
+
+            if (elementLists[rowIndex].size() >= columnIndex) {
+                rowIndex++;
+                columnIndex = 0;
+            }
+
             //noinspection unchecked
-            return (T) array[position++];
+            T result = (T) elementLists[rowIndex].get(columnIndex);
+            columnIndex++;
+
+            elementCount++;
+
+            return result;
         }
     }
 }
