@@ -300,7 +300,7 @@ public class ArrayList<E> implements List<E> {
 
     private static void checkNotCollectionNull(Collection<?> c, String functionName) {
         if (c == null) {
-            throw new NullPointerException("Переденные значение в " + functionName + " равно null.");
+            throw new NullPointerException("Переданные значение в " + functionName + " равно null.");
         }
     }
 
