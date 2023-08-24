@@ -24,9 +24,9 @@ public class Main {
 
         System.out.println("Список до изменения: " + list1);
 
-        removeEvenNumbers(list1);
+        List<Integer> evenNumbersList = removeEvenNumbers(list1);
 
-        System.out.println("Список после исключения четных чисел: " + list1);
+        System.out.println("Список после исключения четных чисел: " + evenNumbersList);
 
         System.out.println();
         System.out.println("------------ Задание 3 ------------------");
@@ -61,13 +61,16 @@ public class Main {
         return null;
     }
 
-    public static void removeEvenNumbers(List<Integer> list) {
-        //noinspection Java8CollectionRemoveIf
+    public static List<Integer> removeEvenNumbers(List<Integer> list) {
+        List<Integer> newList = new ArrayList<>(list.size());
+
         for (Integer element : list) {
-            if (element % 2 == 0) {
-                list.remove(element);
+            if (element % 2 != 0) {
+                newList.add(element);
             }
         }
+
+        return newList;
     }
 
     public static List<Integer> removeDuplicates(List<Integer> list) {
