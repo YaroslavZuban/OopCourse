@@ -1,6 +1,6 @@
 package ru.academits.java.zuban.tree;
 
-public class Node<E>{
+public class Node<E> {
     private E value;
     private Node<E> left;
     private Node<E> right;
@@ -25,5 +25,17 @@ public class Node<E>{
 
     public Node<E> getRight() {
         return right;
+    }
+
+    public void setLeft(Node<E> left) {
+        this.left = left;
+    }
+
+    public void setRight(Node<E> right) {
+        this.right = right;
+    }
+
+    public void setValue(E value) {
+        this.value = value;
     }
 }
