@@ -4,77 +4,81 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("------------ Задание 1 ------------------");
 
-        readLinesFromFile();
+        List<String> lines = readLinesFromFile();
+        System.out.println(lines);
 
+        System.out.println();
         System.out.println("------------ Задание 2 ------------------");
 
-        removeEvenNumbers();
+        List<Integer> list1 = new ArrayList<>();
 
+        for (int i = 0; i < 10; i++) {
+            list1.add(i);
+        }
+
+        System.out.println("Список до изменения: " + list1);
+
+        removeEvenNumbers(list1);
+
+        System.out.println("Список после исключения четных чисел: " + list1);
+
+        System.out.println();
         System.out.println("------------ Задание 3 ------------------");
 
-        removeDuplicates();
+        List<Integer> list2 = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            list2.add((int) (Math.random() * 10));
+        }
+
+        System.out.println("Список: " + list2);
+
+        List<Integer> list3 = removeDuplicates(list2);
+
+        System.out.println("Новый список с уникальными числами: " + list3);
     }
 
-    public static void readLinesFromFile() {
-        List<String> lines = new ArrayList<>();
-
+    public static List<String> readLinesFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ben70\\IdeaProjects\\OopCourse\\ArrayListHome\\text.txt"))) {
+            List<String> lines = new ArrayList<>();
             String line;
 
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
             }
 
-            System.out.println(lines);
+            return lines;
         } catch (IOException e) {
             System.out.println("Файл не найден");
         }
+
+        return null;
     }
 
-    public static void removeEvenNumbers() {
-        List<Integer> list = new ArrayList<>();
-
-        for (int i = 0; i < 100; i++) {
-            list.add(i);
-        }
-
-        Iterator<Integer> iterator = list.iterator();
-
-        System.out.println("Список до изменения: " + list);
-
-        while (iterator.hasNext()) {
-            if (iterator.next() % 2 == 0) {
-                iterator.remove();
+    public static void removeEvenNumbers(List<Integer> list) {
+        //noinspection Java8CollectionRemoveIf
+        for (Integer element : list) {
+            if (element % 2 == 0) {
+                list.remove(element);
             }
         }
-
-        System.out.println("Список после исключения четных чисел: " + list);
     }
 
-    public static void removeDuplicates() {
-        List<Integer> list = new ArrayList<>();
-
-        for (int i = 0; i < 50; i++) {
-            list.add((int) (Math.random() * 20));
-        }
-
-        List<Integer> uniqueNumbersList = new ArrayList<>();
-
-        System.out.println("Список: " + list);
+    public static List<Integer> removeDuplicates(List<Integer> list) {
+        List<Integer> listUnique = new ArrayList<>(list.size());
 
         for (Integer number : list) {
-            if (!uniqueNumbersList.contains(number)) {
-                uniqueNumbersList.add(number);
+            if (!listUnique.contains(number)) {
+                listUnique.add(number);
             }
         }
 
-        System.out.println("Новый список с уникальными числами: " + uniqueNumbersList);
+        return listUnique;
     }
 }
