@@ -64,9 +64,11 @@ public class Vector {
 
         resizeArrayIfNeeded(vector.elements.length);
 
-        int minSize = Math.min(elements.length, vector.elements.length);
+        for (int i = 0; i < elements.length; i++) {
+            if (i >= vector.elements.length) {
+                break;
+            }
 
-        for (int i = 0; i < minSize; i++) {
             elements[i] += vector.elements[i];
         }
     }
@@ -78,9 +80,11 @@ public class Vector {
 
         resizeArrayIfNeeded(vector.elements.length);
 
-        int minSize = Math.min(elements.length, vector.elements.length);
+        for (int i = 0; i < elements.length; i++) {
+            if (i >= vector.elements.length) {
+                break;
+            }
 
-        for (int i = 0; i < minSize; i++) {
             elements[i] -= vector.elements[i];
         }
     }
@@ -159,7 +163,7 @@ public class Vector {
         return result;
     }
 
-    public static Vector getDifference (Vector vector1, Vector vector2) {
+    public static Vector getDifference(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("Первый вектор не должен быть null.");
         }
