@@ -24,7 +24,7 @@ public class Main {
         Vector result = Vector.getSum(vector1, vector2);
         System.out.println("static vector1 add: " + result);
 
-        result = Vector.getDifferentiate(vector1, vector2);
+        result = Vector.getDifference(vector1, vector2);
         System.out.println("static vector1 subtraction: " + result);
 
         System.out.println("static vector1 scalar: " + Vector.getDotProduct(vector1, vector2));

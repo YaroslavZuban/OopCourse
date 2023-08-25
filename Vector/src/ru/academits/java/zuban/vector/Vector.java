@@ -34,16 +34,12 @@ public class Vector {
     }
 
     public Vector(int size, double[] elements) {
-        if (size < 0) {
+        if (size <= 0) {
             throw new IllegalArgumentException("Размерность вектора может быть только положительна. Переданный параметр равен: " + size);
         }
 
         if (elements == null) {
             throw new NullPointerException("Массив не должен быть null.");
-        }
-
-        if (elements.length == 0) {
-            throw new IllegalArgumentException("Невозможно создать вектор размерностью 0.");
         }
 
         this.elements = Arrays.copyOf(elements, size);
@@ -68,7 +64,9 @@ public class Vector {
 
         resizeArrayIfNeeded(vector.elements.length);
 
-        for (int i = 0; i < Math.min(elements.length, vector.elements.length); i++) {
+        int minSize = Math.min(elements.length, vector.elements.length);
+
+        for (int i = 0; i < minSize; i++) {
             elements[i] += vector.elements[i];
         }
     }
@@ -80,7 +78,9 @@ public class Vector {
 
         resizeArrayIfNeeded(vector.elements.length);
 
-        for (int i = 0; i < Math.min(elements.length, vector.elements.length); i++) {
+        int minSize = Math.min(elements.length, vector.elements.length);
+
+        for (int i = 0; i < minSize; i++) {
             elements[i] -= vector.elements[i];
         }
     }
@@ -104,8 +104,8 @@ public class Vector {
     public double getLength() {
         double sum = 0;
 
-        for (double number : elements) {
-            sum += number * number;
+        for (double element : elements) {
+            sum += element * element;
         }
 
         return Math.sqrt(sum);
@@ -159,7 +159,7 @@ public class Vector {
         return result;
     }
 
-    public static Vector getDifferentiate(Vector vector1, Vector vector2) {
+    public static Vector getDifference (Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("Первый вектор не должен быть null.");
         }
