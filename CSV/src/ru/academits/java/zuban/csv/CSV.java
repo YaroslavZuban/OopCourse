@@ -1,131 +1,111 @@
 package ru.academits.java.zuban.csv;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CSV {
-    public void conversionFileCVSToHTML(String link, String fileNew) {
-        checkNotNull(link);
+    private int quotesCount;
 
-        List<StringBuilder> data = new ArrayList<>();
-
-        readingCVS(link, data);
-
-        writingHTML(fileNew, data);
-    }
-
-    public static void readingCVS(String link, List<StringBuilder> sheetRecord) {
-        try (BufferedReader cvsReader = new BufferedReader(new FileReader(link))) {
-            String lineCVS;
-            StringBuilder stringBuilder = new StringBuilder();
-
-            while ((lineCVS = cvsReader.readLine()) != null) {
-                stringBuilder.append(lineCVS);
-
-                if ((countOccurrences(stringBuilder.toString(), '"') % 2) != 0) {
-                    stringBuilder.append("\\n");
-                } else {
-                    sheetRecord.add(stringBuilder);
-                    stringBuilder = new StringBuilder();
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public void conversionFileCvsToHtml(String fileNameCsv, String fileNameHtml) {
+        if (fileNameCsv == null) {
+            throw new NullPointerException("Первый переданный аргумент равен null");
         }
+
+        if (fileNameHtml == null) {
+            throw new NullPointerException("Второй переданный аргумент равен null");
+        }
+
+        translateToHtml(fileNameCsv, fileNameHtml);
     }
 
-    public static void writingHTML(String nameFile, List<StringBuilder> sheetRecord) {
-        try (BufferedWriter htmlWriting = new BufferedWriter(new FileWriter(nameFile))) {
-            htmlWriting.write("<meta charset=\"UTF-8\">");
-            htmlWriting.write("<table>");
+    public void translateToHtml(String fileNameCsv, String fileNameHtml) {
+        try (BufferedReader cvsReader = new BufferedReader(new FileReader(fileNameCsv));
+             PrintWriter htmlWriter = new PrintWriter(fileNameHtml)) {
 
-            for (StringBuilder line : sheetRecord) {
-                htmlWriting.write("<tr>");
-                String[] cells = parseRow(line.toString());
+            htmlWriter.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n");
+            htmlWriter.write("<html>\n");
+            htmlWriter.write("<head>\n");
+            htmlWriter.write("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
+            htmlWriter.write("    <title>Таблица</title>\n");
+            htmlWriter.write("</head>\n");
+            htmlWriter.write("<body>\n");
+            htmlWriter.write("<table>\n");
 
-                for (int i = 0; i < cells.length; i++) {
-                    htmlWriting.write("<td>");
-                    htmlWriting.write(checkingForbiddenCharacters(cells[i]));
-                    htmlWriting.write("</td>");
+            String csvLine;
+
+            while ((csvLine = cvsReader.readLine()) != null) {
+                if (csvLine.isEmpty()) {
+                    continue;
                 }
 
-                htmlWriting.write("</tr>");
+                htmlWriter.write(replaceChar(csvLine));
             }
 
-
-            htmlWriting.write("</table>");
+            htmlWriter.write("</table>\n");
+            htmlWriter.write("</body>\n");
+            htmlWriter.write("</html>\n");
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл не найден или не может быть открыт.");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Ошибка при чтении файла.");
         }
     }
 
-    private static String checkingForbiddenCharacters(String cell) {
-        String cellNew = cell;
+    private String replaceChar(String line) {
+        StringBuilder lineResult = new StringBuilder();
 
-        if (cell.indexOf('&') != -1) {
-            cellNew = cell.replace("&", "&amp");
+        if (quotesCount == 0) {
+            lineResult.append("    <tr>\n");
+            lineResult.append("        <td>\n            ");
+            quotesCount = countOccurrences(line);
         }
-
-        if (cell.contains("\\n")) {
-            cellNew = cell.replace("\\n", "<br/>");
-        }
-
-        if (cell.indexOf('<') != -1) {
-            cellNew = cell.replace("<", "&lt");
-        }
-
-        if (cell.indexOf('>') != -1) {
-            cellNew = cell.replace(">", "&gt");
-        }
-
-        return cellNew;
-    }
-
-    private static String[] parseRow(String line) {
-        boolean creatingNewCell = false;
-
-        StringBuilder cellCurrent = new StringBuilder();
-        List<String> cells = new ArrayList<>();
 
         for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
+            char symbol = line.charAt(i);
 
-            if (c == '"') {
-                if (creatingNewCell && i + 1 < line.length() && line.charAt(i + 1) == '"') {
-                    cellCurrent.append(c);
-                    i++;
-                } else {
-                    creatingNewCell = !creatingNewCell;
-                }
-            } else if (c == ',' && !creatingNewCell) {
-                cells.add(cellCurrent.toString());
-                cellCurrent.setLength(0);
-            } else {
-                cellCurrent.append(c);
+            if (i + 2 < line.length() && symbol == '"' && line.charAt(i + 1) == ',' && line.charAt(i + 2) == '"') {
+                i += 2;
+                lineResult.append("\n        </td>\n").append("        <td>\n            ");
+            } else if (i + 2 < line.length() && symbol == '"' && line.charAt(i + 1) == '"' && line.charAt(i + 2) == ',') {
+                i += 2;
+                lineResult.append("\",");
+            } else if (i + 1 < line.length() && symbol == '"' && line.charAt(i + 1) == '"') {
+                i += 1;
+                lineResult.append('"');
+            } else if (i + 1 < line.length() && symbol == ',' && line.charAt(i + 1) == '"' || i + 1 < line.length() && symbol == '"' && line.charAt(i + 1) == ',') {
+                lineResult.append("\n        </td>\n").append("        <td>\n            ");
+                i += 1;
+            } else if (symbol == '&') {
+                lineResult.append("&amp;");
+            } else if (symbol == '<') {
+                lineResult.append("&lt;");
+            } else if (symbol == '>') {
+                lineResult.append("&gt;");
+            } else if (symbol != '"') {
+                lineResult.append(symbol);
             }
         }
 
-        cells.add(cellCurrent.toString());
-        cellCurrent.setLength(0);
-
-        return cells.toArray(new String[0]);
-    }
-
-    private static void checkNotNull(String link) {
-        if (link == null) {
-            throw new NullPointerException("Переданный объект равен null");
+        if (quotesCount % 2 != 0) {
+            lineResult.append("<br/>");
+            quotesCount += countOccurrences(line);
+        } else {
+            lineResult.append("\n        </td>\n");
+            lineResult.append("    </tr>\n");
+            quotesCount = 0;
         }
+
+        return lineResult.toString();
     }
 
-    private static int countOccurrences(String str, char ch) {
-        int counter = 0;
+    private static int countOccurrences(String str) {
+        int quoteCounter = 0;
+
         for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == ch) {
-                counter++;
+            if (str.charAt(i) == '"') {
+                quoteCounter++;
             }
         }
 
-        return counter;
+        return quoteCounter;
     }
 }
