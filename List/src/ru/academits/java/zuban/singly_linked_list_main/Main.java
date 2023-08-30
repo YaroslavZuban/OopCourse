@@ -19,25 +19,25 @@ public class Main {
         System.out.println("insert result: [7, 1, 6, 5, 4, 3, 2] happened: " + list);
 
         list.deleteByIndex(0);
-        System.out.println("deleteIndex result: [1, 6, 5, 4, 3, 2] happened: " + list);
+        System.out.println("deleteByIndex result: [1, 6, 5, 4, 3, 2] happened: " + list);
 
         list.deleteByIndex(3);
-        System.out.println("deleteIndex result: [1, 6, 5, 3, 2] happened: " + list);
+        System.out.println("deleteByIndex result: [1, 6, 5, 3, 2] happened: " + list);
 
         list.deleteByValue(1);
-        System.out.println("deleteValue result: [6, 5, 3, 2] happened: " + list);
+        System.out.println("deleteByValue result: [6, 5, 3, 2] happened: " + list);
 
         list.deleteByValue(3);
-        System.out.println("deleteValue result: [6, 5, 2] happened: " + list);
+        System.out.println("deleteByValue result: [6, 5, 2] happened: " + list);
 
         list.addFirst(null);
-        System.out.println("setFirst  result: [null, 6, 5, 2] happened: " + list);
+        System.out.println("addFirst  result: [null, 6, 5, 2] happened: " + list);
 
         list.deleteByValue(null);
-        System.out.println("deleteValue result: [6, 5, 2] happened: " + list);
+        System.out.println("deleteByValue result: [6, 5, 2] happened: " + list);
 
         list.deleteByValue(10);
-        System.out.println("deleteValue result: [6, 4, 2] happened: " + list);
+        System.out.println("deleteByValue result: [6, 4, 2] happened: " + list);
 
         list.reverse();
         System.out.println("revers result: [2, 5, 6] happened: " + list);

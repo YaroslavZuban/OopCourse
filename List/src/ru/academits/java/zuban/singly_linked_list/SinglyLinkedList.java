@@ -22,13 +22,7 @@ public class SinglyLinkedList<E> {
     public E get(int index) {
         checkIndex(index);
 
-        if (index == 0) {
-            return getFirst();
-        }
-
-        Node<E> node = getNode(index);
-
-        return node.getValue();
+        return getNode(index).getValue();
     }
 
     public E set(int index, E value) {
@@ -36,10 +30,10 @@ public class SinglyLinkedList<E> {
 
         Node<E> node = getNode(index);
 
-        E valueOld = node.getValue();
+        E oldValue = node.getValue();
         node.setValue(value);
 
-        return valueOld;
+        return oldValue;
     }
 
     public E deleteFirst() {
@@ -47,18 +41,16 @@ public class SinglyLinkedList<E> {
             throw new NoSuchElementException("Список пуст.");
         }
 
-        E valueDelete = head.getValue();
+        E deletedValue = head.getValue();
         head = head.getNext();
 
         size--;
 
-        return valueDelete;
+        return deletedValue;
     }
 
     public E deleteByIndex(int index) {
         checkIndex(index);
-
-        size--;
 
         if (index == 0) {
             return deleteFirst();
@@ -69,6 +61,7 @@ public class SinglyLinkedList<E> {
         E deletedValue = previousNode.getNext().getValue();
 
         previousNode.setNext(previousNode.getNext().getNext());
+        size--;
 
         return deletedValue;
     }
@@ -96,7 +89,7 @@ public class SinglyLinkedList<E> {
     }
 
     private void checkIndex(int index) {
-        if (index < 0 || index > size) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
         }
     }
@@ -106,9 +99,8 @@ public class SinglyLinkedList<E> {
             return false;
         }
 
-        if (head.getValue() == null ? value == null : head.getValue().equals(value)) {
-            head = head.getNext();
-            size--;
+        if (Objects.equals(head.getValue(), value)) {
+            deleteFirst();
             return true;
         }
 
@@ -172,22 +164,23 @@ public class SinglyLinkedList<E> {
             return new SinglyLinkedList<>();
         }
 
-        SinglyLinkedList<E> singlyLinkedList = new SinglyLinkedList<>();
-        Node<E> node = head;
-        Node<E> newHead = new Node<>(node.getValue());
-        Node<E> previousCopied = newHead;
+        SinglyLinkedList<E> copiedList = new SinglyLinkedList<>();
 
-        singlyLinkedList.head = newHead;
+        Node<E> originalNode = head;
+        Node<E> copiedNode = new Node<>(originalNode.getValue());
+        Node<E> previousCopied = copiedNode;
 
-        for (node = node.getNext(); node != null; node = node.getNext()) {
-            Node<E> newNode = new Node<>(node.getValue());
-            previousCopied.setNext(newNode);
-            previousCopied = newNode;
+        copiedList.head = copiedNode;
+
+        for (originalNode = originalNode.getNext(); originalNode != null; originalNode = originalNode.getNext()) {
+            Node<E> nextCopiedNode = new Node<>(originalNode.getValue());
+            previousCopied.setNext(nextCopiedNode);
+            previousCopied = nextCopiedNode;
         }
 
-        singlyLinkedList.size = size;
+        copiedList.size = size;
 
-        return singlyLinkedList;
+        return copiedList;
     }
 
     private Node<E> getNode(int index) {
