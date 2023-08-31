@@ -52,7 +52,6 @@ public class Main {
         System.out.println("------------------------------------remove-----------------------------------");
         System.out.println("ArrayList содержит следующие элементы: " + arrayList1);
 
-
         System.out.println("Проверка удаления элемента remove. Индекс: 0 Результат: " + arrayList1.remove(0));
         System.out.println("Проверка удаления элемента remove. Индекс: 0 Результат: " + arrayList1.remove(0));
         System.out.println("Проверка удаления элемента remove. Индекс: " + (arrayList1.size() - 1) + " Результат: " + arrayList1.remove(arrayList1.size() - 1));
