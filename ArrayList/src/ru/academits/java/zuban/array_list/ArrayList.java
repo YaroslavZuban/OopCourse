@@ -239,7 +239,9 @@ public class ArrayList<E> implements List<E> {
     public void add(int index, E element) {
         checkIndex(index);
 
-        ensureCapacity(index + 1);
+        if (size + 1 == elements.length) {
+            ensureCapacity();
+        }
 
         System.arraycopy(elements, index, elements, index + 1, size - index);
         elements[index] = element;
