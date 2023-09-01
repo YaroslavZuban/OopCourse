@@ -29,6 +29,7 @@ public class Graph {
         boolean[] visited = new boolean[numberNodes];
 
         Queue<Integer> queue = new ArrayDeque<>();
+
         queue.add(0);
         visited[0] = true;
 
@@ -70,11 +71,5 @@ public class Graph {
         }
 
         return result.toArray();
-    }
-
-    private void checkingExistenceNode(int numberNode) {
-        if (numberNode < 0 || numberNode > numberNodes) {
-            throw new NoSuchElementException("Количество узлов: " + numberNodes + " переданный параметр равен: " + numberNode);
-        }
     }
 }
