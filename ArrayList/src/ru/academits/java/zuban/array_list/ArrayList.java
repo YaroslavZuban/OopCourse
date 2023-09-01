@@ -240,7 +240,7 @@ public class ArrayList<E> implements List<E> {
         checkIndex(index);
 
         if (size + 1 == elements.length) {
-            ensureCapacity();
+            increaseCapacity();
         }
 
         System.arraycopy(elements, index, elements, index + 1, size - index);
@@ -301,12 +301,10 @@ public class ArrayList<E> implements List<E> {
     }
 
     private void ensureCapacity(int minCapacity) {
-        while (minCapacity > elements.length) {
-            ensureCapacity();
-        }
+        elements = Arrays.copyOf(elements, minCapacity);
     }
 
-    private void ensureCapacity() {
+    private void increaseCapacity() {
         int currentCapacity = elements.length;
         int newCapacity = Math.max(currentCapacity * 2, 1);
         elements = Arrays.copyOf(elements, newCapacity);
