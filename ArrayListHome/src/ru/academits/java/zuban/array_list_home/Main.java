@@ -39,8 +39,8 @@ public class Main {
 
         System.out.println("Список: " + numbersList2);
 
-        List<Integer> listWithoutEvenNumbers = getWithoutDuplicatesList(numbersList2);
-        System.out.println("Новый список с уникальными числами: " + listWithoutEvenNumbers);
+        List<Integer> listWithoutDuplicates = getListWithoutDuplicates(numbersList2);
+        System.out.println("Новый список с уникальными числами: " + listWithoutDuplicates);
     }
 
     public static List<String> readLinesFromFile(String path) {
@@ -72,15 +72,15 @@ public class Main {
         }
     }
 
-    public static List<Integer> getWithoutDuplicatesList(List<Integer> numbersList) {
-        List<Integer> listWithoutEvenNumbers = new ArrayList<>(numbersList.size());
+    public static List<Integer> getListWithoutDuplicates(List<Integer> numbersList) {
+        List<Integer> listWithoutDuplicates = new ArrayList<>(numbersList.size());
 
         for (Integer number : numbersList) {
-            if (!listWithoutEvenNumbers.contains(number)) {
-                listWithoutEvenNumbers.add(number);
+            if (!listWithoutDuplicates.contains(number)) {
+                listWithoutDuplicates.add(number);
             }
         }
 
-        return listWithoutEvenNumbers;
+        return listWithoutDuplicates;
     }
 }
