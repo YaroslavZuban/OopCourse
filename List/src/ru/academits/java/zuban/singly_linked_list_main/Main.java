@@ -53,7 +53,7 @@ public class Main {
         list.set(0, 9);
         System.out.println("set list result: [9, 3, 2] happened: " + list);
 
-        list.set(list.getSize(), 20);
+        list.set(list.getSize()-1, 20);
         System.out.println("set list result: [9, 3, 20] happened: " + list);
 
         System.out.println("get(0)=9 list result: [9, 3, 20] happened: " + list.get(0));

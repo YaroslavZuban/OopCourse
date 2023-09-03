@@ -168,15 +168,9 @@ public class SinglyLinkedList<E> {
 
         copiedList.head = new Node<>(head.getValue());
 
-        Node<E> copiedNode = null;
-
-        for (Node<E> originalNode = head; originalNode != null; originalNode = originalNode.getNext()) {
-            if (originalNode.equals(head)) {
-                copiedNode = new Node<>(head.getValue());
-            } else {
-                copiedNode.setNext(new Node<>(originalNode.getValue()));
-                copiedNode = new Node<>(originalNode.getValue());
-            }
+        for (Node<E> originalNode = head.getNext(), copiedNode = copiedList.head; originalNode != null; originalNode = originalNode.getNext()) {
+            copiedNode.setNext(new Node<>(originalNode.getValue()));
+            copiedNode = copiedNode.getNext();
         }
 
         copiedList.size = size;
