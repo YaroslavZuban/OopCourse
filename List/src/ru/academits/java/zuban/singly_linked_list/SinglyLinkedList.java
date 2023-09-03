@@ -90,7 +90,7 @@ public class SinglyLinkedList<E> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + (size - 1) + "]");
         }
     }
 
@@ -147,35 +147,36 @@ public class SinglyLinkedList<E> {
         }
 
         Node<E> previousNode = null;
-        Node<E> node = head;
+        Node<E> currentNode = head;
 
-        while (node != null) {
-            Node<E> nextNode = node.getNext();
-            node.setNext(previousNode);
-            previousNode = node;
-            node = nextNode;
+        while (currentNode != null) {
+            Node<E> nextNode = currentNode.getNext();
+            currentNode.setNext(previousNode);
+            previousNode = currentNode;
+            currentNode = nextNode;
         }
 
         head = previousNode;
     }
 
     public SinglyLinkedList<E> copy() {
-        if (size == 0) {
-            return new SinglyLinkedList<>();
-        }
-
         SinglyLinkedList<E> copiedList = new SinglyLinkedList<>();
 
-        Node<E> originalNode = head;
-        Node<E> copiedNode = new Node<>(originalNode.getValue());
-        Node<E> previousCopied = copiedNode;
+        if (size == 0) {
+            return copiedList;
+        }
 
-        copiedList.head = copiedNode;
+        copiedList.head = new Node<>(head.getValue());
 
-        for (originalNode = originalNode.getNext(); originalNode != null; originalNode = originalNode.getNext()) {
-            Node<E> nextCopiedNode = new Node<>(originalNode.getValue());
-            previousCopied.setNext(nextCopiedNode);
-            previousCopied = nextCopiedNode;
+        Node<E> copiedNode = null;
+
+        for (Node<E> originalNode = head; originalNode != null; originalNode = originalNode.getNext()) {
+            if (originalNode.equals(head)) {
+                copiedNode = new Node<>(head.getValue());
+            } else {
+                copiedNode.setNext(new Node<>(originalNode.getValue()));
+                copiedNode = new Node<>(originalNode.getValue());
+            }
         }
 
         copiedList.size = size;
