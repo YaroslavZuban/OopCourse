@@ -17,29 +17,29 @@ public class Main {
         System.out.println();
         System.out.println("------------ Задание 2 ------------------");
 
-        List<Integer> numberList1 = new ArrayList<>();
+        List<Integer> numbersList1 = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            numberList1.add(i);
+            numbersList1.add(i);
         }
 
-        System.out.println("Список до изменения: " + numberList1);
+        System.out.println("Список до изменения: " + numbersList1);
 
-        removeEvenNumbers(numberList1);
-        System.out.println("Список после исключения четных чисел: " + numberList1);
+        removeEvenNumbers(numbersList1);
+        System.out.println("Список после исключения четных чисел: " + numbersList1);
 
         System.out.println();
         System.out.println("------------ Задание 3 ------------------");
 
-        List<Integer> numberList2 = new ArrayList<>();
+        List<Integer> numbersList2 = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            numberList2.add((int) (Math.random() * 10));
+            numbersList2.add((int) (Math.random() * 10));
         }
 
-        System.out.println("Список: " + numberList2);
+        System.out.println("Список: " + numbersList2);
 
-        List<Integer> listWithoutEvenNumbers = removeDuplicates(numberList2);
+        List<Integer> listWithoutEvenNumbers = getWithoutDuplicatesList(numbersList2);
         System.out.println("Новый список с уникальными числами: " + listWithoutEvenNumbers);
     }
 
@@ -62,23 +62,20 @@ public class Main {
         return null;
     }
 
-    public static void removeEvenNumbers(List<Integer> numberList) {
-        List<Integer> oddNumbers = new ArrayList<>(numberList.size());
+    public static void removeEvenNumbers(List<Integer> numbersList) {
+        for (int i = 0; i < numbersList.size(); i++) {
+            Integer element = numbersList.get(i);
 
-        for (Integer number : numberList) {
-            if (number % 2 != 0) {
-                oddNumbers.add(number);
+            if (element % 2 == 0) {
+                numbersList.remove(element);
             }
         }
-
-        numberList.clear();
-        numberList.addAll(oddNumbers);
     }
 
-    public static List<Integer> removeDuplicates(List<Integer> numberList) {
-        List<Integer> listWithoutEvenNumbers = new ArrayList<>(numberList.size());
+    public static List<Integer> getWithoutDuplicatesList(List<Integer> numbersList) {
+        List<Integer> listWithoutEvenNumbers = new ArrayList<>(numbersList.size());
 
-        for (Integer number : numberList) {
+        for (Integer number : numbersList) {
             if (!listWithoutEvenNumbers.contains(number)) {
                 listWithoutEvenNumbers.add(number);
             }
