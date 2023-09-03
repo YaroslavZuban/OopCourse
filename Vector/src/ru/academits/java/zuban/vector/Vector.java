@@ -64,11 +64,7 @@ public class Vector {
 
         resizeArrayIfNeeded(vector.elements.length);
 
-        for (int i = 0; i < elements.length; i++) {
-            if(vector.elements.length<=i){
-                break;
-            }
-
+        for (int i = 0; i < vector.elements.length; i++) {
             elements[i] += vector.elements[i];
         }
     }
@@ -80,11 +76,7 @@ public class Vector {
 
         resizeArrayIfNeeded(vector.elements.length);
 
-        for (int i = 0; i < elements.length; i++) {
-            if(vector.elements.length<=i){
-                break;
-            }
-
+        for (int i = 0; i < vector.elements.length; i++) {
             elements[i] -= vector.elements[i];
         }
     }

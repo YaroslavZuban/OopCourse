@@ -1,35 +1,40 @@
 package ru.academits.java.zuban.tree;
 
-import ru.academits.java.zuban.tree_comparator.NodeComparator;
-
 import java.util.ArrayDeque;
+import java.util.Comparator;
 import java.util.Queue;
 import java.util.Stack;
 
-public class Tree<T extends Comparable<T>> {
-    private Node<T> peak;
+
+//остановился на задаче 7
+public class Tree<E> {
+    private final Comparator<E> comparator;
+    private Node<E> root;
     private int size;
 
-    public void insert(T value) {
-        if (peak == null) {
-            peak = new Node<>(value);
+    public Tree() {
+        comparator = null;
+    }
+
+    public Tree(Comparator<E> comparator) {
+        this.comparator = comparator;
+    }
+
+    public void insert(E value) {
+        if (root == null) {
+            root = new Node<>(value);
             size++;
             return;
         }
 
-        Node<T> currentNode = peak;
-        Node<T> newNode = new Node<>(value);
-
-        NodeComparator<T> nodeComparator = new NodeComparator<>();
+        Node<E> currentNode = root;
 
         while (currentNode != null) {
-            int compareResult = nodeComparator.compare(newNode, currentNode);
+            int compareResult = compareNodes(value, currentNode.getValue());
 
-            if (compareResult == 0) {
-                return;
-            } else if (compareResult > 0) {
+            if (compareResult > 0) {
                 if (currentNode.getRight() == null) {
-                    currentNode.setRight(newNode);
+                    currentNode.setRight(new Node<>(value));
                     size++;
                     return;
                 }
@@ -37,7 +42,7 @@ public class Tree<T extends Comparable<T>> {
                 currentNode = currentNode.getRight();
             } else {
                 if (currentNode.getLeft() == null) {
-                    currentNode.setLeft(newNode);
+                    currentNode.setLeft(new Node<>(value));
                     size++;
                     return;
                 }
@@ -47,24 +52,21 @@ public class Tree<T extends Comparable<T>> {
         }
     }
 
-    public boolean findNode(T value) {
-        if (peak == null) {
+    public boolean findNode(E value) {
+        if (root == null) {
             return false;
         }
 
-        Node<T> currentNode = peak;
-        Node<T> searchNode = new Node<>(value);
-
-        NodeComparator<T> nodeComparator = new NodeComparator<>();
+        Node<E> currentNode = root;
 
         while (currentNode != null) {
-            int compareResult = nodeComparator.compare(searchNode, currentNode);
+            int compareResult = compareNodes(value, currentNode.getValue());
 
             if (compareResult == 0) {
                 return true;
             } else if (compareResult > 0) {
                 if (currentNode.getRight() == null) {
-                    currentNode.setRight(searchNode);
+                    currentNode.setRight(new Node<>(value));
                     size++;
                     return false;
                 }
@@ -72,7 +74,7 @@ public class Tree<T extends Comparable<T>> {
                 currentNode = currentNode.getRight();
             } else {
                 if (currentNode.getLeft() == null) {
-                    currentNode.setLeft(searchNode);
+                    currentNode.setLeft(new Node<>(value));
                     size++;
                     return false;
                 }
@@ -84,20 +86,18 @@ public class Tree<T extends Comparable<T>> {
         return false;
     }
 
-    public boolean remove(T value) {
-        if (peak == null) {
+    public boolean remove(E value) {
+        if (root == null) {
             return false;
         }
 
         int oldSize = size;
 
-        NodeComparator<T> nodeComparator = new NodeComparator<>();
-
-        Node<T> parent = null;
-        Node<T> current = peak;
+        Node<E> parent = null;
+        Node<E> current = root;
 
         while (current != null) {
-            int compareResult = nodeComparator.compare(new Node<>(value), current);
+            int compareResult = compareNodes(value, current.getValue());
 
             if (compareResult > 0) {
                 parent = current;
@@ -125,7 +125,7 @@ public class Tree<T extends Comparable<T>> {
                         parent.setRight(current.getRight());
                     }
                 } else {
-                    Node<T> successor = getMinimumKey(current.getRight());
+                    Node<E> successor = getMinimumKey(current.getRight());
 
                     current.setValue(successor.getValue());
                     value = successor.getValue();
@@ -144,7 +144,7 @@ public class Tree<T extends Comparable<T>> {
         return oldSize != size;
     }
 
-    public static <T> Node<T> getMinimumKey(Node<T> currentNode) {
+    private static <E> Node<E> getMinimumKey(Node<E> currentNode) {
         while (currentNode.getLeft() != null) {
             currentNode = currentNode.getLeft();
         }
@@ -157,10 +157,10 @@ public class Tree<T extends Comparable<T>> {
     }
 
     public void traversalsDepthRecursive() {
-        traversalsDepthRecursive(peak);
+        traversalsDepthRecursive(root);
     }
 
-    private void traversalsDepthRecursive(Node<T> node) {
+    private void traversalsDepthRecursive(Node<E> node) {
         if (node != null) {
             System.out.println(node.getValue());
 
@@ -170,18 +170,18 @@ public class Tree<T extends Comparable<T>> {
     }
 
     public void traversalsDepth() {
-        if (peak == null) {
+        if (root == null) {
             return;
         }
 
-        Node<T> currentNode = peak;
+        Node<E> currentNode = root;
 
         //noinspection DuplicatedCode
-        Stack<Node<T>> stack = new Stack<>();
+        Stack<Node<E>> stack = new Stack<>();
         stack.push(currentNode);
 
         while (!stack.isEmpty()) {
-            Node<T> node = stack.pop();
+            Node<E> node = stack.pop();
 
             System.out.println(node.getValue());
 
@@ -196,18 +196,18 @@ public class Tree<T extends Comparable<T>> {
     }
 
     public void traversalsWidth() {
-        if (peak == null) {
+        if (root == null) {
             return;
         }
 
-        Node<T> currentNode = peak;
+        Node<E> currentNode = root;
 
         //noinspection DuplicatedCode
-        Queue<Node<T>> queue = new ArrayDeque<>();
+        Queue<Node<E>> queue = new ArrayDeque<>();
         queue.add(currentNode);
 
         while (!queue.isEmpty()) {
-            Node<T> node = queue.poll();
+            Node<E> node = queue.poll();
 
             System.out.println(node.getValue());
 
@@ -219,5 +219,17 @@ public class Tree<T extends Comparable<T>> {
                 queue.add(node.getLeft());
             }
         }
+    }
+
+    private int compareNodes(E node1, E node2) {
+        if (node1 == null && node2 == null) {
+            return 0;
+        } else if (node1 == null) {
+            return -1;
+        } else if (node2 == null) {
+            return 1;
+        }
+
+        return comparator.compare(node1, node2);
     }
 }
