@@ -15,6 +15,8 @@ public class Main {
 
         try {
             lines = readLinesFromFile("C:/Users/ben70/IdeaProjects/OopCourse/ArrayListHome/text.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл не найден");
         } catch (IOException e) {
             System.out.println("Ошибка при открытии файла");
         }
@@ -52,7 +54,7 @@ public class Main {
         System.out.println("Новый список с уникальными числами: " + listWithoutDuplicates);
     }
 
-    public static List<String> readLinesFromFile(String path) throws IOException {
+    public static List<String> readLinesFromFile(String path) throws FileNotFoundException, IOException {
         BufferedReader reader = new BufferedReader(new FileReader(path));
         List<String> lines = new ArrayList<>();
         String line;
@@ -60,6 +62,8 @@ public class Main {
         while ((line = reader.readLine()) != null) {
             lines.add(line);
         }
+
+        reader.close();
 
         return lines;
     }
