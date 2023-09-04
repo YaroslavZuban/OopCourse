@@ -52,7 +52,7 @@ public class Graph {
         List<Integer> result = new ArrayList<>(numberNodes);
         boolean[] visited = new boolean[numberNodes];
 
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> stack = new ArrayDeque<>();
         stack.push(0);
 
         while (!stack.isEmpty()) {
