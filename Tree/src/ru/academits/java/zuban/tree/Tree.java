@@ -1,12 +1,8 @@
 package ru.academits.java.zuban.tree;
 
-import java.util.ArrayDeque;
-import java.util.Comparator;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
+import java.util.function.Consumer;
 
-
-//остановился на задаче 7
 public class Tree<E> {
     private final Comparator<E> comparator;
     private Node<E> root;
@@ -52,7 +48,7 @@ public class Tree<E> {
         }
     }
 
-    public boolean findNode(E value) {
+    public boolean contains(E value) {
         if (root == null) {
             return false;
         }
@@ -64,18 +60,16 @@ public class Tree<E> {
 
             if (compareResult == 0) {
                 return true;
-            } else if (compareResult > 0) {
+            }
+
+            if (compareResult > 0) {
                 if (currentNode.getRight() == null) {
-                    currentNode.setRight(new Node<>(value));
-                    size++;
                     return false;
                 }
 
                 currentNode = currentNode.getRight();
             } else {
                 if (currentNode.getLeft() == null) {
-                    currentNode.setLeft(new Node<>(value));
-                    size++;
                     return false;
                 }
 
@@ -91,99 +85,106 @@ public class Tree<E> {
             return false;
         }
 
-        int oldSize = size;
+        Node<E> parent = root;
+        Node<E> currentNode = root;
 
-        Node<E> parent = null;
-        Node<E> current = root;
+        while (currentNode != null) {
+            int compareResult = compareNodes(value, currentNode.getValue());
 
-        while (current != null) {
-            int compareResult = compareNodes(value, current.getValue());
+            if (compareResult == 0) {
+                break;
+            }
+
+            parent = currentNode;
 
             if (compareResult > 0) {
-                parent = current;
-                current = current.getRight();
-            } else if (compareResult < 0) {
-                parent = current;
-                current = current.getLeft();
-            } else {
-                if (current.getLeft() == null && current.getRight() == null) {
-                    if (parent.getLeft() == current) {
-                        parent.setLeft(null);
-                    } else {
-                        parent.setRight(null);
-                    }
-                } else if (current.getLeft() != null && current.getRight() == null) {
-                    if (parent.getLeft() == current) {
-                        parent.setLeft(current.getLeft());
-                    } else {
-                        parent.setRight(current.getLeft());
-                    }
-                } else if (current.getLeft() == null && current.getRight() != null) {
-                    if (parent.getLeft() == current) {
-                        parent.setLeft(current.getRight());
-                    } else {
-                        parent.setRight(current.getRight());
-                    }
-                } else {
-                    Node<E> successor = getMinimumKey(current.getRight());
-
-                    current.setValue(successor.getValue());
-                    value = successor.getValue();
-
-                    parent = current;
-                    current = current.getRight();
-
-                    continue;
+                if (currentNode.getRight() == null) {
+                    return false;
                 }
 
-                size--;
-                break;
+                currentNode = currentNode.getRight();
+            } else {
+                if (currentNode.getLeft() == null) {
+                    return false;
+                }
+
+                currentNode = currentNode.getLeft();
             }
         }
 
-        return oldSize != size;
-    }
+        if (currentNode.getLeft() == null) {
+            if (parent.getLeft() == currentNode) {
+                parent.setLeft(currentNode.getRight());
+            } else {
+                parent.setRight(currentNode.getRight());
+            }
 
-    private static <E> Node<E> getMinimumKey(Node<E> currentNode) {
-        while (currentNode.getLeft() != null) {
-            currentNode = currentNode.getLeft();
+            size--;
+            return true;
         }
 
-        return currentNode;
+        if (currentNode.getRight() == null) {
+            if (parent.getLeft() == currentNode) {
+                parent.setLeft(currentNode.getLeft());
+            } else {
+                parent.setRight(currentNode.getLeft());
+            }
+
+            size--;
+            return true;
+        }
+
+        Node<E> successorParent = currentNode;
+        Node<E> successor = currentNode.getRight();
+
+        while (successor.getLeft() != null) {
+            successorParent = successor;
+            successor = successor.getLeft();
+        }
+
+        currentNode.setValue(successor.getValue());
+
+        if (successorParent.getLeft() == successor) {
+            successorParent.setLeft(successor.getRight());
+        } else {
+            successorParent.setRight(successor.getRight());
+        }
+
+        size--;
+        return true;
     }
 
     public int size() {
         return size;
     }
 
-    public void traversalsDepthRecursive() {
-        traversalsDepthRecursive(root);
+    public void traversalInDepthRecursive(Consumer<E> consumer) {
+        traversalInDepthRecursive(root, consumer);
     }
 
-    private void traversalsDepthRecursive(Node<E> node) {
+    private void traversalInDepthRecursive(Node<E> node, Consumer<E> consumer) {
         if (node != null) {
-            System.out.println(node.getValue());
+            consumer.accept(node.getValue());
 
-            traversalsDepthRecursive(node.getLeft());
-            traversalsDepthRecursive(node.getRight());
+            traversalInDepthRecursive(node.getLeft(), consumer);
+            traversalInDepthRecursive(node.getRight(), consumer);
         }
     }
 
-    public void traversalsDepth() {
+    public void traversalInDepth(Consumer<E> consumer) {
         if (root == null) {
             return;
         }
 
         Node<E> currentNode = root;
 
-        //noinspection DuplicatedCode
-        Stack<Node<E>> stack = new Stack<>();
+        Deque<Node<E>> stack = new ArrayDeque<>();
         stack.push(currentNode);
 
         while (!stack.isEmpty()) {
             Node<E> node = stack.pop();
 
-            System.out.println(node.getValue());
+            consumer.accept(node.getValue());
 
             if (node.getRight() != null) {
                 stack.push(node.getRight());
@@ -195,21 +196,20 @@ public class Tree<E> {
         }
     }
 
-    public void traversalsWidth() {
+    public void traversalInWidth(Consumer<E> consumer) {
         if (root == null) {
             return;
         }
 
         Node<E> currentNode = root;
 
-        //noinspection DuplicatedCode
         Queue<Node<E>> queue = new ArrayDeque<>();
         queue.add(currentNode);
 
         while (!queue.isEmpty()) {
             Node<E> node = queue.poll();
 
-            System.out.println(node.getValue());
+            consumer.accept(node.getValue());
 
             if (node.getRight() != null) {
                 queue.add(node.getRight());
@@ -221,15 +221,25 @@ public class Tree<E> {
         }
     }
 
-    private int compareNodes(E node1, E node2) {
-        if (node1 == null && node2 == null) {
+    private int compareNodes(E value1, E value2) {
+        if (value1 == null && value2 == null) {
             return 0;
-        } else if (node1 == null) {
+        } else if (value1 == null) {
             return -1;
-        } else if (node2 == null) {
+        } else if (value2 == null) {
             return 1;
         }
 
-        return comparator.compare(node1, node2);
+        if (comparator != null) {
+            return comparator.compare(value1, value2);
+        }
+
+        //noinspection unchecked
+        Comparable<E> comparableValue = (Comparable<E>) value1;
+        //noinspection unchecked
+        Comparable<E> comparableOtherValue = (Comparable<E>) value2;
+
+        //noinspection unchecked
+        return comparableValue.compareTo((E) comparableOtherValue);
     }
 }

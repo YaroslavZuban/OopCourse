@@ -47,16 +47,16 @@ class TreeTest {
         tree.insert(6);
         tree.insert(8);
 
-        Assertions.assertTrue(tree.findNode(5));
-        Assertions.assertTrue(tree.findNode(2));
-        Assertions.assertTrue(tree.findNode(7));
-        Assertions.assertTrue(tree.findNode(1));
-        Assertions.assertTrue(tree.findNode(3));
-        Assertions.assertTrue(tree.findNode(8));
+        Assertions.assertTrue(tree.contains(5));
+        Assertions.assertTrue(tree.contains(2));
+        Assertions.assertTrue(tree.contains(7));
+        Assertions.assertTrue(tree.contains(1));
+        Assertions.assertTrue(tree.contains(3));
+        Assertions.assertTrue(tree.contains(8));
 
-        Assertions.assertFalse(tree.findNode(9));
-        Assertions.assertFalse(tree.findNode(10));
-        Assertions.assertFalse(tree.findNode(0));
+        Assertions.assertFalse(tree.contains(9));
+        Assertions.assertFalse(tree.contains(10));
+        Assertions.assertFalse(tree.contains(0));
     }
 
     @Test

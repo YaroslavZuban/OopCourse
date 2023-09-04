@@ -32,5 +32,4 @@ class Node<E> {
     public void setRight(Node<E> right) {
         this.right = right;
     }
-
 }
