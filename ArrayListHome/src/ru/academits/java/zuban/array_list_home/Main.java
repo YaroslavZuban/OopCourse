@@ -19,7 +19,6 @@ public class Main {
             System.out.println("Файл не найден");
         } catch (IOException e) {
             System.out.println("Ошибка при открытии файла");
-
         }
 
         System.out.println("Ошибка при открытии файла");
