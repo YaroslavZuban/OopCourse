@@ -19,6 +19,7 @@ public class Main {
             System.out.println("Файл не найден");
         } catch (IOException e) {
             System.out.println("Ошибка при открытии файла");
+
         }
 
         System.out.println("Ошибка при открытии файла");
@@ -54,16 +55,16 @@ public class Main {
         System.out.println("Новый список с уникальными числами: " + listWithoutDuplicates);
     }
 
-    public static List<String> readLinesFromFile(String path) throws FileNotFoundException, IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(path));
+    public static List<String> readLinesFromFile(String path) throws IOException {
         List<String> lines = new ArrayList<>();
-        String line;
 
-        while ((line = reader.readLine()) != null) {
-            lines.add(line);
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
         }
-
-        reader.close();
 
         return lines;
     }
