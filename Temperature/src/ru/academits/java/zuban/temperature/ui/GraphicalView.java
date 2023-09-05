@@ -1,6 +1,7 @@
 package ru.academits.java.zuban.temperature.ui;
 
-import ru.academits.java.zuban.temperature.translation.*;
+import ru.academits.java.zuban.temperature.representation.TemperatureConverter;
+import ru.academits.java.zuban.temperature.model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraphicalView {
-    private final TemperatureTranslator temperatureTranslator;
+    private final TemperatureConverter temperatureTranslator;
     private final JTextField valueInput;
     private final JFrame windowFrame;
     private final JLabel labelOutput;
@@ -17,7 +18,9 @@ public class GraphicalView {
     private int valueUniqueInput = 0;
     private int valueUniqueOutput = 0;
 
-    public GraphicalView() {
+    public GraphicalView(List<Scale> listTemperatureConverter, TemperatureConverter temperatureTranslator) {
+        this.temperatureTranslator = temperatureTranslator;
+
         windowFrame = new JFrame("Перевод температуры");
         windowFrame.setVisible(true);
         windowFrame.setResizable(false);
@@ -33,15 +36,11 @@ public class GraphicalView {
         textLabel.setHorizontalAlignment(JLabel.CENTER);
         windowFrame.add(textLabel);
 
-        List<TemperatureConverter> listTemperatureConverter = new ArrayList<>();
-
-        listTemperatureConverter.add(new CelsiusConverter());
-        listTemperatureConverter.add(new FahrenheitConverter());
-        listTemperatureConverter.add(new KelvinConverter());
-
-        temperatureTranslator = new TemperatureTranslator(listTemperatureConverter);
         List<JButton> listButtonConvertToCelsius = new ArrayList<>(listTemperatureConverter.size());
-        windowFrame.add(setupButtonsAndListeners(listButtonConvertToCelsius, listTemperatureConverter, true));
+
+        windowFrame.add(setupButtonsAndListeners(listButtonConvertToCelsius,
+                listTemperatureConverter,
+                true));
 
         JPanel panelGridInput = new JPanel();
         GridLayout gridInput = new GridLayout(1, 2, 30, 20);
@@ -65,7 +64,10 @@ public class GraphicalView {
         windowFrame.add(textOutputLabel);
 
         List<JButton> listButtonConvertFromCelsius = new ArrayList<>(listTemperatureConverter.size());
-        windowFrame.add(setupButtonsAndListeners(listButtonConvertFromCelsius, listTemperatureConverter, false));
+
+        windowFrame.add(setupButtonsAndListeners(listButtonConvertFromCelsius,
+                listTemperatureConverter,
+                false));
 
         labelOutput = new JLabel();
         labelOutput.setVerticalAlignment(JLabel.CENTER);
@@ -75,7 +77,7 @@ public class GraphicalView {
         windowFrame.add(labelOutput);
     }
 
-    private JPanel setupButtonsAndListeners(List<JButton> buttonList, List<TemperatureConverter> converterList,
+    private JPanel setupButtonsAndListeners(List<JButton> buttonList, List<Scale> converterList,
                                             boolean isValueUniqueInput) {
         JPanel panelButton = new JPanel();
         GridLayout buttonGrid = new GridLayout(1, converterList.size(), 20, 20);
@@ -104,12 +106,12 @@ public class GraphicalView {
                 setButtonBackground(finalI, buttonList);
 
                 try {
-                    temperatureTranslator.setResult(valueInput.getText());
+                    temperatureTranslator.setInputValue(valueInput.getText());
                     temperatureTranslator.convertToCelsius(valueUniqueInput);
                     temperatureTranslator.convertFromCelsius(valueUniqueOutput);
 
                     formatNumber();
-                    format = " " + converterList.get(finalI).getType();
+                    format = " " + converterList.get(finalI).getMeasurementUnit();
                     labelOutput();
                 } catch (NumberFormatException exception) {
                     error();
@@ -137,21 +139,17 @@ public class GraphicalView {
     }
 
     private void formatNumber() {
-        result = String.valueOf(temperatureTranslator.getResult());
+        result = temperatureTranslator.getOutputValue();
         result = String.format("%.3f", Double.parseDouble(result));
     }
 
     private void error() {
         JOptionPane.showMessageDialog(windowFrame,
-                "Введены некорректные символы. Пожалуйста, используйте только допустимые символы для выполнения данной операции.",
+                "Введены недопустимые символы. Пожалуйста, используйте только цифры для выполнения данной операции.",
                 "Ошибка",
                 JOptionPane.PLAIN_MESSAGE);
 
         valueInput.setText("0");
         result = "0";
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(GraphicalView::new);
     }
 }
