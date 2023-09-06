@@ -21,8 +21,6 @@ public class Main {
             System.out.println("Ошибка при открытии файла");
         }
 
-        System.out.println("Ошибка при открытии файла");
-
         System.out.println(lines);
 
         System.out.println();
@@ -55,17 +53,17 @@ public class Main {
     }
 
     public static List<String> readLinesFromFile(String path) throws IOException {
-        List<String> lines = new ArrayList<>();
-
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            List<String> lines = new ArrayList<>();
+
             String line;
 
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
             }
-        }
 
-        return lines;
+            return lines;
+        }
     }
 
     public static void removeEvenNumbers(List<Integer> numbersList) {
