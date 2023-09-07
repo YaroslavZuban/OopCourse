@@ -44,20 +44,20 @@ public class Matrix {
             throw new IllegalArgumentException("Количество строк матрицы равно 0.");
         }
 
-        int maxColumnCounts = 0;
+        int maxColumnsCount = 0;
 
         for (double[] row : array) {
-            maxColumnCounts = Math.max(maxColumnCounts, row.length);
+            maxColumnsCount = Math.max(maxColumnsCount, row.length);
         }
 
-        if (maxColumnCounts == 0) {
+        if (maxColumnsCount == 0) {
             throw new IllegalArgumentException("Количество столбцов матрицы равно 0.");
         }
 
         rows = new Vector[array.length];
 
         for (int i = 0; i < getRowsCount(); i++) {
-            rows[i] = new Vector(maxColumnCounts, array[i]);
+            rows[i] = new Vector(maxColumnsCount, array[i]);
         }
     }
 
@@ -248,7 +248,7 @@ public class Matrix {
         }
 
         if (vector.getSize() != getColumnsCount()) {
-            throw new IllegalArgumentException("Несовместимые размеры вектора и матрицы для данной операции." +
+            throw new IllegalArgumentException("Размер переданного вектора должен быть равен количеству столбцов матрицы." +
                     " Размер переданного вектора: " + vector.getSize() +
                     ". Количество столбцов матрицы: " + getColumnsCount());
         }
@@ -267,7 +267,7 @@ public class Matrix {
             throw new NullPointerException("Матрица не должна быть null.");
         }
 
-        validateSizeEquality(this, matrix);
+        validateSizesEquality(this, matrix);
 
         for (int i = 0; i < getRowsCount(); i++) {
             rows[i].add(matrix.rows[i]);
@@ -279,14 +279,14 @@ public class Matrix {
             throw new NullPointerException("Матрица не должна быть null.");
         }
 
-        validateSizeEquality(this, matrix);
+        validateSizesEquality(this, matrix);
 
         for (int i = 0; i < getRowsCount(); i++) {
             rows[i].subtract(matrix.rows[i]);
         }
     }
 
-    public static void validateSizeEquality(Matrix matrix1, Matrix matrix2) {
+    public static void validateSizesEquality(Matrix matrix1, Matrix matrix2) {
         if (matrix1.getRowsCount() != matrix2.getRowsCount() || matrix1.getColumnsCount() != matrix2.getColumnsCount()) {
             throw new IllegalArgumentException("Размеры матриц не совпадают." +
                     " Размер первой матрицы: " + matrix1.getRowsCount() + " * " + matrix1.getColumnsCount() +
@@ -296,7 +296,7 @@ public class Matrix {
 
     public static Matrix getSum(Matrix matrix1, Matrix matrix2) {
         validateMatricesNotNull(matrix1, matrix2);
-        validateSizeEquality(matrix1, matrix2);
+        validateSizesEquality(matrix1, matrix2);
 
         Matrix result = new Matrix(matrix1);
         result.add(matrix2);
@@ -306,7 +306,7 @@ public class Matrix {
 
     public static Matrix getDifference(Matrix matrix1, Matrix matrix2) {
         validateMatricesNotNull(matrix1, matrix2);
-        validateSizeEquality(matrix1, matrix2);
+        validateSizesEquality(matrix1, matrix2);
 
         Matrix result = new Matrix(matrix1);
         result.subtract(matrix2);
@@ -343,11 +343,11 @@ public class Matrix {
 
     private static void validateMatricesNotNull(Matrix matrix1, Matrix matrix2) {
         if (matrix1 == null) {
-            throw new NullPointerException("Первый параметр равен null");
+            throw new NullPointerException("Первая матрица равена null");
         }
 
         if (matrix2 == null) {
-            throw new NullPointerException("Второй параметр равен null");
+            throw new NullPointerException("Вторая матрица равена null");
         }
     }
 }
