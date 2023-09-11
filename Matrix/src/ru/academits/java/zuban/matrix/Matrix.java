@@ -72,14 +72,14 @@ public class Matrix {
 
         rows = new Vector[vectors.length];
 
-        int maxColumnCounts = 0;
+        int maxColumnsCount = 0;
 
         for (Vector vector : vectors) {
-            maxColumnCounts = Math.max(maxColumnCounts, vector.getSize());
+            maxColumnsCount = Math.max(maxColumnsCount, vector.getSize());
         }
 
         for (int i = 0; i < getRowsCount(); i++) {
-            rows[i] = new Vector(maxColumnCounts);
+            rows[i] = new Vector(maxColumnsCount);
             rows[i].add(vectors[i]);
         }
     }
@@ -343,11 +343,11 @@ public class Matrix {
 
     private static void validateMatricesNotNull(Matrix matrix1, Matrix matrix2) {
         if (matrix1 == null) {
-            throw new NullPointerException("Первая матрица равена null");
+            throw new NullPointerException("Первая матрица равна null");
         }
 
         if (matrix2 == null) {
-            throw new NullPointerException("Вторая матрица равена null");
+            throw new NullPointerException("Вторая матрица равна null");
         }
     }
 }
