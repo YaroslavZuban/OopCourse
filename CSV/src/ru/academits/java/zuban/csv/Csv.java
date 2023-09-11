@@ -47,7 +47,8 @@ public class Csv {
         StringBuilder htmlLine = new StringBuilder();
 
         if (quotesCount == 0) {
-            htmlLine.append("    <tr>");
+            htmlLine.append("    <tr>")
+                    .append(System.lineSeparator());
             htmlLine.append("        <td>")
                     .append(System.lineSeparator())
                     .append("            ");
@@ -55,11 +56,21 @@ public class Csv {
             quotesCount = getQuotesNumber(line);
         }
 
+        boolean isOpenQuote = false;
+
         for (int i = 0; i < line.length(); i++) {
             char symbol = line.charAt(i);
 
-            if (i + 2 < line.length() && symbol == '"' && line.charAt(i + 1) == ',' && line.charAt(i + 2) == '"') {
+            if(symbol == ',' && isOpenQuote){
+                htmlLine.append(System.lineSeparator())
+                        .append("        </td>")
+                        .append(System.lineSeparator())
+                        .append("        <td>")
+                        .append(System.lineSeparator())
+                        .append("            ");
+            } else if (i + 2 < line.length() && symbol == '"' && line.charAt(i + 1) == ',' && line.charAt(i + 2) == '"') {
                 i += 2;
+                isOpenQuote = true;
 
                 htmlLine.append(System.lineSeparator())
                         .append("        </td>")
@@ -67,16 +78,18 @@ public class Csv {
                         .append("        <td>")
                         .append(System.lineSeparator())
                         .append("            ");
-            } else if (i + 2 < line.length() && symbol == '"' && line.charAt(i + 1) == '"' && line.charAt(i + 2) == ',') {
+            } /*else if (i + 2 < line.length() && symbol == '"' && line.charAt(i + 1) == '"' && line.charAt(i + 2) == ',') {//условие нужно будет пересмотреть
                 i += 2;
 
                 htmlLine.append("\",");
-            } else if (i + 1 < line.length() && symbol == '"' && line.charAt(i + 1) == '"') {
+            } */ else if (i + 1 < line.length() && symbol == '"' && line.charAt(i + 1) == '"' && isOpenQuote) {
                 i++;
 
                 htmlLine.append('"');
             } else if ((i + 1 < line.length() && symbol == ',' && line.charAt(i + 1) == '"') || (i + 1 < line.length() && symbol == '"' && line.charAt(i + 1) == ',')) {
                 i++;
+
+                isOpenQuote = symbol == ',';
 
                 htmlLine.append(System.lineSeparator())
                         .append("        </td>")

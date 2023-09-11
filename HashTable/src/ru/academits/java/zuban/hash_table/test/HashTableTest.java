@@ -1,7 +1,8 @@
-package ru.academits.java.zuban.hash_table;
+package ru.academits.java.zuban.hash_table.test;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.academits.java.zuban.hash_table.HashTable;
 
 import java.util.*;
 
@@ -16,6 +17,7 @@ class HashTableTest {
 
         assertTrue(table.contains(2));
         assertTrue(table.contains(5));
+
         assertFalse(table.contains(225));
 
         try {
@@ -32,16 +34,17 @@ class HashTableTest {
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
 
         fillingTable(table, 5);
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 2, 3, 4, 0,});
+
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 1, 2, 3, 4});
 
         fillingTable(table, 5);
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 1, 2, 2, 3, 3, 4, 4, 0, 0});
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 0, 1, 1, 2, 2, 3, 3, 4, 4});
 
         fillingTable(table, 2);
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 1, 1, 2, 2, 3, 3, 4, 4, 0, 0, 0,});
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4});
 
         fillingTable(table, 1);
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 1, 1, 2, 2, 3, 3, 4, 4, 0, 0, 0, 0,});
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4});
     }
 
     @Test
@@ -51,11 +54,13 @@ class HashTableTest {
         Assertions.assertArrayEquals(table.toArray(new Integer[0]), new Integer[]{});
 
         Integer[] array = new Integer[5];
-        fillingTable(table, 3);
-        Assertions.assertArrayEquals(table.toArray(array), new Integer[]{1, 2, 0, null, null});
 
         fillingTable(table, 3);
-        Assertions.assertArrayEquals(table.toArray(array), new Integer[]{1, 1, 2, 2, 0, 0});
+
+        Assertions.assertArrayEquals(table.toArray(array), new Integer[]{0, 1, 2, null, null});
+
+        fillingTable(table, 3);
+        Assertions.assertArrayEquals(table.toArray(array), new Integer[]{0, 0, 1, 1, 2, 2});
 
         try {
             table.toArray((Object[]) null);
@@ -106,10 +111,10 @@ class HashTableTest {
 
         fillingTable(table, 3);
         table.remove(1);
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 2, 3, 0});
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 1, 2, 3});
 
         table.remove(20);
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 2, 3, 0});
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 1, 2, 3});
 
         try {
             table.remove(null);
@@ -172,18 +177,18 @@ class HashTableTest {
         HashTable<Integer> table = new HashTable<>();
         table.addAll(list1);
         Assertions.assertEquals(table.size(), list1.size());
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 2, 3, 4, 0});
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 1, 2, 3, 4});
 
         fillingTable(table, 2);
         Assertions.assertEquals(table.size(), 7);
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 1, 2, 3, 4, 0, 0});
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 0, 1, 1, 2, 3, 4});
 
         List<Integer> list2 = new ArrayList<>();
         fillingTable(list2, 4);
 
         table.addAll(list2);
         Assertions.assertEquals(table.size(), 11);
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 1, 1, 2, 2, 3, 3, 4, 0, 0, 0,});
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4});
 
         try {
             table.addAll(null);
@@ -229,7 +234,7 @@ class HashTableTest {
         fillingTable(table, 7);
 
         table.retainAll(list1);
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 2, 3, 4, 0});
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 1, 2, 3, 4});
 
         List<Integer> list2 = new ArrayList<>();
         table.retainAll(list2);

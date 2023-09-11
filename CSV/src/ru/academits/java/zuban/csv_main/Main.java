@@ -12,10 +12,9 @@ public class Main {
         String htmlPath = "html.html";
 
         try {
-            new Csv().convertFileCsvToHtml(args[0], args[1]);
+            new Csv().convertFileCsvToHtml(csvPath,htmlPath);
         }catch (IOException e) {
             System.out.println("Файл не получилось открыть.");
         }
-
     }
 }
