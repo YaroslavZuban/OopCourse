@@ -1,75 +1,95 @@
 package ru.academits.java.zuban.graph;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class Graph {
-    private final int numberNodes;
-    private final int[][] adjacencyGraphMatrix;
+    private final int[][] adjacencyMatrix;
 
     public Graph(int[][] matrix) {
         if (matrix == null) {
             throw new NullPointerException("Двухмерный массив не должен быть null.");
         }
 
-        if (matrix.length == 0) {
-            throw new IllegalArgumentException("Количество строк матрицы равно 0.");
+        for (int[] line : matrix) {
+            if (matrix.length != line.length) {
+                throw new IllegalArgumentException("Матрица не является квадратной");
+            }
         }
 
-        if (matrix.length != matrix[0].length) {
-            throw new IllegalArgumentException("Матрица не является квадратной");
-        }
-
-        this.numberNodes = matrix.length;
-
-        adjacencyGraphMatrix = matrix;
+        adjacencyMatrix = matrix;
     }
 
-    public Object[] searchWidth() {
-        List<Integer> result = new ArrayList<>(numberNodes);
-        boolean[] visited = new boolean[numberNodes];
+    public void bypassInWidth(int startNode, IntConsumer consumer) {
+        validateNode(startNode);
+
+        boolean[] visited = new boolean[adjacencyMatrix.length];
 
         Queue<Integer> queue = new ArrayDeque<>();
 
-        queue.add(0);
-        visited[0] = true;
+        queue.add(startNode);
+        visited[startNode] = true;
 
         while (!queue.isEmpty()) {
             int node = queue.poll();
-            result.add(node + 1);
+            consumer.accept(node);
 
-            for (int i = 0; i < numberNodes; i++) {
-                if (adjacencyGraphMatrix[node][i] == 1 && !visited[i]) {
+            for (int i = 0; i < adjacencyMatrix.length; i++) {
+                if (adjacencyMatrix[node][i] == 1 && !visited[i]) {
                     queue.add(i);
                     visited[i] = true;
                 }
             }
         }
-
-        return result.toArray();
     }
 
-    public Object[] searchDepth() {
-        List<Integer> result = new ArrayList<>(numberNodes);
-        boolean[] visited = new boolean[numberNodes];
+    public void bypassInDepthRecursion(int startNode, IntConsumer consumer) {
+        validateNode(startNode);
+        boolean[] visited = new boolean[adjacencyMatrix.length];
+
+        recursiveBypassInDepth(startNode, visited, consumer);
+    }
+
+    private void recursiveBypassInDepth(int node, boolean[] visited, IntConsumer consumer) {
+        visited[node] = true;
+        consumer.accept(node);
+
+        for (int i = 0; i < adjacencyMatrix.length; i++) {
+            if (adjacencyMatrix[node][i] == 1 && !visited[i]) {
+                recursiveBypassInDepth(i, visited, consumer);
+            }
+        }
+    }
+
+    public void bypassInDepth(int startNode, IntConsumer consumer) {
+        validateNode(startNode);
+
+        boolean[] visited = new boolean[adjacencyMatrix.length];
 
         Deque<Integer> stack = new ArrayDeque<>();
-        stack.push(0);
+        stack.push(startNode);
 
         while (!stack.isEmpty()) {
             int node = stack.pop();
 
             if (!visited[node]) {
-                result.add(node + 1);
+                consumer.accept(node);
                 visited[node] = true;
 
-                for (int i = 0; i < numberNodes; i++) {
-                    if (adjacencyGraphMatrix[node][i] == 1 && !visited[i]) {
+                for (int i = adjacencyMatrix.length - 1; i >= 0; i--) {
+                    if (adjacencyMatrix[node][i] == 1 && !visited[i]) {
                         stack.push(i);
                     }
                 }
             }
         }
 
-        return result.toArray();
+    }
+
+    private void validateNode(int node) {
+        if (node < 0 || node >= adjacencyMatrix.length) {
+            throw new NoSuchElementException("Узел с номером " + node + " не найден в графе");
+        }
     }
 }

@@ -1,11 +1,20 @@
 package ru.academits.java.zuban.graph;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.IntConsumer;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GraphTest {
 
     @org.junit.jupiter.api.Test
-    void searchWidth() {
+    void bypassInWidth() {
+        List<Integer> output1 = new ArrayList<>();
+        List<Integer> output2 = new ArrayList<>();
+
+        IntConsumer consumer1 = output1::add;
+
         Graph graph1 = new Graph(new int[][]{
                 {0, 1, 1, 0, 0, 0, 1},
                 {1, 0, 1, 1, 0, 0, 0},
@@ -16,8 +25,22 @@ class GraphTest {
                 {1, 0, 0, 0, 0, 1, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3, 7, 4, 6, 5}, graph1.searchWidth());
+        graph1.bypassInWidth(0, consumer1);
 
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(6);
+        output2.add(3);
+        output2.add(5);
+        output2.add(4);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer2 = output1::add;
 
         Graph graph2 = new Graph(new int[][]{
                 {0, 1, 1},
@@ -26,7 +49,18 @@ class GraphTest {
 
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3}, graph2.searchWidth());
+        graph2.bypassInWidth(0, consumer2);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer3 = output1::add;
 
         Graph graph3 = new Graph(new int[][]{
                 {0, 0, 0},
@@ -34,7 +68,16 @@ class GraphTest {
                 {0, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1}, graph3.searchWidth());
+        graph3.bypassInWidth(0, consumer3);
+
+        output2.add(0);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer4 = output1::add;
 
         Graph graph4 = new Graph(new int[][]{
                 {0, 1, 0},
@@ -42,7 +85,18 @@ class GraphTest {
                 {0, 1, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3}, graph4.searchWidth());
+        graph4.bypassInWidth(0, consumer4);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer5 = output1::add;
 
         Graph graph5 = new Graph(new int[][]{
                 {0, 1, 1},
@@ -50,7 +104,18 @@ class GraphTest {
                 {1, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3}, graph5.searchWidth());
+        graph5.bypassInWidth(0, consumer5);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer6 = output1::add;
 
         Graph graph6 = new Graph(new int[][]{
                 {0, 1, 1, 1},
@@ -59,7 +124,19 @@ class GraphTest {
                 {1, 0, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3, 4}, graph6.searchWidth());
+        graph6.bypassInWidth(0, consumer6);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(3);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer7 = output1::add;
 
         Graph graph7 = new Graph(new int[][]{
                 {0, 1, 0, 0, 1, 0},
@@ -70,7 +147,21 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 5, 3, 4, 6}, graph7.searchWidth());
+        graph7.bypassInWidth(0, consumer7);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(4);
+        output2.add(2);
+        output2.add(3);
+        output2.add(5);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer8 = output1::add;
 
         Graph graph8 = new Graph(new int[][]{
                 {0, 1, 1, 0, 0},
@@ -80,7 +171,22 @@ class GraphTest {
                 {0, 0, 0, 1, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3, 4, 5}, graph8.searchWidth());
+        graph8.bypassInWidth(0, consumer8);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(3);
+        output2.add(4);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        assertEquals(output1, output2);
+
+        IntConsumer consumer9 = output1::add;
 
         Graph graph9 = new Graph(new int[][]{
                 {0, 1, 0, 1, 0, 0},
@@ -91,11 +197,28 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 4, 3, 5, 6}, graph9.searchWidth());
+        graph9.bypassInWidth(0, consumer9);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(3);
+        output2.add(2);
+        output2.add(4);
+        output2.add(5);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
     }
 
     @org.junit.jupiter.api.Test
-    void searchDepth() {
+    void bypassInDepth() {
+        List<Integer> output1 = new ArrayList<>();
+        List<Integer> output2 = new ArrayList<>();
+
+        IntConsumer consumer1 = output1::add;
+
         Graph graph1 = new Graph(new int[][]{
                 {0, 1, 1, 0, 0, 0, 1},
                 {1, 0, 1, 1, 0, 0, 0},
@@ -106,8 +229,22 @@ class GraphTest {
                 {1, 0, 0, 0, 0, 1, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3, 4, 5, 6, 7}, graph1.searchDepth());
+        graph1.bypassInDepth(0, consumer1);
 
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(3);
+        output2.add(4);
+        output2.add(5);
+        output2.add(6);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer2 = output1::add;
 
         Graph graph2 = new Graph(new int[][]{
                 {0, 1, 1},
@@ -116,7 +253,18 @@ class GraphTest {
 
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3}, graph2.searchDepth());
+        graph2.bypassInDepth(0, consumer2);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer3 = output1::add;
 
         Graph graph3 = new Graph(new int[][]{
                 {0, 0, 0},
@@ -124,7 +272,16 @@ class GraphTest {
                 {0, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1}, graph3.searchDepth());
+        graph3.bypassInDepth(0, consumer3);
+
+        output2.add(0);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer4 = output1::add;
 
         Graph graph4 = new Graph(new int[][]{
                 {0, 1, 0},
@@ -132,7 +289,18 @@ class GraphTest {
                 {0, 1, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3}, graph4.searchDepth());
+        graph4.bypassInDepth(0, consumer4);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer5 = output1::add;
 
         Graph graph5 = new Graph(new int[][]{
                 {0, 1, 1},
@@ -140,7 +308,18 @@ class GraphTest {
                 {1, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3}, graph5.searchDepth());
+        graph5.bypassInDepth(0, consumer5);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer6 = output1::add;
 
         Graph graph6 = new Graph(new int[][]{
                 {0, 1, 1, 1},
@@ -149,7 +328,19 @@ class GraphTest {
                 {1, 0, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3, 4}, graph6.searchDepth());
+        graph6.bypassInDepth(0, consumer6);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(3);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer7 = output1::add;
 
         Graph graph7 = new Graph(new int[][]{
                 {0, 1, 0, 0, 1, 0},
@@ -160,7 +351,21 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3, 4, 5, 6}, graph7.searchDepth());
+        graph7.bypassInDepth(0, consumer7);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(3);
+        output2.add(4);
+        output2.add(5);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer8 = output1::add;
 
         Graph graph8 = new Graph(new int[][]{
                 {0, 1, 1, 0, 0},
@@ -170,7 +375,19 @@ class GraphTest {
                 {0, 0, 0, 1, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 4, 3, 5}, graph8.searchDepth());
+        graph8.bypassInDepth(0, consumer8);
+        output2.add(0);
+        output2.add(1);
+        output2.add(3);
+        output2.add(2);
+        output2.add(4);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer9 = output1::add;
 
         Graph graph9 = new Graph(new int[][]{
                 {0, 1, 0, 1, 0, 0},
@@ -181,6 +398,214 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        assertArrayEquals(new Object[]{1, 2, 3, 5, 4, 6}, graph9.searchDepth());
+        graph9.bypassInDepth(0, consumer9);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(4);
+        output2.add(3);
+        output2.add(5);
+
+        assertEquals(output1, output2);
+    }
+
+    @org.junit.jupiter.api.Test
+    void bypassInDepthRecursion() {
+        List<Integer> output1 = new ArrayList<>();
+        List<Integer> output2 = new ArrayList<>();
+
+        IntConsumer consumer1 = output1::add;
+
+        Graph graph1 = new Graph(new int[][]{
+                {0, 1, 1, 0, 0, 0, 1},
+                {1, 0, 1, 1, 0, 0, 0},
+                {1, 1, 0, 0, 0, 0, 0},
+                {0, 1, 0, 0, 1, 0, 0},
+                {0, 0, 0, 1, 0, 1, 0},
+                {0, 0, 0, 0, 1, 0, 1},
+                {1, 0, 0, 0, 0, 1, 0}
+        });
+
+        graph1.bypassInDepthRecursion(0, consumer1);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(3);
+        output2.add(4);
+        output2.add(5);
+        output2.add(6);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer2 = output1::add;
+
+        Graph graph2 = new Graph(new int[][]{
+                {0, 1, 1},
+                {1, 0, 1},
+                {1, 1, 0},
+
+        });
+
+        graph2.bypassInDepthRecursion(0, consumer2);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer3 = output1::add;
+
+        Graph graph3 = new Graph(new int[][]{
+                {0, 0, 0},
+                {0, 0, 0},
+                {0, 0, 0}
+        });
+
+        graph3.bypassInDepthRecursion(0, consumer3);
+
+        output2.add(0);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer4 = output1::add;
+
+        Graph graph4 = new Graph(new int[][]{
+                {0, 1, 0},
+                {1, 0, 1},
+                {0, 1, 0}
+        });
+
+        graph4.bypassInDepthRecursion(0, consumer4);
+
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer5 = output1::add;
+
+        Graph graph5 = new Graph(new int[][]{
+                {0, 1, 1},
+                {1, 0, 0},
+                {1, 0, 0}
+        });
+
+        graph5.bypassInDepthRecursion(0, consumer5);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer6 = output1::add;
+
+        Graph graph6 = new Graph(new int[][]{
+                {0, 1, 1, 1},
+                {1, 0, 1, 0},
+                {1, 1, 0, 0},
+                {1, 0, 0, 0}
+        });
+
+        graph6.bypassInDepthRecursion(0, consumer6);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(3);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer7 = output1::add;
+
+        Graph graph7 = new Graph(new int[][]{
+                {0, 1, 0, 0, 1, 0},
+                {1, 0, 1, 0, 1, 0},
+                {0, 1, 0, 1, 0, 0},
+                {0, 0, 1, 0, 1, 1},
+                {1, 1, 0, 1, 0, 0},
+                {0, 0, 0, 1, 0, 0}
+        });
+
+        graph7.bypassInDepthRecursion(0, consumer7);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(3);
+        output2.add(4);
+        output2.add(5);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer8 = output1::add;
+
+        Graph graph8 = new Graph(new int[][]{
+                {0, 1, 1, 0, 0},
+                {1, 0, 0, 1, 0},
+                {1, 0, 0, 1, 0},
+                {0, 1, 1, 0, 1},
+                {0, 0, 0, 1, 0}
+        });
+
+        graph8.bypassInDepthRecursion(0, consumer8);
+        output2.add(0);
+        output2.add(1);
+        output2.add(3);
+        output2.add(2);
+        output2.add(4);
+
+        assertEquals(output1, output2);
+
+        output1.clear();
+        output2.clear();
+
+        IntConsumer consumer9 = output1::add;
+
+        Graph graph9 = new Graph(new int[][]{
+                {0, 1, 0, 1, 0, 0},
+                {1, 0, 1, 0, 1, 0},
+                {0, 1, 0, 0, 0, 0},
+                {1, 0, 0, 0, 1, 1},
+                {0, 1, 0, 1, 0, 0},
+                {0, 0, 0, 1, 0, 0}
+        });
+
+        graph9.bypassInDepthRecursion(0, consumer9);
+
+        output2.add(0);
+        output2.add(1);
+        output2.add(2);
+        output2.add(4);
+        output2.add(3);
+        output2.add(5);
+
+        assertEquals(output1, output2);
     }
 }
