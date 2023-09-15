@@ -1,15 +1,17 @@
-package ru.academits.java.zuban.graph;
+package ru.academits.java.zuban.graph.test;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import ru.academits.java.zuban.graph.Graph;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntConsumer;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GraphTest {
 
-    @org.junit.jupiter.api.Test
-    void bypassInWidth() {
+    @Test
+    protected void bypassInWidth() {
         List<Integer> output1 = new ArrayList<>();
         List<Integer> output2 = new ArrayList<>();
 
@@ -35,7 +37,7 @@ class GraphTest {
         output2.add(5);
         output2.add(4);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -55,7 +57,7 @@ class GraphTest {
         output2.add(1);
         output2.add(2);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -72,7 +74,7 @@ class GraphTest {
 
         output2.add(0);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -91,7 +93,7 @@ class GraphTest {
         output2.add(1);
         output2.add(2);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -110,7 +112,7 @@ class GraphTest {
         output2.add(1);
         output2.add(2);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -131,7 +133,7 @@ class GraphTest {
         output2.add(2);
         output2.add(3);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -156,7 +158,7 @@ class GraphTest {
         output2.add(3);
         output2.add(5);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -179,12 +181,12 @@ class GraphTest {
         output2.add(3);
         output2.add(4);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         IntConsumer consumer9 = output1::add;
 
@@ -206,14 +208,14 @@ class GraphTest {
         output2.add(4);
         output2.add(5);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
     }
 
-    @org.junit.jupiter.api.Test
-    void bypassInDepth() {
+    @Test
+    protected void bypassInDepth() {
         List<Integer> output1 = new ArrayList<>();
         List<Integer> output2 = new ArrayList<>();
 
@@ -239,7 +241,7 @@ class GraphTest {
         output2.add(5);
         output2.add(6);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -259,7 +261,7 @@ class GraphTest {
         output2.add(1);
         output2.add(2);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -276,7 +278,7 @@ class GraphTest {
 
         output2.add(0);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -295,7 +297,7 @@ class GraphTest {
         output2.add(1);
         output2.add(2);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -314,7 +316,7 @@ class GraphTest {
         output2.add(1);
         output2.add(2);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -335,7 +337,7 @@ class GraphTest {
         output2.add(2);
         output2.add(3);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -360,7 +362,7 @@ class GraphTest {
         output2.add(4);
         output2.add(5);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -382,7 +384,7 @@ class GraphTest {
         output2.add(2);
         output2.add(4);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -407,11 +409,11 @@ class GraphTest {
         output2.add(3);
         output2.add(5);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
     }
 
-    @org.junit.jupiter.api.Test
-    void bypassInDepthRecursion() {
+    @Test
+    protected void bypassInDepthRecursion() {
         List<Integer> output1 = new ArrayList<>();
         List<Integer> output2 = new ArrayList<>();
 
@@ -437,7 +439,7 @@ class GraphTest {
         output2.add(5);
         output2.add(6);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -457,7 +459,7 @@ class GraphTest {
         output2.add(1);
         output2.add(2);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -474,7 +476,7 @@ class GraphTest {
 
         output2.add(0);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -494,7 +496,7 @@ class GraphTest {
         output2.add(1);
         output2.add(2);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -513,7 +515,7 @@ class GraphTest {
         output2.add(1);
         output2.add(2);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -534,7 +536,7 @@ class GraphTest {
         output2.add(2);
         output2.add(3);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -559,7 +561,7 @@ class GraphTest {
         output2.add(4);
         output2.add(5);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -581,7 +583,7 @@ class GraphTest {
         output2.add(2);
         output2.add(4);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
 
         output1.clear();
         output2.clear();
@@ -606,6 +608,6 @@ class GraphTest {
         output2.add(3);
         output2.add(5);
 
-        assertEquals(output1, output2);
+        Assertions.assertEquals(output1, output2);
     }
 }
