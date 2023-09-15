@@ -16,6 +16,31 @@ public class Tree<E> {
         this.comparator = comparator;
     }
 
+    public int size() {
+        return size;
+    }
+
+    private int compare(E value1, E value2) {
+        if (value1 == null && value2 == null) {
+            return 0;
+        }
+
+        if (value1 == null) {
+            return -1;
+        }
+
+        if (value2 == null) {
+            return 1;
+        }
+
+        if (comparator != null) {
+            return comparator.compare(value1, value2);
+        }
+
+        //noinspection unchecked
+        return ((Comparable<E>) value1).compareTo(value2);
+    }
+
     public void insert(E value) {
         if (root == null) {
             root = new Node<>(value);
@@ -26,7 +51,7 @@ public class Tree<E> {
         Node<E> currentNode = root;
 
         while (currentNode != null) {
-            int compareResult = compareNodes(value, currentNode.getValue());
+            int compareResult = compare(value, currentNode.getValue());
 
             if (compareResult > 0) {
                 if (currentNode.getRight() == null) {
@@ -56,7 +81,7 @@ public class Tree<E> {
         Node<E> currentNode = root;
 
         while (currentNode != null) {
-            int compareResult = compareNodes(value, currentNode.getValue());
+            int compareResult = compare(value, currentNode.getValue());
 
             if (compareResult == 0) {
                 return true;
@@ -85,11 +110,12 @@ public class Tree<E> {
             return false;
         }
 
-        Node<E> parent = root;
+        Node<E> parent = null;
         Node<E> currentNode = root;
+        boolean isLeftParent = false;
 
         while (currentNode != null) {
-            int compareResult = compareNodes(value, currentNode.getValue());
+            int compareResult = compare(value, currentNode.getValue());
 
             if (compareResult == 0) {
                 break;
@@ -103,83 +129,87 @@ public class Tree<E> {
                 }
 
                 currentNode = currentNode.getRight();
+                isLeftParent = false;
             } else {
                 if (currentNode.getLeft() == null) {
                     return false;
                 }
 
                 currentNode = currentNode.getLeft();
+                isLeftParent = true;
             }
         }
 
-        if (currentNode.getLeft() == null) {
-            if (parent.getLeft() == currentNode) {
-                parent.setLeft(currentNode.getRight());
+        //noinspection DataFlowIssue
+        if (currentNode.getLeft() == null && currentNode.getRight() == null) {
+            if (parent == null) {
+                root = null;
+            } else if (parent.getLeft() == currentNode) {
+                parent.setLeft(null);
             } else {
-                parent.setRight(currentNode.getRight());
+                parent.setRight(null);
             }
+        } else if (currentNode.getLeft() == null || currentNode.getRight() == null) {
+            Node<E> child = (currentNode.getLeft() != null) ? currentNode.getLeft() : currentNode.getRight();
 
-            size--;
-            return true;
-        }
-
-        if (currentNode.getRight() == null) {
-            if (parent.getLeft() == currentNode) {
-                parent.setLeft(currentNode.getLeft());
+            if (parent == null) {
+                root = child;
+            } else if (parent.getLeft() == currentNode) {
+                parent.setLeft(child);
             } else {
-                parent.setRight(currentNode.getLeft());
+                parent.setRight(child);
             }
-
-            size--;
-            return true;
-        }
-
-        Node<E> successorParent = currentNode;
-        Node<E> successor = currentNode.getRight();
-
-        while (successor.getLeft() != null) {
-            successorParent = successor;
-            successor = successor.getLeft();
-        }
-
-        currentNode.setValue(successor.getValue());
-
-        if (successorParent.getLeft() == successor) {
-            successorParent.setLeft(successor.getRight());
         } else {
-            successorParent.setRight(successor.getRight());
+            Node<E> successorParent = null;
+            Node<E> successor = currentNode.getRight();
+
+            while (successor.getLeft() != null) {
+                successorParent = successor;
+                successor = successor.getLeft();
+            }
+
+            if (successorParent != null) {
+                successorParent.setLeft(successor.getRight());
+            } else {
+                currentNode.setRight(successor.getRight());
+            }
+
+            successor.setLeft(currentNode.getLeft());
+            successor.setRight(currentNode.getRight());
+
+            if (parent == null) {
+                root = successor;
+            } else if (isLeftParent) {
+                parent.setLeft(successor);
+            } else {
+                parent.setRight(successor);
+            }
         }
 
         size--;
         return true;
     }
 
-    public int size() {
-        return size;
+    public void traverseInDepthRecursive(Consumer<E> consumer) {
+        traverseInDepthRecursive(root, consumer);
     }
 
-    public void traversalInDepthRecursive(Consumer<E> consumer) {
-        traversalInDepthRecursive(root, consumer);
-    }
-
-    private void traversalInDepthRecursive(Node<E> node, Consumer<E> consumer) {
+    private void traverseInDepthRecursive(Node<E> node, Consumer<E> consumer) {
         if (node != null) {
             consumer.accept(node.getValue());
 
-            traversalInDepthRecursive(node.getLeft(), consumer);
-            traversalInDepthRecursive(node.getRight(), consumer);
+            traverseInDepthRecursive(node.getLeft(), consumer);
+            traverseInDepthRecursive(node.getRight(), consumer);
         }
     }
 
-    public void traversalInDepth(Consumer<E> consumer) {
+    public void traverseInDepth(Consumer<E> consumer) {
         if (root == null) {
             return;
         }
 
-        Node<E> currentNode = root;
-
         Deque<Node<E>> stack = new ArrayDeque<>();
-        stack.push(currentNode);
+        stack.push(root);
 
         while (!stack.isEmpty()) {
             Node<E> node = stack.pop();
@@ -196,15 +226,13 @@ public class Tree<E> {
         }
     }
 
-    public void traversalInWidth(Consumer<E> consumer) {
+    public void traverseInWidth(Consumer<E> consumer) {
         if (root == null) {
             return;
         }
 
-        Node<E> currentNode = root;
-
         Queue<Node<E>> queue = new ArrayDeque<>();
-        queue.add(currentNode);
+        queue.add(root);
 
         while (!queue.isEmpty()) {
             Node<E> node = queue.poll();
@@ -219,27 +247,5 @@ public class Tree<E> {
                 queue.add(node.getLeft());
             }
         }
-    }
-
-    private int compareNodes(E value1, E value2) {
-        if (value1 == null && value2 == null) {
-            return 0;
-        } else if (value1 == null) {
-            return -1;
-        } else if (value2 == null) {
-            return 1;
-        }
-
-        if (comparator != null) {
-            return comparator.compare(value1, value2);
-        }
-
-        //noinspection unchecked
-        Comparable<E> comparableValue = (Comparable<E>) value1;
-        //noinspection unchecked
-        Comparable<E> comparableOtherValue = (Comparable<E>) value2;
-
-        //noinspection unchecked
-        return comparableValue.compareTo((E) comparableOtherValue);
     }
 }

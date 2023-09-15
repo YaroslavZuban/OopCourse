@@ -18,15 +18,17 @@ public class Main {
 
         Consumer<Integer> consumer = x -> System.out.print(x + " ");
 
-        System.out.println("------------ traversalInDepth -----------");
-        tree.traversalInDepth(consumer);
+        System.out.println("------------ traverseInDepth -----------");
+        tree.traverseInDepth(consumer);
 
         System.out.println();
-        System.out.println("------------ traversalInDepthRecursive -----------");
-        tree.traversalInDepthRecursive(consumer);
+        System.out.println("------------ traverseInDepthRecursive -----------");
+        tree.traverseInDepthRecursive(consumer);
 
         System.out.println();
-        System.out.println("------------ traversalInWidth -----------");
-        tree.traversalInWidth(consumer);
+        System.out.println("------------ traverseInWidth -----------");
+        tree.traverseInWidth(consumer);
+
+        System.out.println();
     }
 }

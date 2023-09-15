@@ -1,9 +1,8 @@
-package ru.academits.java.zuban.tree;
+package ru.academits.java.zuban.tree.test;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import ru.academits.java.zuban.tree.Tree;
 
 class TreeTest {
     @Test
@@ -11,28 +10,28 @@ class TreeTest {
         Tree<Integer> tree = new Tree<>();
 
         tree.insert(5);
-        assertEquals(1, tree.size());
+        Assertions.assertEquals(1, tree.size());
 
         tree.insert(2);
-        assertEquals(2, tree.size());
+        Assertions.assertEquals(2, tree.size());
 
         tree.insert(7);
-        assertEquals(3, tree.size());
+        Assertions.assertEquals(3, tree.size());
 
         tree.insert(1);
-        assertEquals(4, tree.size());
+        Assertions.assertEquals(4, tree.size());
 
         tree.insert(3);
-        assertEquals(5, tree.size());
+        Assertions.assertEquals(5, tree.size());
 
         tree.insert(6);
-        assertEquals(6, tree.size());
+        Assertions.assertEquals(6, tree.size());
 
         tree.insert(8);
-        assertEquals(7, tree.size());
+        Assertions.assertEquals(7, tree.size());
 
         tree.insert(null);
-        assertEquals(8, tree.size());
+        Assertions.assertEquals(8, tree.size());
     }
 
     @Test
