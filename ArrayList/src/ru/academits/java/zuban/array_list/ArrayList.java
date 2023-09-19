@@ -139,7 +139,7 @@ public class ArrayList<E> implements List<E> {
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         checkCollectionIsNotNull(c, "collection");
-        Objects.checkIndex(index, size);
+        checkIndex(index);
 
         if (c.isEmpty()) {
             return false;
@@ -216,14 +216,14 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public E get(int index) {
-        Objects.checkIndex(index, size);
+        checkIndex(index);
 
         return elements[index];
     }
 
     @Override
     public E set(int index, E element) {
-        Objects.checkIndex(index, size);
+        checkIndex(index);
 
         E oldElement = elements[index];
         elements[index] = element;
@@ -233,7 +233,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-        Objects.checkIndex(index, size);
+        checkIndex(index);
 
         if (size == elements.length) {
             increaseCapacity();
@@ -248,7 +248,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public E remove(int index) {
-        Objects.checkIndex(index, size);
+        checkIndex(index);
 
         E removedElement = elements[index];
 
@@ -287,6 +287,12 @@ public class ArrayList<E> implements List<E> {
     private static void checkCollectionIsNotNull(Object object, String argumentName) {
         if (object == null) {
             throw new NullPointerException("Переданные значение в " + argumentName + " равно null.");
+        }
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
         }
     }
 
