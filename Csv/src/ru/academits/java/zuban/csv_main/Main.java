@@ -1,9 +1,6 @@
 package ru.academits.java.zuban.csv_main;
 
 import ru.academits.java.zuban.csv.Csv;
-
-import javax.imageio.IIOException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Main {
