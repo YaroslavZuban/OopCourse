@@ -18,7 +18,7 @@ public class ArrayList<E> implements List<E> {
 
     public ArrayList(int capacity) {
         if (capacity < 0) {
-            throw new NoSuchElementException("Не возможно создать ArrayList размерностью: " + size);
+            throw new IllegalArgumentException("Не возможно создать ArrayList размерностью: " + size);
         }
 
         //noinspection unchecked
@@ -133,15 +133,13 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        checkCollectionIsNotNull(c, "collection");
-
         return addAll(size, c);
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        checkCollectionIsNotNull(c, "collection by index");
-        checkIndex(index);
+        checkCollectionIsNotNull(c, "collection");
+        Objects.checkIndex(index, size);
 
         if (c.isEmpty()) {
             return false;
@@ -176,11 +174,9 @@ public class ArrayList<E> implements List<E> {
 
         int originalSize = size;
 
-        for (Object element : c) {
-            boolean isDeleteElement = remove(element);
-
-            while (isDeleteElement) {
-                isDeleteElement = remove(element);
+        for (int i = size() - 1; i >= 0; i--) {
+            if (c.contains(get(i))) {
+                remove(i);
             }
         }
 
@@ -197,9 +193,9 @@ public class ArrayList<E> implements List<E> {
 
         int originalSize = size;
 
-        for (int i = 0; i < size; i++) {
-            if (c.contains(elements[i])) {
-                remove(elements[i]);
+        for (int i = size() - 1; i >= 0; i--) {
+            if (!c.contains(get(i))) {
+                remove(i);
             }
         }
 
@@ -237,9 +233,9 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-        checkIndex(index);
+        Objects.checkIndex(index, size);
 
-        if (size + 1 == elements.length) {
+        if (size == elements.length) {
             increaseCapacity();
         }
 
@@ -294,20 +290,25 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
-    private void checkIndex(int index) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
+    public void ensureCapacity(int minCapacity) {
+        if (minCapacity > elements.length) {
+            int newCapacity = Math.max(elements.length * 2, minCapacity);
+            elements = Arrays.copyOf(elements, newCapacity);
         }
-    }
-
-    private void ensureCapacity(int minCapacity) {
-        elements = Arrays.copyOf(elements, minCapacity);
     }
 
     private void increaseCapacity() {
         int currentCapacity = elements.length;
-        int newCapacity = Math.max(currentCapacity * 2, 1);
+        int newCapacity = (currentCapacity == 0) ? 1 : currentCapacity * 2;
         elements = Arrays.copyOf(elements, newCapacity);
+    }
+
+    public void trimToSize() {
+        changesCount++;
+
+        if (size < elements.length) {
+            elements = Arrays.copyOf(elements, size);
+        }
     }
 
     private class ArrayListIterator implements Iterator<E> {
@@ -316,7 +317,7 @@ public class ArrayList<E> implements List<E> {
 
         @Override
         public boolean hasNext() {
-            return size != index;
+            return size <= index;
         }
 
         @Override
@@ -325,12 +326,8 @@ public class ArrayList<E> implements List<E> {
                 throw new ConcurrentModificationException("Коллекция изменена.");
             }
 
-            if (index >= size) {
+            if (hasNext()) {
                 throw new NoSuchElementException("Не существует элемента");
-            }
-
-            if (index >= elements.length) {
-                throw new ConcurrentModificationException("Не существует элемента");
             }
 
             E result = elements[index];
