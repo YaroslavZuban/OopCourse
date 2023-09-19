@@ -174,7 +174,7 @@ public class ArrayList<E> implements List<E> {
 
         int originalSize = size;
 
-        for (int i = size() - 1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             if (c.contains(get(i))) {
                 remove(i);
             }
@@ -193,7 +193,7 @@ public class ArrayList<E> implements List<E> {
 
         int originalSize = size;
 
-        for (int i = size() - 1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             if (!c.contains(get(i))) {
                 remove(i);
             }
