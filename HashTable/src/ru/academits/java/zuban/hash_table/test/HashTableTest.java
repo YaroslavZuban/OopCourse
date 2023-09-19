@@ -6,19 +6,17 @@ import ru.academits.java.zuban.hash_table.HashTable;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class HashTableTest {
     @Test
-    void contains() {
+    protected void contains() {
         HashTable<Integer> table = new HashTable<>();
 
-        fillingTable(table, 20);
+        fillArray(table, 20);
 
-        assertTrue(table.contains(2));
-        assertTrue(table.contains(5));
+        Assertions.assertTrue(table.contains(2));
+        Assertions.assertTrue(table.contains(5));
 
-        assertFalse(table.contains(225));
+        Assertions.assertFalse(table.contains(225));
 
         try {
             boolean isValue = table.contains(null);
@@ -28,38 +26,38 @@ class HashTableTest {
     }
 
     @Test
-    void toArray() {
+    protected void toArray() {
         HashTable<Integer> table = new HashTable<>();
 
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
 
-        fillingTable(table, 5);
+        fillArray(table, 5);
 
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 1, 2, 3, 4});
 
-        fillingTable(table, 5);
+        fillArray(table, 5);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 0, 1, 1, 2, 2, 3, 3, 4, 4});
 
-        fillingTable(table, 2);
+        fillArray(table, 2);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4});
 
-        fillingTable(table, 1);
+        fillArray(table, 1);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4});
     }
 
     @Test
-    void testToArray() {
+    protected void testToArray() {
         HashTable<Integer> table = new HashTable<>();
 
         Assertions.assertArrayEquals(table.toArray(new Integer[0]), new Integer[]{});
 
         Integer[] array = new Integer[5];
 
-        fillingTable(table, 3);
+        fillArray(table, 3);
 
         Assertions.assertArrayEquals(table.toArray(array), new Integer[]{0, 1, 2, null, null});
 
-        fillingTable(table, 3);
+        fillArray(table, 3);
         Assertions.assertArrayEquals(table.toArray(array), new Integer[]{0, 0, 1, 1, 2, 2});
 
         try {
@@ -70,7 +68,7 @@ class HashTableTest {
     }
 
     @Test
-    void add() {
+    protected void add() {
         HashTable<Integer> table = new HashTable<>();
 
         Assertions.assertEquals(table.size(), 0);
@@ -96,10 +94,10 @@ class HashTableTest {
     }
 
     @Test
-    void remove() {
+    protected void remove() {
         HashTable<Integer> table = new HashTable<>();
 
-        fillingTable(table, 5);
+        fillArray(table, 5);
         table.remove(0);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 2, 3, 4});
 
@@ -109,7 +107,7 @@ class HashTableTest {
         table.remove(2);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{1, 3});
 
-        fillingTable(table, 3);
+        fillArray(table, 3);
         table.remove(1);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 1, 2, 3});
 
@@ -124,29 +122,28 @@ class HashTableTest {
     }
 
     @Test
-    void containsAll() {
+    protected void containsAll() {
         HashTable<Integer> table1 = new HashTable<>();
         List<Integer> list1 = new ArrayList<>();
 
-        fillingTable(list1, 5);
-        fillingTable(table1, 5);
+        fillArray(list1, 5);
+        fillArray(table1, 5);
 
         Assertions.assertTrue(table1.containsAll(list1));
 
         HashTable<Integer> table2 = new HashTable<>();
         List<Integer> list2 = new ArrayList<>();
 
-        fillingTable(list2, 40);
-        fillingTable(table2, 40);
+        fillArray(list2, 40);
+        fillArray(table2, 40);
 
         Assertions.assertTrue(table2.containsAll(list2));
-
 
         HashTable<Integer> table3 = new HashTable<>();
         List<Integer> list3 = new ArrayList<>();
 
-        fillingTable(list3, 0);
-        fillingTable(table3, 0);
+        fillArray(list3, 0);
+        fillArray(table3, 0);
 
         Assertions.assertTrue(table3.containsAll(list3));
 
@@ -162,29 +159,29 @@ class HashTableTest {
         HashTable<Integer> table5 = new HashTable<>();
         List<Integer> list5 = new ArrayList<>();
 
-        fillingTable(list5, 5);
-        fillingTable(table5, 5);
+        fillArray(list5, 5);
+        fillArray(table5, 5);
         table5.add(20);
 
         Assertions.assertFalse(table5.containsAll(list5));
     }
 
     @Test
-    void addAll() {
+    protected void addAll() {
         List<Integer> list1 = new ArrayList<>();
-        fillingTable(list1, 5);
+        fillArray(list1, 5);
 
         HashTable<Integer> table = new HashTable<>();
         table.addAll(list1);
         Assertions.assertEquals(table.size(), list1.size());
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 1, 2, 3, 4});
 
-        fillingTable(table, 2);
+        fillArray(table, 2);
         Assertions.assertEquals(table.size(), 7);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 0, 1, 1, 2, 3, 4});
 
         List<Integer> list2 = new ArrayList<>();
-        fillingTable(list2, 4);
+        fillArray(list2, 4);
 
         table.addAll(list2);
         Assertions.assertEquals(table.size(), 11);
@@ -198,12 +195,12 @@ class HashTableTest {
     }
 
     @Test
-    void removeAll() {
+    protected void removeAll() {
         List<Integer> list1 = new ArrayList<>();
-        fillingTable(list1, 5);
+        fillArray(list1, 5);
 
         HashTable<Integer> table = new HashTable<>();
-        fillingTable(table, 7);
+        fillArray(table, 7);
 
         table.removeAll(list1);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{5, 6});
@@ -213,7 +210,7 @@ class HashTableTest {
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{5, 6});
 
         List<Integer> list3 = new ArrayList<>();
-        fillingTable(list3, 10);
+        fillArray(list3, 10);
 
         table.removeAll(list3);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
@@ -226,12 +223,12 @@ class HashTableTest {
     }
 
     @Test
-    void retainAll() {
+    protected void retainAll() {
         List<Integer> list1 = new ArrayList<>();
-        fillingTable(list1, 5);
+        fillArray(list1, 5);
 
         HashTable<Integer> table = new HashTable<>();
-        fillingTable(table, 7);
+        fillArray(table, 7);
 
         table.retainAll(list1);
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{0, 1, 2, 3, 4});
@@ -241,7 +238,7 @@ class HashTableTest {
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
 
         List<Integer> list3 = new ArrayList<>();
-        fillingTable(list3, 10);
+        fillArray(list3, 10);
         table.add(12);
 
         table.retainAll(list3);
@@ -255,40 +252,40 @@ class HashTableTest {
     }
 
     @Test
-    void clear() {
+    protected void clear() {
         HashTable<Integer> table = new HashTable<>();
-        fillingTable(table, 7);
+        fillArray(table, 7);
 
         table.clear();
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
-        assertEquals(table.size(), 0);
+        Assertions.assertEquals(table.size(), 0);
 
-        fillingTable(table, 9);
-
-        table.clear();
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
-        assertEquals(table.size(), 0);
-
-        fillingTable(table, 100);
+        fillArray(table, 9);
 
         table.clear();
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
-        assertEquals(table.size(), 0);
+        Assertions.assertEquals(table.size(), 0);
 
-        fillingTable(table, 2);
-
-        table.clear();
-        Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
-        assertEquals(table.size(), 0);
-
-        fillingTable(table, 0);
+        fillArray(table, 100);
 
         table.clear();
         Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
-        assertEquals(table.size(), 0);
+        Assertions.assertEquals(table.size(), 0);
+
+        fillArray(table, 2);
+
+        table.clear();
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
+        Assertions.assertEquals(table.size(), 0);
+
+        fillArray(table, 0);
+
+        table.clear();
+        Assertions.assertArrayEquals(table.toArray(), new Integer[]{});
+        Assertions.assertEquals(table.size(), 0);
     }
 
-    private static void fillingTable(Collection<Integer> collection, int size) {
+    private static void fillArray(Collection<Integer> collection, int size) {
         if (size > 0) {
             for (int i = 0; i < size; i++) {
                 collection.add(i);
