@@ -6,7 +6,7 @@ import ru.academits.java.zuban.tree.Tree;
 
 class TreeTest {
     @Test
-    void insert() {
+    protected void insert() {
         Tree<Integer> tree = new Tree<>();
 
         tree.insert(5);
@@ -35,7 +35,7 @@ class TreeTest {
     }
 
     @Test
-    void findNode() {
+    protected void findNode() {
         Tree<Integer> tree = new Tree<>();
 
         tree.insert(5);
@@ -59,7 +59,7 @@ class TreeTest {
     }
 
     @Test
-    void remove() {
+    protected void remove() {
         Tree<Integer> tree = new Tree<>();
 
         tree.insert(5);

@@ -21,6 +21,10 @@ public class Tree<E> {
     }
 
     private int compare(E value1, E value2) {
+        if (comparator != null) {
+            return comparator.compare(value1, value2);
+        }
+
         if (value1 == null && value2 == null) {
             return 0;
         }
@@ -31,10 +35,6 @@ public class Tree<E> {
 
         if (value2 == null) {
             return 1;
-        }
-
-        if (comparator != null) {
-            return comparator.compare(value1, value2);
         }
 
         //noinspection unchecked
@@ -112,7 +112,7 @@ public class Tree<E> {
 
         Node<E> parent = null;
         Node<E> currentNode = root;
-        boolean isLeftParent = false;
+        boolean hasLeftChild = false;
 
         while (currentNode != null) {
             int compareResult = compare(value, currentNode.getValue());
@@ -123,20 +123,20 @@ public class Tree<E> {
 
             parent = currentNode;
 
-            if (compareResult > 0) {
+            if (compareResult >= 0) {
                 if (currentNode.getRight() == null) {
                     return false;
                 }
 
                 currentNode = currentNode.getRight();
-                isLeftParent = false;
+                hasLeftChild = false;
             } else {
                 if (currentNode.getLeft() == null) {
                     return false;
                 }
 
                 currentNode = currentNode.getLeft();
-                isLeftParent = true;
+                hasLeftChild = true;
             }
         }
 
@@ -144,7 +144,7 @@ public class Tree<E> {
         if (currentNode.getLeft() == null && currentNode.getRight() == null) {
             if (parent == null) {
                 root = null;
-            } else if (parent.getLeft() == currentNode) {
+            } else if (hasLeftChild) {
                 parent.setLeft(null);
             } else {
                 parent.setRight(null);
@@ -154,7 +154,7 @@ public class Tree<E> {
 
             if (parent == null) {
                 root = child;
-            } else if (parent.getLeft() == currentNode) {
+            } else if (hasLeftChild) {
                 parent.setLeft(child);
             } else {
                 parent.setRight(child);
@@ -179,7 +179,7 @@ public class Tree<E> {
 
             if (parent == null) {
                 root = successor;
-            } else if (isLeftParent) {
+            } else if (hasLeftChild) {
                 parent.setLeft(successor);
             } else {
                 parent.setRight(successor);
@@ -239,12 +239,12 @@ public class Tree<E> {
 
             consumer.accept(node.getValue());
 
-            if (node.getRight() != null) {
-                queue.add(node.getRight());
-            }
-
             if (node.getLeft() != null) {
                 queue.add(node.getLeft());
+            }
+
+            if (node.getRight() != null) {
+                queue.add(node.getRight());
             }
         }
     }
