@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.function.IntConsumer;
 
 class GraphTest {
-
     @Test
     protected void bypassInWidth() {
         List<Integer> output1 = new ArrayList<>();
@@ -27,7 +26,7 @@ class GraphTest {
                 {1, 0, 0, 0, 0, 1, 0}
         });
 
-        graph1.bypassInWidth(0, consumer1);
+        graph1.bypassInWidth(consumer1);
 
         output2.add(0);
         output2.add(1);
@@ -47,11 +46,10 @@ class GraphTest {
         Graph graph2 = new Graph(new int[][]{
                 {0, 1, 1},
                 {1, 0, 1},
-                {1, 1, 0},
-
+                {1, 1, 0}
         });
 
-        graph2.bypassInWidth(0, consumer2);
+        graph2.bypassInWidth(consumer2);
 
         output2.add(0);
         output2.add(1);
@@ -70,9 +68,11 @@ class GraphTest {
                 {0, 0, 0}
         });
 
-        graph3.bypassInWidth(0, consumer3);
+        graph3.bypassInWidth(consumer3);
 
         output2.add(0);
+        output2.add(1);
+        output2.add(2);
 
         Assertions.assertEquals(output1, output2);
 
@@ -87,7 +87,7 @@ class GraphTest {
                 {0, 1, 0}
         });
 
-        graph4.bypassInWidth(0, consumer4);
+        graph4.bypassInWidth(consumer4);
 
         output2.add(0);
         output2.add(1);
@@ -106,7 +106,7 @@ class GraphTest {
                 {1, 0, 0}
         });
 
-        graph5.bypassInWidth(0, consumer5);
+        graph5.bypassInWidth(consumer5);
 
         output2.add(0);
         output2.add(1);
@@ -126,7 +126,7 @@ class GraphTest {
                 {1, 0, 0, 0}
         });
 
-        graph6.bypassInWidth(0, consumer6);
+        graph6.bypassInWidth(consumer6);
 
         output2.add(0);
         output2.add(1);
@@ -149,7 +149,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        graph7.bypassInWidth(0, consumer7);
+        graph7.bypassInWidth(consumer7);
 
         output2.add(0);
         output2.add(1);
@@ -173,7 +173,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0}
         });
 
-        graph8.bypassInWidth(0, consumer8);
+        graph8.bypassInWidth(consumer8);
 
         output2.add(0);
         output2.add(1);
@@ -199,7 +199,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        graph9.bypassInWidth(0, consumer9);
+        graph9.bypassInWidth(consumer9);
 
         output2.add(0);
         output2.add(1);
@@ -231,7 +231,7 @@ class GraphTest {
                 {1, 0, 0, 0, 0, 1, 0}
         });
 
-        graph1.bypassInDepth(0, consumer1);
+        graph1.bypassInDepth(consumer1);
 
         output2.add(0);
         output2.add(1);
@@ -251,11 +251,10 @@ class GraphTest {
         Graph graph2 = new Graph(new int[][]{
                 {0, 1, 1},
                 {1, 0, 1},
-                {1, 1, 0},
-
+                {1, 1, 0}
         });
 
-        graph2.bypassInDepth(0, consumer2);
+        graph2.bypassInDepth(consumer2);
 
         output2.add(0);
         output2.add(1);
@@ -274,9 +273,11 @@ class GraphTest {
                 {0, 0, 0}
         });
 
-        graph3.bypassInDepth(0, consumer3);
+        graph3.bypassInDepth(consumer3);
 
         output2.add(0);
+        output2.add(1);
+        output2.add(2);
 
         Assertions.assertEquals(output1, output2);
 
@@ -291,7 +292,7 @@ class GraphTest {
                 {0, 1, 0}
         });
 
-        graph4.bypassInDepth(0, consumer4);
+        graph4.bypassInDepth(consumer4);
 
         output2.add(0);
         output2.add(1);
@@ -310,7 +311,7 @@ class GraphTest {
                 {1, 0, 0}
         });
 
-        graph5.bypassInDepth(0, consumer5);
+        graph5.bypassInDepth(consumer5);
 
         output2.add(0);
         output2.add(1);
@@ -330,7 +331,7 @@ class GraphTest {
                 {1, 0, 0, 0}
         });
 
-        graph6.bypassInDepth(0, consumer6);
+        graph6.bypassInDepth(consumer6);
 
         output2.add(0);
         output2.add(1);
@@ -353,7 +354,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        graph7.bypassInDepth(0, consumer7);
+        graph7.bypassInDepth(consumer7);
 
         output2.add(0);
         output2.add(1);
@@ -377,7 +378,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0}
         });
 
-        graph8.bypassInDepth(0, consumer8);
+        graph8.bypassInDepth(consumer8);
         output2.add(0);
         output2.add(1);
         output2.add(3);
@@ -400,7 +401,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        graph9.bypassInDepth(0, consumer9);
+        graph9.bypassInDepth(consumer9);
 
         output2.add(0);
         output2.add(1);
@@ -413,7 +414,7 @@ class GraphTest {
     }
 
     @Test
-    protected void bypassInDepthRecursion() {
+    protected void traverseInDepth() {
         List<Integer> output1 = new ArrayList<>();
         List<Integer> output2 = new ArrayList<>();
 
@@ -429,7 +430,7 @@ class GraphTest {
                 {1, 0, 0, 0, 0, 1, 0}
         });
 
-        graph1.bypassInDepthRecursion(0, consumer1);
+        graph1.traverseInDepth(consumer1);
 
         output2.add(0);
         output2.add(1);
@@ -449,11 +450,10 @@ class GraphTest {
         Graph graph2 = new Graph(new int[][]{
                 {0, 1, 1},
                 {1, 0, 1},
-                {1, 1, 0},
-
+                {1, 1, 0}
         });
 
-        graph2.bypassInDepthRecursion(0, consumer2);
+        graph2.traverseInDepth(consumer2);
 
         output2.add(0);
         output2.add(1);
@@ -472,9 +472,11 @@ class GraphTest {
                 {0, 0, 0}
         });
 
-        graph3.bypassInDepthRecursion(0, consumer3);
+        graph3.traverseInDepth(consumer3);
 
         output2.add(0);
+        output2.add(1);
+        output2.add(2);
 
         Assertions.assertEquals(output1, output2);
 
@@ -489,8 +491,7 @@ class GraphTest {
                 {0, 1, 0}
         });
 
-        graph4.bypassInDepthRecursion(0, consumer4);
-
+        graph4.traverseInDepth(consumer4);
 
         output2.add(0);
         output2.add(1);
@@ -509,7 +510,7 @@ class GraphTest {
                 {1, 0, 0}
         });
 
-        graph5.bypassInDepthRecursion(0, consumer5);
+        graph5.traverseInDepth(consumer5);
 
         output2.add(0);
         output2.add(1);
@@ -529,7 +530,7 @@ class GraphTest {
                 {1, 0, 0, 0}
         });
 
-        graph6.bypassInDepthRecursion(0, consumer6);
+        graph6.traverseInDepth(consumer6);
 
         output2.add(0);
         output2.add(1);
@@ -552,7 +553,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        graph7.bypassInDepthRecursion(0, consumer7);
+        graph7.traverseInDepth(consumer7);
 
         output2.add(0);
         output2.add(1);
@@ -576,7 +577,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0}
         });
 
-        graph8.bypassInDepthRecursion(0, consumer8);
+        graph8.traverseInDepth(consumer8);
         output2.add(0);
         output2.add(1);
         output2.add(3);
@@ -599,7 +600,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        graph9.bypassInDepthRecursion(0, consumer9);
+        graph9.traverseInDepth(consumer9);
 
         output2.add(0);
         output2.add(1);
