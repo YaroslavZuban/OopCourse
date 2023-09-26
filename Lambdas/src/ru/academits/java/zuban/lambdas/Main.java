@@ -1,11 +1,6 @@
-package ru.academits.java.zuban.lambdas_main;
+package ru.academits.java.zuban.lambdas;
 
-import ru.academits.java.zuban.lambdas.Person;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -25,9 +20,9 @@ public class Main {
         System.out.println("Получить список уникальных имен");
         System.out.println();
 
-        List<String> uniqueNamesList = getListUniqueNames(personsList);
+        List<String> uniqueNamesList = getUniqueNames(personsList);
 
-        System.out.println("Проверка: ");
+        System.out.println("Проверка:");
         uniqueNamesList.forEach(System.out::println);
 
         System.out.println();
@@ -36,9 +31,9 @@ public class Main {
         System.out.println("Вывести список уникальных имен");
         System.out.println();
 
-        String uniqueNames = getStringUniqueNames(personsList);
+        String uniqueNamesLines = getUniqueNamesString(uniqueNamesList);
 
-        System.out.println("Имена: " + uniqueNames);
+        System.out.println(uniqueNamesLines);
         System.out.println();
 
         System.out.println("Задача В");
@@ -46,23 +41,23 @@ public class Main {
         System.out.println("Посчитать для них средний возраст");
         System.out.println();
 
-        List<Person> personsUnder18List = getListPersonsUnder18(personsList);
-        System.out.println("Список людей младше 18: ");
+        List<Person> personsUnder18List = getPersonsUnder18(personsList);
+        System.out.println("Список людей младше 18:");
 
         personsUnder18List.forEach(System.out::println);
 
-        System.out.println("Cредний возраст людей младше 18 равен: " + getPersonsAverageAge(personsUnder18List));
+        System.out.println("Средний возраст людей младше 18 равен: " + getPersonsAverageAge(personsUnder18List));
         System.out.println();
 
         System.out.println("Задача Г");
         System.out.println("При помощи группировки получить Map, в котором ключи – имена, а значения – средний возраст");
         System.out.println();
 
-        Map<String, Double> persons = getGroupingsMap(personsList);
+        Map<String, Double> namesBasedOnAgeMany = getNamesBasedOnAgeMany(personsList);
 
         System.out.println("Группировка людей");
 
-        persons.forEach((name, averageAge) -> {
+        namesBasedOnAgeMany.forEach((name, averageAge) -> {
             System.out.println(name + ": " + averageAge);
         });
 
@@ -73,45 +68,44 @@ public class Main {
                 "их имена в порядке убывания возраста");
         System.out.println();
 
-        List<Person> personsAgeFrom20To45List = getListPersonAgeFrom20To45(personsList);
+        List<Person> personsAgeFrom20To45 = getPersonsAgeFrom20To45(personsList);
 
-        personsAgeFrom20To45List.forEach(System.out::println);
-        System.out.println();
+        personsAgeFrom20To45.forEach(System.out::println);
     }
 
-    private static List<Person> getListPersonAgeFrom20To45(List<Person> personsList) {
+    private static List<Person> getPersonsAgeFrom20To45(List<Person> personsList) {
         return personsList.stream()
                 .filter(x -> x.getAge() >= 20 && x.getAge() <= 45)
                 .sorted(Comparator.comparingInt(Person::getAge).reversed())
                 .collect(Collectors.toList());
     }
 
-    private static Map<String, Double> getGroupingsMap(List<Person> personsList) {
+    private static Map<String, Double> getNamesBasedOnAgeMany(List<Person> personsList) {
         return personsList.stream()
-                .collect(Collectors.groupingBy(Person::getName,
-                        Collectors.averagingDouble(Person::getAge)));
+                .collect(Collectors.groupingBy(Person::getName, Collectors.collectingAndThen(
+                        Collectors.summingInt(Person::getAge),
+                        totalAge -> (double) totalAge / personsList.size()
+                )));
     }
 
     private static double getPersonsAverageAge(List<Person> personsList) {
-        return personsList.stream()
-                .mapToDouble(Person::getAge)
-                .average()
-                .orElse(0);
+        return (double) personsList.stream()
+                .map(Person::getAge)
+                .reduce(0, Integer::sum) / personsList.size();
     }
 
-    private static List<Person> getListPersonsUnder18(List<Person> personsList) {
+    private static List<Person> getPersonsUnder18(List<Person> personsList) {
         return personsList.stream()
-                .filter(x -> x.getAge() < 18).toList();
+                .filter(x -> x.getAge() < 18)
+                .toList();
     }
 
-    private static String getStringUniqueNames(List<Person> personsList) {
+    private static String getUniqueNamesString(List<String> personsList) {
         return personsList.stream()
-                .map(Person::getName)
-                .distinct()
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining(",", "Имена: ", "."));
     }
 
-    private static List<String> getListUniqueNames(List<Person> personsList) {
+    private static List<String> getUniqueNames(List<Person> personsList) {
         return personsList.stream()
                 .map(Person::getName)
                 .distinct()
