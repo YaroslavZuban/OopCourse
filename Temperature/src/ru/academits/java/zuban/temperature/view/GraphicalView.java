@@ -1,7 +1,7 @@
 package ru.academits.java.zuban.temperature.view;
 
 import ru.academits.java.zuban.temperature.model.converter.Converter;
-import ru.academits.java.zuban.temperature.model.scale.Scale;
+import ru.academits.java.zuban.temperature.model.scales.Scale;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,24 +10,25 @@ import java.util.List;
 
 public class GraphicalView {
     private final Converter temperatureConverter;
-    private JTextField inputValue;
+    private JTextField inputTemperatureTextField;
     private JFrame windowFrame;
-    private JLabel showResult;
-    private String result;
-    private double resultTemperature;
-    private String format;
-    private int inputIndexScale;
-    private int outputIndexScale;
+    private JLabel outputTemperatureLabel;
+    private String outputTemperatureLine;
+    private double outputTemperature;
+    private String unitMeasurement;
+    private int inputScaleIndex;
+    private int outputScaleIndex;
 
     public GraphicalView(Converter temperatureConverter) {
         this.temperatureConverter = temperatureConverter;
     }
 
-    private JPanel setupButtonsAndListeners(List<JButton> buttonList, List<Scale> converterList,
+    private JPanel setupButtonsAndListeners(List<JButton> buttonList,
+                                            List<Scale> converterList,
                                             boolean isInputIndexScale) {
-        JPanel panelButton = new JPanel();
+        JPanel buttonsPanel = new JPanel();
         GridLayout buttonGrid = new GridLayout(1, converterList.size(), 20, 20);
-        panelButton.setLayout(buttonGrid);
+        buttonsPanel.setLayout(buttonGrid);
 
         for (int i = 0; i < converterList.size(); i++) {
             JButton button = new JButton(converterList.get(i).getName());
@@ -42,42 +43,42 @@ public class GraphicalView {
 
             int indexScale = i;
 
-            buttonList.get(i).addActionListener(e -> {
+            buttonList.get(i).addActionListener(x -> {
                 if (isInputIndexScale) {
-                    inputIndexScale = indexScale;
+                    inputScaleIndex = indexScale;
                 } else {
-                    outputIndexScale = indexScale;
+                    outputScaleIndex = indexScale;
                 }
 
-                setButtonBackground(indexScale, buttonList);
+                setButtonsBackground(indexScale, buttonList);
 
                 try {
-                    resultTemperature = temperatureConverter.convert(
-                            converterList.get(inputIndexScale),
-                            converterList.get(outputIndexScale),
-                            Double.parseDouble(inputValue.getText()));
+                    outputTemperature = temperatureConverter.convert(
+                            converterList.get(inputScaleIndex),
+                            converterList.get(outputScaleIndex),
+                            Double.parseDouble(inputTemperatureTextField.getText()));
 
                     formatResult();
-                    format = " " + converterList.get(indexScale).getMeasurementUnit();
-                    showResult();
-                } catch (NumberFormatException exception) {
+                    unitMeasurement = " " + converterList.get(indexScale).getMeasurementUnit();
+                    outputTemperatureLabel();
+                } catch (NumberFormatException e) {
                     showErrorWindow();
                 }
             });
 
-            panelButton.add(button);
+            buttonsPanel.add(button);
         }
 
-        return panelButton;
+        return buttonsPanel;
     }
 
-    private void showResult() {
-        showResult.setText("Результат равен: " + result + format);
+    private void outputTemperatureLabel() {
+        outputTemperatureLabel.setText("Результат равен: " + outputTemperatureLine + unitMeasurement);
     }
 
-    private static void setButtonBackground(int index, List<JButton> listButton) {
+    private static void setButtonsBackground(int buttonShadedIndex, List<JButton> listButton) {
         for (int i = 0; i < listButton.size(); i++) {
-            if (index == i) {
+            if (buttonShadedIndex == i) {
                 listButton.get(i).setBackground(Color.GREEN);
             } else {
                 listButton.get(i).setBackground(Color.GRAY);
@@ -86,7 +87,7 @@ public class GraphicalView {
     }
 
     private void formatResult() {
-        result = String.format("%.3f", resultTemperature);
+        outputTemperatureLine = String.format("%.3f", outputTemperature);
     }
 
     private void showErrorWindow() {
@@ -95,7 +96,7 @@ public class GraphicalView {
                 "Ошибка",
                 JOptionPane.PLAIN_MESSAGE);
 
-        result = "0";
+        outputTemperatureLine = "0";
     }
 
     public void run() {
@@ -115,49 +116,49 @@ public class GraphicalView {
             textLabel.setHorizontalAlignment(JLabel.CENTER);
             windowFrame.add(textLabel);
 
-            List<Scale> temperatureConvertersList = temperatureConverter.getTemperaturesConvertersList();
+            List<Scale> scales = temperatureConverter.getTemperaturesConvertersList();
 
-            format = temperatureConvertersList.get(0).getMeasurementUnit();
+            unitMeasurement = scales.get(0).getMeasurementUnit();
 
-            List<JButton> listButtonConvertToCelsius = new ArrayList<>(temperatureConvertersList.size());
+            List<JButton> listButtonConvertToCelsius = new ArrayList<>(scales.size());
 
             windowFrame.add(setupButtonsAndListeners(listButtonConvertToCelsius,
-                    temperatureConvertersList,
+                    scales,
                     true));
 
-            JPanel panelGridInput = new JPanel();
-            GridLayout gridInput = new GridLayout(1, 2, 30, 20);
+            JPanel gridInputPanel = new JPanel();
+            GridLayout inputGridLayout = new GridLayout(1, 2, 30, 20);
 
-            panelGridInput.setLayout(gridInput);
-            JLabel textInput = new JLabel("Введите число:");
-            textInput.setVerticalAlignment(JLabel.CENTER);
-            textInput.setHorizontalAlignment(JLabel.RIGHT);
-            panelGridInput.add(textInput);
+            gridInputPanel.setLayout(inputGridLayout);
+            JLabel textInputLabel = new JLabel("Введите число:");
+            textInputLabel.setVerticalAlignment(JLabel.CENTER);
+            textInputLabel.setHorizontalAlignment(JLabel.RIGHT);
+            gridInputPanel.add(textInputLabel);
 
-            inputValue = new JTextField();
-            inputValue.setText("0");
-            inputValue.setHorizontalAlignment(JTextField.CENTER);
-            panelGridInput.add(inputValue);
+            inputTemperatureTextField = new JTextField();
+            inputTemperatureTextField.setText("0");
+            inputTemperatureTextField.setHorizontalAlignment(JTextField.CENTER);
+            gridInputPanel.add(inputTemperatureTextField);
 
-            windowFrame.add(panelGridInput);
+            windowFrame.add(gridInputPanel);
 
             JLabel textOutputLabel = new JLabel("Выберите целевую шкалу температуры:");
             textOutputLabel.setVerticalAlignment(JLabel.CENTER);
             textOutputLabel.setHorizontalAlignment(JLabel.CENTER);
             windowFrame.add(textOutputLabel);
 
-            List<JButton> listButtonConvertFromCelsius = new ArrayList<>(temperatureConvertersList.size());
+            List<JButton> listButtonConvertFromCelsius = new ArrayList<>(scales.size());
 
             windowFrame.add(setupButtonsAndListeners(listButtonConvertFromCelsius,
-                    temperatureConvertersList,
+                    scales,
                     false));
 
-            showResult = new JLabel();
-            showResult.setVerticalAlignment(JLabel.CENTER);
-            showResult.setHorizontalAlignment(JLabel.CENTER);
-            showResult.setText("Результат равен: ");
+            outputTemperatureLabel = new JLabel();
+            outputTemperatureLabel.setVerticalAlignment(JLabel.CENTER);
+            outputTemperatureLabel.setHorizontalAlignment(JLabel.CENTER);
+            outputTemperatureLabel.setText("Результат равен: ");
 
-            windowFrame.add(showResult);
+            windowFrame.add(outputTemperatureLabel);
         });
     }
 }

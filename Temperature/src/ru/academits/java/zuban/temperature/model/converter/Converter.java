@@ -1,6 +1,6 @@
 package ru.academits.java.zuban.temperature.model.converter;
 
-import ru.academits.java.zuban.temperature.model.scale.Scale;
+import ru.academits.java.zuban.temperature.model.scales.Scale;
 
 import java.util.List;
 

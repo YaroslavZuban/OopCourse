@@ -1,4 +1,4 @@
-package ru.academits.java.zuban.temperature.model.scale;
+package ru.academits.java.zuban.temperature.model.scales;
 
 public class FahrenheitScale implements Scale {
     @Override

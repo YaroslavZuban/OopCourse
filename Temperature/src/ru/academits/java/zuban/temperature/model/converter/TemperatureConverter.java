@@ -1,13 +1,19 @@
 package ru.academits.java.zuban.temperature.model.converter;
 
-import ru.academits.java.zuban.temperature.model.scale.Scale;
+import ru.academits.java.zuban.temperature.model.scales.Scale;
 
 import java.util.List;
 
-public record TemperatureConverter(List<Scale> temperaturesConvertersList) implements Converter {
+public class TemperatureConverter implements Converter {
+    private final List<Scale> scales;
+
+    public TemperatureConverter(List<Scale> scales) {
+        this.scales = scales;
+    }
+
     @Override
     public List<Scale> getTemperaturesConvertersList() {
-        return temperaturesConvertersList;
+        return scales;
     }
 
     @Override

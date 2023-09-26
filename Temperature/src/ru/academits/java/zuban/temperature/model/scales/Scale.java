@@ -1,4 +1,4 @@
-package ru.academits.java.zuban.temperature.model.scale;
+package ru.academits.java.zuban.temperature.model.scales;
 
 public interface Scale {
     String getMeasurementUnit();

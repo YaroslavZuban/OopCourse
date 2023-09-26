@@ -1,23 +1,23 @@
-package ru.academits.java.zuban.temperature.model.scale;
+package ru.academits.java.zuban.temperature.model.scales;
 
-public class CelsiusScale implements Scale {
+public class KelvinScale implements Scale {
     @Override
     public String getMeasurementUnit() {
-        return "C";
+        return "K";
     }
 
     @Override
     public String getName() {
-        return "Цельсий";
+        return "Кельвин";
     }
 
     @Override
     public double convertToCelsius(double temperature) {
-        return temperature;
+        return temperature - 273.15;
     }
 
     @Override
     public double convertFromCelsius(double celsiusTemperature) {
-        return celsiusTemperature;
+        return celsiusTemperature + 273.15;
     }
 }
