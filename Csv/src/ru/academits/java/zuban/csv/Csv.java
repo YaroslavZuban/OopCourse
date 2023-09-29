@@ -4,7 +4,7 @@ import java.io.*;
 
 public class Csv {
     private int quotesCount;
-    private boolean isOpenQuote = false;
+    private boolean isOpenQuote;
 
     public void convertFileCsvToHtml(String csvFileName, String htmlFileName) throws IOException {
         if (csvFileName == null) {
@@ -17,24 +17,18 @@ public class Csv {
 
         try (BufferedReader csvReader = new BufferedReader(new FileReader(csvFileName));
              PrintWriter htmlWriter = new PrintWriter(htmlFileName)) {
-
             htmlWriter.println("<!DOCTYPE html>");
             htmlWriter.println("<html>");
             htmlWriter.println("<head>");
-            htmlWriter.println("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
-            htmlWriter.println("    <title>Таблица</title>");
+            htmlWriter.println("\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
+            htmlWriter.println("\t<title>Таблица</title>");
             htmlWriter.println("</head>");
             htmlWriter.println("<body>");
             htmlWriter.println("<table>");
 
-
             String csvLine;
 
             while ((csvLine = csvReader.readLine()) != null) {
-                if (csvLine.isEmpty()) {
-                    continue;
-                }
-
                 htmlWriter.write(replaceChars(csvLine));
             }
 
@@ -48,13 +42,13 @@ public class Csv {
         StringBuilder htmlLine = new StringBuilder();
 
         if (quotesCount == 0) {
-            htmlLine.append("    <tr>")
+            htmlLine.append("\t<tr>")
                     .append(System.lineSeparator())
-                    .append("        <td>")
+                    .append("\t\t<td>")
                     .append(System.lineSeparator())
-                    .append("            ");
+                    .append("\t\t\t");
 
-            quotesCount = getQuotesNumber(line);
+            quotesCount = getQuotesCount(line);
         }
 
         for (int i = 0; i < line.length(); i++) {
@@ -92,9 +86,7 @@ public class Csv {
                     isOpenQuote = false;
 
                     htmlLine.append(createHtmlTableCellSeparator());
-                } else if (i + 1 == line.length() && symbol == '"') {
-                    break;
-                } else {
+                } else if (symbol != '"') {
                     htmlLine.append(handleSpecialCharacters(symbol));
                 }
             }
@@ -102,12 +94,12 @@ public class Csv {
 
         if (quotesCount % 2 != 0) {
             htmlLine.append("<br/>");
-            quotesCount += getQuotesNumber(line);
+            quotesCount += getQuotesCount(line);
         } else {
             htmlLine.append(System.lineSeparator())
-                    .append("        </td>")
+                    .append("\t\t</td>")
                     .append(System.lineSeparator())
-                    .append("    </tr>")
+                    .append("\t</tr>")
                     .append(System.lineSeparator());
 
             quotesCount = 0;
@@ -119,26 +111,30 @@ public class Csv {
 
     private static String createHtmlTableCellSeparator() {
         return System.lineSeparator() +
-                "        </td>" +
+                "\t\t</td>" +
                 System.lineSeparator() +
-                "        <td>" +
+                "\t\t<td>" +
                 System.lineSeparator() +
-                "            ";
+                "\t\t\t";
     }
 
     private String handleSpecialCharacters(char symbol) {
         if (symbol == '&') {
             return "&amp;";
-        } else if (symbol == '<') {
+        }
+
+        if (symbol == '<') {
             return "&lt;";
-        } else if (symbol == '>') {
+        }
+
+        if (symbol == '>') {
             return "&gt;";
         }
 
         return String.valueOf(symbol);
     }
 
-    private static int getQuotesNumber(String line) {
+    private static int getQuotesCount(String line) {
         int quotesCount = 0;
 
         for (int i = 0; i < line.length(); i++) {
