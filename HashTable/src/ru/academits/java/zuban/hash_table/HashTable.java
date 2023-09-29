@@ -132,21 +132,13 @@ public class HashTable<E> implements Collection<E> {
     public boolean containsAll(Collection<?> c) {
         checkArgumentNotNull(c, "c");
 
-        int matchCount = 0;
-
         for (Object element : c) {
-            for (List<E> list : lists) {
-                if (list != null) {
-                    //noinspection SuspiciousMethodCalls
-                    if (list.contains(element)) {
-                        matchCount++;
-                        break;
-                    }
-                }
+            if (!contains(element)) {
+                return false;
             }
         }
 
-        return matchCount == size;
+        return true;
     }
 
     @Override
@@ -184,7 +176,6 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean retainAll(Collection<?> c) {
         checkArgumentNotNull(c, "c");
-        changesCount++;
 
         int oldSize = size;
         size = 0;
@@ -194,6 +185,10 @@ public class HashTable<E> implements Collection<E> {
                 list.retainAll(c);
                 size += list.size();
             }
+        }
+
+        if (oldSize != size) {
+            changesCount++;
         }
 
         return oldSize != size;
@@ -227,22 +222,21 @@ public class HashTable<E> implements Collection<E> {
         return new HashTableIterator();
     }
 
-    class HashTableIterator implements Iterator<E> {
+    private class HashTableIterator implements Iterator<E> {
         private int currentArrayIndex;
         private int currentListIndex;
-        private int expectedModCount;
-        private boolean canRemove = false;
+        private final int expectedModCount;
+        private int countPassedElement;
 
-        HashTableIterator() {
-            currentArrayIndex = -1;
-            currentListIndex = -1;
+        public HashTableIterator() {
+            currentArrayIndex = 0;
+            currentListIndex = 0;
             expectedModCount = changesCount;
-            findNextElement();
         }
 
         @Override
         public boolean hasNext() {
-            return currentArrayIndex < lists.length;
+            return countPassedElement < size;
         }
 
         @Override
@@ -255,36 +249,18 @@ public class HashTable<E> implements Collection<E> {
                 throw new NoSuchElementException("Коллекция закончилась.");
             }
 
-            if (currentArrayIndex < lists.length && currentListIndex < lists[currentArrayIndex].size()) {
-                canRemove = true;
+            E result = lists[currentArrayIndex].get(currentListIndex);
 
-                E result = lists[currentArrayIndex].get(currentListIndex);
+            currentListIndex++;
 
-                currentListIndex++;
-                return result;
-            } else {
-                throw new NoSuchElementException("Коллекция закончилась.");
-            }
-        }
-
-        @Override
-        public void remove() {
-            if (!canRemove) {
-                throw new IllegalStateException("Нельзя удалить элемент до вызова next().");
+            if (currentListIndex == lists[currentArrayIndex].size()) {
+                currentArrayIndex++;
+                currentListIndex = 0;
             }
 
-            HashTable.this.remove(lists[currentArrayIndex].get(currentListIndex - 1));
-            expectedModCount = changesCount;
-            canRemove = false;
-        }
+            countPassedElement++;
 
-        private void findNextElement() {
-            while (++currentArrayIndex < lists.length) {
-                if (lists[currentArrayIndex] != null && !lists[currentArrayIndex].isEmpty()) {
-                    currentListIndex = 0;
-                    return;
-                }
-            }
+            return result;
         }
     }
 }

@@ -3,6 +3,7 @@ package ru.academits.java.zuban.array_list_main;
 import ru.academits.java.zuban.array_list.ArrayList;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class Main {
     public static void main(String[] args) {
