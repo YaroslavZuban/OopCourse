@@ -53,7 +53,7 @@ public class Tree<E> {
         while (currentNode != null) {
             int compareResult = compare(value, currentNode.getValue());
 
-            if (compareResult > 0) {
+            if (compareResult >= 0) {
                 if (currentNode.getRight() == null) {
                     currentNode.setRight(new Node<>(value));
                     size++;
@@ -87,7 +87,7 @@ public class Tree<E> {
                 return true;
             }
 
-            if (compareResult > 0) {
+            if (compareResult >= 0) {
                 if (currentNode.getRight() == null) {
                     return false;
                 }
@@ -112,9 +112,9 @@ public class Tree<E> {
 
         Node<E> parent = null;
         Node<E> currentNode = root;
-        boolean hasLeftChild = false;
+        boolean isLeftChild = false;
 
-        while (currentNode != null) {
+        while (true) {
             int compareResult = compare(value, currentNode.getValue());
 
             if (compareResult == 0) {
@@ -124,27 +124,22 @@ public class Tree<E> {
             parent = currentNode;
 
             if (compareResult >= 0) {
-                if (currentNode.getRight() == null) {
-                    return false;
-                }
-
                 currentNode = currentNode.getRight();
-                hasLeftChild = false;
+                isLeftChild = false;
             } else {
-                if (currentNode.getLeft() == null) {
-                    return false;
-                }
-
                 currentNode = currentNode.getLeft();
-                hasLeftChild = true;
+                isLeftChild = true;
+            }
+
+            if (currentNode == null) {
+                return false;
             }
         }
 
-        //noinspection DataFlowIssue
         if (currentNode.getLeft() == null && currentNode.getRight() == null) {
             if (parent == null) {
                 root = null;
-            } else if (hasLeftChild) {
+            } else if (isLeftChild) {
                 parent.setLeft(null);
             } else {
                 parent.setRight(null);
@@ -154,7 +149,7 @@ public class Tree<E> {
 
             if (parent == null) {
                 root = child;
-            } else if (hasLeftChild) {
+            } else if (isLeftChild) {
                 parent.setLeft(child);
             } else {
                 parent.setRight(child);
@@ -179,7 +174,7 @@ public class Tree<E> {
 
             if (parent == null) {
                 root = successor;
-            } else if (hasLeftChild) {
+            } else if (isLeftChild) {
                 parent.setLeft(successor);
             } else {
                 parent.setRight(successor);
