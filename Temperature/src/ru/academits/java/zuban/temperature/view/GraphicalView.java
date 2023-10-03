@@ -13,9 +13,8 @@ public class GraphicalView {
     private JTextField inputTemperatureTextField;
     private JFrame windowFrame;
     private JLabel outputTemperatureLabel;
-    private String outputTemperatureLine;
     private double outputTemperature;
-    private String unitMeasurement;
+    private String measurementUnit;
     private int inputScaleIndex;
     private int outputScaleIndex;
 
@@ -23,15 +22,15 @@ public class GraphicalView {
         this.temperatureConverter = temperatureConverter;
     }
 
-    private JPanel setupButtonsAndListeners(List<JButton> buttonList,
-                                            List<Scale> converterList,
-                                            boolean isInputIndexScale) {
+    private JPanel setupButtonsAndListeners(List<JButton> buttonsList,
+                                            List<Scale> scalesList,
+                                            boolean isInputScale) {
         JPanel buttonsPanel = new JPanel();
-        GridLayout buttonGrid = new GridLayout(1, converterList.size(), 20, 20);
-        buttonsPanel.setLayout(buttonGrid);
+        GridLayout buttonsGrid = new GridLayout(1, scalesList.size(), 20, 20);
+        buttonsPanel.setLayout(buttonsGrid);
 
-        for (int i = 0; i < converterList.size(); i++) {
-            JButton button = new JButton(converterList.get(i).getName());
+        for (int i = 0; i < scalesList.size(); i++) {
+            JButton button = new JButton(scalesList.get(i).getName());
 
             if (i == 0) {
                 button.setBackground(Color.GREEN);
@@ -39,28 +38,27 @@ public class GraphicalView {
                 button.setBackground(Color.GRAY);
             }
 
-            buttonList.add(button);
+            buttonsList.add(button);
 
-            int indexScale = i;
+            int scaleIndex = i;
 
-            buttonList.get(i).addActionListener(x -> {
-                if (isInputIndexScale) {
-                    inputScaleIndex = indexScale;
+            buttonsList.get(i).addActionListener(x -> {
+                if (isInputScale) {
+                    inputScaleIndex = scaleIndex;
                 } else {
-                    outputScaleIndex = indexScale;
+                    outputScaleIndex = scaleIndex;
                 }
 
-                setButtonsBackground(indexScale, buttonList);
+                setButtonsBackground(scaleIndex, buttonsList);
 
                 try {
                     outputTemperature = temperatureConverter.convert(
-                            converterList.get(inputScaleIndex),
-                            converterList.get(outputScaleIndex),
+                            scalesList.get(inputScaleIndex),
+                            scalesList.get(outputScaleIndex),
                             Double.parseDouble(inputTemperatureTextField.getText()));
 
-                    formatResult();
-                    unitMeasurement = " " + converterList.get(indexScale).getMeasurementUnit();
-                    outputTemperatureLabel();
+                    measurementUnit = " " + scalesList.get(scaleIndex).getMeasurementUnit();
+                    setTemperatureLabel();
                 } catch (NumberFormatException e) {
                     showErrorWindow();
                 }
@@ -72,22 +70,19 @@ public class GraphicalView {
         return buttonsPanel;
     }
 
-    private void outputTemperatureLabel() {
-        outputTemperatureLabel.setText("Результат равен: " + outputTemperatureLine + unitMeasurement);
+    private void setTemperatureLabel() {
+        String outputTemperatureLine = String.format("%.3f", outputTemperature);
+        outputTemperatureLabel.setText("Результат равен: " + outputTemperatureLine + measurementUnit);
     }
 
-    private static void setButtonsBackground(int buttonShadedIndex, List<JButton> listButton) {
-        for (int i = 0; i < listButton.size(); i++) {
-            if (buttonShadedIndex == i) {
-                listButton.get(i).setBackground(Color.GREEN);
+    private static void setButtonsBackground(int shadedButtonIndex, List<JButton> buttonList) {
+        for (int i = 0; i < buttonList.size(); i++) {
+            if (shadedButtonIndex == i) {
+                buttonList.get(i).setBackground(Color.GREEN);
             } else {
-                listButton.get(i).setBackground(Color.GRAY);
+                buttonList.get(i).setBackground(Color.GRAY);
             }
         }
-    }
-
-    private void formatResult() {
-        outputTemperatureLine = String.format("%.3f", outputTemperature);
     }
 
     private void showErrorWindow() {
@@ -95,8 +90,6 @@ public class GraphicalView {
                 "Пожалуйста, введите корректное числовое значение для выполнения данной операции.",
                 "Ошибка",
                 JOptionPane.PLAIN_MESSAGE);
-
-        outputTemperatureLine = "0";
     }
 
     public void run() {
@@ -116,13 +109,13 @@ public class GraphicalView {
             textLabel.setHorizontalAlignment(JLabel.CENTER);
             windowFrame.add(textLabel);
 
-            List<Scale> scales = temperatureConverter.getTemperaturesConvertersList();
+            List<Scale> scales = temperatureConverter.getScalesList();
 
-            unitMeasurement = scales.get(0).getMeasurementUnit();
+            measurementUnit = scales.get(0).getMeasurementUnit();
 
-            List<JButton> listButtonConvertToCelsius = new ArrayList<>(scales.size());
+            List<JButton> buttonsForConversionToCelsius = new ArrayList<>(scales.size());
 
-            windowFrame.add(setupButtonsAndListeners(listButtonConvertToCelsius,
+            windowFrame.add(setupButtonsAndListeners(buttonsForConversionToCelsius,
                     scales,
                     true));
 
@@ -147,9 +140,9 @@ public class GraphicalView {
             textOutputLabel.setHorizontalAlignment(JLabel.CENTER);
             windowFrame.add(textOutputLabel);
 
-            List<JButton> listButtonConvertFromCelsius = new ArrayList<>(scales.size());
+            List<JButton> buttonsForConversionFromCelsius = new ArrayList<>(scales.size());
 
-            windowFrame.add(setupButtonsAndListeners(listButtonConvertFromCelsius,
+            windowFrame.add(setupButtonsAndListeners(buttonsForConversionFromCelsius,
                     scales,
                     false));
 

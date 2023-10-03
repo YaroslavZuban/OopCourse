@@ -12,7 +12,7 @@ public class TemperatureConverter implements Converter {
     }
 
     @Override
-    public List<Scale> getTemperaturesConvertersList() {
+    public List<Scale> getScalesList() {
         return scales;
     }
 
