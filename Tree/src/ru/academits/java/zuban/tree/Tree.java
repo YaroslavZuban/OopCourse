@@ -87,7 +87,7 @@ public class Tree<E> {
                 return true;
             }
 
-            if (compareResult >= 0) {
+            if (compareResult > 0) {
                 if (currentNode.getRight() == null) {
                     return false;
                 }
@@ -123,7 +123,7 @@ public class Tree<E> {
 
             parent = currentNode;
 
-            if (compareResult >= 0) {
+            if (compareResult > 0) {
                 currentNode = currentNode.getRight();
                 isLeftChild = false;
             } else {
