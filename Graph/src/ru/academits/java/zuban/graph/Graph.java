@@ -20,7 +20,7 @@ public class Graph {
         adjacencyMatrix = matrix;
     }
 
-    public void bypassInWidth(IntConsumer consumer) {
+    public void traverseInWidth(IntConsumer consumer) {
         if (adjacencyMatrix.length == 0) {
             return;
         }

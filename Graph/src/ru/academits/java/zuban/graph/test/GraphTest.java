@@ -10,7 +10,7 @@ import java.util.function.IntConsumer;
 
 class GraphTest {
     @Test
-    protected void bypassInWidth() {
+    protected void traverseInWidth() {
         List<Integer> output1 = new ArrayList<>();
         List<Integer> output2 = new ArrayList<>();
 
@@ -26,7 +26,7 @@ class GraphTest {
                 {1, 0, 0, 0, 0, 1, 0}
         });
 
-        graph1.bypassInWidth(consumer1);
+        graph1.traverseInWidth(consumer1);
 
         output2.add(0);
         output2.add(1);
@@ -49,7 +49,7 @@ class GraphTest {
                 {1, 1, 0}
         });
 
-        graph2.bypassInWidth(consumer2);
+        graph2.traverseInWidth(consumer2);
 
         output2.add(0);
         output2.add(1);
@@ -68,7 +68,7 @@ class GraphTest {
                 {0, 0, 0}
         });
 
-        graph3.bypassInWidth(consumer3);
+        graph3.traverseInWidth(consumer3);
 
         output2.add(0);
         output2.add(1);
@@ -87,7 +87,7 @@ class GraphTest {
                 {0, 1, 0}
         });
 
-        graph4.bypassInWidth(consumer4);
+        graph4.traverseInWidth(consumer4);
 
         output2.add(0);
         output2.add(1);
@@ -106,7 +106,7 @@ class GraphTest {
                 {1, 0, 0}
         });
 
-        graph5.bypassInWidth(consumer5);
+        graph5.traverseInWidth(consumer5);
 
         output2.add(0);
         output2.add(1);
@@ -126,7 +126,7 @@ class GraphTest {
                 {1, 0, 0, 0}
         });
 
-        graph6.bypassInWidth(consumer6);
+        graph6.traverseInWidth(consumer6);
 
         output2.add(0);
         output2.add(1);
@@ -149,7 +149,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        graph7.bypassInWidth(consumer7);
+        graph7.traverseInWidth(consumer7);
 
         output2.add(0);
         output2.add(1);
@@ -173,7 +173,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0}
         });
 
-        graph8.bypassInWidth(consumer8);
+        graph8.traverseInWidth(consumer8);
 
         output2.add(0);
         output2.add(1);
@@ -199,7 +199,7 @@ class GraphTest {
                 {0, 0, 0, 1, 0, 0}
         });
 
-        graph9.bypassInWidth(consumer9);
+        graph9.traverseInWidth(consumer9);
 
         output2.add(0);
         output2.add(1);
