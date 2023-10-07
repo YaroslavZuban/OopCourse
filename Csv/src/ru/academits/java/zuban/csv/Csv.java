@@ -47,9 +47,9 @@ public class Csv {
                     .append("\t\t<td>")
                     .append(System.lineSeparator())
                     .append("\t\t\t");
-
-            quotesCount = getQuotesCount(line);
         }
+
+        quotesCount += getQuotesCount(line);
 
         for (int i = 0; i < line.length(); i++) {
             char symbol = line.charAt(i);
@@ -94,7 +94,6 @@ public class Csv {
 
         if (quotesCount % 2 != 0) {
             htmlLine.append("<br/>");
-            quotesCount += getQuotesCount(line);
         } else {
             htmlLine.append(System.lineSeparator())
                     .append("\t\t</td>")
