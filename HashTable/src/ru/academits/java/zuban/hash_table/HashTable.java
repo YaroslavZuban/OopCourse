@@ -223,20 +223,22 @@ public class HashTable<E> implements Collection<E> {
     }
 
     private class HashTableIterator implements Iterator<E> {
-        private int currentArrayIndex;
-        private int currentListIndex;
         private final int expectedModCount;
-        private int countPassedElement;
+        private int arrayIndex;
+        private int listIndex;
+        private int passedElementsCount;
 
         public HashTableIterator() {
-            currentArrayIndex = 0;
-            currentListIndex = 0;
             expectedModCount = changesCount;
         }
 
         @Override
         public boolean hasNext() {
-            return countPassedElement < size;
+            while (arrayIndex < lists.length && (lists[arrayIndex] == null || lists[arrayIndex].isEmpty())) {
+                arrayIndex++;
+            }
+
+            return arrayIndex < lists.length;
         }
 
         @Override
@@ -249,16 +251,16 @@ public class HashTable<E> implements Collection<E> {
                 throw new NoSuchElementException("Коллекция закончилась.");
             }
 
-            E result = lists[currentArrayIndex].get(currentListIndex);
+            E result = lists[arrayIndex].get(listIndex);
 
-            currentListIndex++;
+            listIndex++;
 
-            if (currentListIndex == lists[currentArrayIndex].size()) {
-                currentArrayIndex++;
-                currentListIndex = 0;
+            if (listIndex == lists[arrayIndex].size()) {
+                arrayIndex++;
+                listIndex = 0;
             }
 
-            countPassedElement++;
+            passedElementsCount++;
 
             return result;
         }

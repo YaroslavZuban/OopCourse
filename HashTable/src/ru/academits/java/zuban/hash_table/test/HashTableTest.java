@@ -9,9 +9,13 @@ import java.util.*;
 class HashTableTest {
     @Test
     protected void contains() {
+        Object[] myArray;
+
         HashTable<Object> table = new HashTable<>();
 
-        fillArray(table, 20);
+        myArray = new Object[20];
+        fillArray(myArray, 20);
+        table.addAll(List.of(myArray));
 
         Assertions.assertTrue(table.contains(2));
         Assertions.assertTrue(table.contains(5));
@@ -27,37 +31,56 @@ class HashTableTest {
 
     @Test
     protected void toArray() {
+        Object[] myArray;
         HashTable<Object> table = new HashTable<>();
 
         Assertions.assertArrayEquals(table.toArray(), new Object[]{});
 
-        fillArray(table, 5);
+        myArray = new Object[5];
+        fillArray(myArray, 5);
+        table.addAll(List.of(myArray));
 
         Assertions.assertArrayEquals(table.toArray(), new Object[]{0, 1, 2, 3, 4});
 
-        fillArray(table, 5);
+        myArray = new Object[5];
+        fillArray(myArray, 5);
+        table.addAll(List.of(myArray));
+
         Assertions.assertArrayEquals(table.toArray(), new Object[]{0, 0, 1, 1, 2, 2, 3, 3, 4, 4});
 
-        fillArray(table, 2);
+        myArray = new Object[2];
+        fillArray(myArray, 2);
+        table.addAll(List.of(myArray));
+
         Assertions.assertArrayEquals(table.toArray(), new Object[]{0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4});
 
-        fillArray(table, 1);
+        myArray = new Object[1];
+        fillArray(myArray, 1);
+        table.addAll(List.of(myArray));
+
         Assertions.assertArrayEquals(table.toArray(), new Object[]{0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4});
     }
 
     @Test
     protected void testToArray() {
+        Object[] myArray;
+
         HashTable<Object> table = new HashTable<>();
 
         Assertions.assertArrayEquals(table.toArray(new Object[0]), new Object[]{});
 
         Object[] array = new Object[5];
 
-        fillArray(table, 3);
+        myArray = new Object[3];
+        fillArray(myArray, 3);
+        table.addAll(List.of(myArray));
 
         Assertions.assertArrayEquals(table.toArray(array), new Object[]{0, 1, 2, null, null});
 
-        fillArray(table, 3);
+        myArray = new Object[3];
+        fillArray(myArray, 3);
+        table.addAll(List.of(myArray));
+
         Assertions.assertArrayEquals(table.toArray(array), new Object[]{0, 0, 1, 1, 2, 2});
 
         try {
@@ -95,9 +118,13 @@ class HashTableTest {
 
     @Test
     protected void remove() {
-        HashTable<Object> table = new HashTable<>();
+        Object[] myArray;
 
-        fillArray(table, 5);
+        HashTable<Object> table = new HashTable<>();
+        myArray = new Object[5];
+        fillArray(myArray, 5);
+        table.addAll(List.of(myArray));
+
         table.remove(0);
         Assertions.assertArrayEquals(table.toArray(), new Object[]{1, 2, 3, 4});
 
@@ -107,7 +134,10 @@ class HashTableTest {
         table.remove(2);
         Assertions.assertArrayEquals(table.toArray(), new Object[]{1, 3});
 
-        fillArray(table, 3);
+        myArray = new Object[3];
+        fillArray(myArray, 3);
+        table.addAll(List.of(myArray));
+
         table.remove(1);
         Assertions.assertArrayEquals(table.toArray(), new Object[]{0, 1, 2, 3});
 
@@ -123,27 +153,38 @@ class HashTableTest {
 
     @Test
     protected void containsAll() {
-        HashTable<Object> table1 = new HashTable<>();
-        List<Object> list1 = new ArrayList<>();
+        Object[] myArray;
 
-        fillArray(list1, 5);
-        fillArray(table1, 5);
+        HashTable<Object> table1 = new HashTable<>();
+        myArray = new Object[5];
+        fillArray(myArray, 5);
+        table1.addAll(List.of(myArray));
+
+        myArray = new Object[5];
+        fillArray(myArray, 5);
+        List<Object> list1 = new ArrayList<>(List.of(myArray));
 
         Assertions.assertTrue(table1.containsAll(list1));
 
         HashTable<Object> table2 = new HashTable<>();
-        List<Object> list2 = new ArrayList<>();
+        myArray = new Object[20];
+        fillArray(myArray, 20);
+        table2.addAll(List.of(myArray));
 
-        fillArray(list2, 40);
-        fillArray(table2, 40);
+        myArray = new Object[20];
+        fillArray(myArray, 20);
+        List<Object> list2 = new ArrayList<>(List.of(myArray));
 
         Assertions.assertTrue(table2.containsAll(list2));
 
         HashTable<Object> table3 = new HashTable<>();
-        List<Object> list3 = new ArrayList<>();
+        myArray = new Object[0];
+        fillArray(myArray, 0);
+        table3.addAll(List.of(myArray));
 
-        fillArray(list3, 0);
-        fillArray(table3, 0);
+        myArray = new Object[0];
+        fillArray(myArray, 0);
+        List<Object> list3 = new ArrayList<>(List.of(myArray));
 
         Assertions.assertTrue(table3.containsAll(list3));
 
@@ -157,10 +198,15 @@ class HashTableTest {
         }
 
         HashTable<Object> table5 = new HashTable<>();
-        List<Object> list5 = new ArrayList<>();
 
-        fillArray(list5, 5);
-        fillArray(table5, 5);
+        myArray = new Object[5];
+        fillArray(myArray, 5);
+        table5.addAll(List.of(myArray));
+
+        myArray = new Object[5];
+        fillArray(myArray, 5);
+        List<Object> list5 = new ArrayList<>(List.of(myArray));
+
         table5.add(20);
 
         Assertions.assertTrue(table5.containsAll(list5));
@@ -168,20 +214,27 @@ class HashTableTest {
 
     @Test
     protected void addAll() {
-        List<Object> list1 = new ArrayList<>();
-        fillArray(list1, 5);
+        Object[] myArray;
+
+        myArray = new Object[5];
+        fillArray(myArray, 5);
+        List<Object> list1 = new ArrayList<>(List.of(myArray));
 
         HashTable<Object> table = new HashTable<>();
         table.addAll(list1);
         Assertions.assertEquals(table.size(), list1.size());
         Assertions.assertArrayEquals(table.toArray(), new Object[]{0, 1, 2, 3, 4});
 
-        fillArray(table, 2);
+        myArray = new Object[2];
+        fillArray(myArray, 2);
+        table.addAll(List.of(myArray));
+
         Assertions.assertEquals(table.size(), 7);
         Assertions.assertArrayEquals(table.toArray(), new Object[]{0, 0, 1, 1, 2, 3, 4});
 
-        List<Object> list2 = new ArrayList<>();
-        fillArray(list2, 4);
+        myArray = new Object[4];
+        fillArray(myArray, 4);
+        List<Object> list2 = new ArrayList<>(List.of(myArray));
 
         table.addAll(list2);
         Assertions.assertEquals(table.size(), 11);
@@ -196,11 +249,16 @@ class HashTableTest {
 
     @Test
     protected void removeAll() {
-        List<Object> list1 = new ArrayList<>();
-        fillArray(list1, 5);
+        Object[] myArray;
+
+        myArray = new Object[5];
+        fillArray(myArray, 5);
+        List<Object> list1 = new ArrayList<>(List.of(myArray));
 
         HashTable<Object> table = new HashTable<>();
-        fillArray(table, 7);
+        myArray = new Object[7];
+        fillArray(myArray, 7);
+        table.addAll(List.of(myArray));
 
         table.removeAll(list1);
         Assertions.assertArrayEquals(table.toArray(), new Object[]{5, 6});
@@ -209,8 +267,9 @@ class HashTableTest {
         table.removeAll(list2);
         Assertions.assertArrayEquals(table.toArray(), new Object[]{5, 6});
 
-        List<Object> list3 = new ArrayList<>();
-        fillArray(list3, 10);
+        myArray = new Object[10];
+        fillArray(myArray, 10);
+        List<Object> list3 = new ArrayList<>(List.of(myArray));
 
         table.removeAll(list3);
         Assertions.assertArrayEquals(table.toArray(), new Object[]{});
@@ -224,11 +283,14 @@ class HashTableTest {
 
     @Test
     protected void retainAll() {
-        List<Object> list1 = new ArrayList<>();
-        fillArray(list1, 5);
+        Object[] myArray = new Object[5];
+        fillArray(myArray, 5);
+        List<Object> list1 = new ArrayList<>(List.of(myArray));
 
         HashTable<Object> table = new HashTable<>();
-        fillArray(table, 7);
+        myArray = new Object[7];
+        fillArray(myArray, 7);
+        table.addAll(List.of(myArray));
 
         table.retainAll(list1);
         Assertions.assertArrayEquals(table.toArray(), new Object[]{0, 1, 2, 3, 4});
@@ -237,8 +299,10 @@ class HashTableTest {
         table.retainAll(list2);
         Assertions.assertArrayEquals(table.toArray(), new Object[]{});
 
-        List<Object> list3 = new ArrayList<>();
-        fillArray(list3, 10);
+        myArray = new Object[10];
+        fillArray(myArray, 10);
+        List<Object> list3 = new ArrayList<>(List.of(myArray));
+
         table.add(12);
 
         table.retainAll(list3);
@@ -254,41 +318,52 @@ class HashTableTest {
     @Test
     protected void clear() {
         HashTable<Object> table = new HashTable<>();
-        fillArray(table, 7);
+
+        Object[] myArray = new Object[7];
+        fillArray(myArray, 7);
+        table.addAll(List.of(myArray));
 
         table.clear();
         Assertions.assertArrayEquals(table.toArray(), new Object[]{});
         Assertions.assertEquals(table.size(), 0);
 
-        fillArray(table, 9);
+        myArray = new Object[9];
+        fillArray(myArray, 9);
+        table.addAll(List.of(myArray));
 
         table.clear();
         Assertions.assertArrayEquals(table.toArray(), new Object[]{});
         Assertions.assertEquals(table.size(), 0);
 
-        fillArray(table, 100);
+        myArray = new Object[100];
+        fillArray(myArray, 100);
+        table.addAll(List.of(myArray));
 
         table.clear();
         Assertions.assertArrayEquals(table.toArray(), new Object[]{});
         Assertions.assertEquals(table.size(), 0);
 
-        fillArray(table, 2);
+        myArray = new Object[2];
+        fillArray(myArray, 2);
+        table.addAll(List.of(myArray));
 
         table.clear();
         Assertions.assertArrayEquals(table.toArray(), new Object[]{});
         Assertions.assertEquals(table.size(), 0);
 
-        fillArray(table, 0);
+        myArray = new Object[0];
+        fillArray(myArray, 0);
+        table.addAll(List.of(myArray));
 
         table.clear();
         Assertions.assertArrayEquals(table.toArray(), new Object[]{});
         Assertions.assertEquals(table.size(), 0);
     }
 
-    private static void fillArray(Collection<Object> collection, int size) {
+    private static void fillArray(Object[] array, int size) {
         if (size > 0) {
             for (int i = 0; i < size; i++) {
-                collection.add(i);
+                array[i] = i;
             }
         }
     }
