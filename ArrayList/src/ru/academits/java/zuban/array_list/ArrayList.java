@@ -10,7 +10,7 @@ public class ArrayList<E> implements List<E> {
     private E[] elements;
 
     public ArrayList(E[] elements) {
-        checkCollectionIsNotNull(elements, "elements");
+        checkIsNotNull(elements, "elements");
 
         size = elements.length;
         this.elements = Arrays.copyOf(elements, elements.length);
@@ -26,7 +26,7 @@ public class ArrayList<E> implements List<E> {
     }
 
     public ArrayList(Collection<E> collection) {
-        checkCollectionIsNotNull(collection, "c");
+        checkIsNotNull(collection, "collection");
 
         //noinspection unchecked
         elements = (E[]) collection.toArray();
@@ -120,7 +120,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        checkCollectionIsNotNull(c, "c");
+        checkIsNotNull(c, "collection");
 
         for (Object item : c) {
             if (!contains(item)) {
@@ -138,8 +138,11 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        checkCollectionIsNotNull(c, "c");
-        checkIndex(index);
+        checkIsNotNull(c, "collection");
+
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + (size - 1) + "]");
+        }
 
         if (c.isEmpty()) {
             return false;
@@ -166,7 +169,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        checkCollectionIsNotNull(c, "c");
+        checkIsNotNull(c, "collection");
 
         if (isEmpty()) {
             return false;
@@ -185,7 +188,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        checkCollectionIsNotNull(c, "c");
+        checkIsNotNull(c, "collection");
 
         if (isEmpty()) {
             return false;
@@ -216,18 +219,14 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public E get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
-        }
+        checkIndex(index);
 
         return elements[index];
     }
 
     @Override
     public E set(int index, E element) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
-        }
+        checkIndex(index);
 
         E oldElement = elements[index];
         elements[index] = element;
@@ -237,7 +236,9 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-        checkIndex(index);
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + (size - 1) + "]");
+        }
 
         if (size == elements.length) {
             increaseCapacity();
@@ -252,9 +253,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public E remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
-        }
+        checkIndex(index);
 
         E removedElement = elements[index];
 
@@ -290,14 +289,14 @@ public class ArrayList<E> implements List<E> {
         return -1;
     }
 
-    private static void checkCollectionIsNotNull(Object object, String argumentName) {
+    private static void checkIsNotNull(Object object, String argumentName) {
         if (object == null) {
-            throw new NullPointerException("Переданные значения в " + argumentName + " равно null.");
+            throw new NullPointerException("Переданное значение в " + argumentName + " равно null.");
         }
     }
 
     private void checkIndex(int index) {
-        if (index < 0 || index > size) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
         }
     }
@@ -309,9 +308,14 @@ public class ArrayList<E> implements List<E> {
     }
 
     private void increaseCapacity() {
-        int currentCapacity = elements.length;
-        int newCapacity = (currentCapacity == 0) ? 1 : currentCapacity * 2;
-        elements = Arrays.copyOf(elements, newCapacity);
+        int newCapacity = (elements.length == 0) ? 1 : elements.length * 2;
+
+        if (elements.length == 0) {
+            //noinspection unchecked
+            elements = (E[]) new Object[newCapacity];
+        } else {
+            elements = Arrays.copyOf(elements, newCapacity);
+        }
     }
 
     public void trimToSize() {
@@ -326,7 +330,7 @@ public class ArrayList<E> implements List<E> {
 
         @Override
         public boolean hasNext() {
-            return size > index;
+            return index < size;
         }
 
         @Override
@@ -335,7 +339,7 @@ public class ArrayList<E> implements List<E> {
                 throw new ConcurrentModificationException("Коллекция изменена.");
             }
 
-            if (size <= index) {
+            if (!hasNext()) {
                 throw new NoSuchElementException("Коллекция закончилась");
             }
 
