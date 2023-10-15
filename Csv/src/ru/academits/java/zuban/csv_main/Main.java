@@ -21,4 +21,4 @@ public class Main {
             System.out.println("Ошибка работы программы.");
         }
     }
-}q
+}
