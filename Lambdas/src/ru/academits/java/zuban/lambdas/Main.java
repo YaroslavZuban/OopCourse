@@ -46,20 +46,21 @@ public class Main {
 
         personsUnder18List.forEach(System.out::println);
 
-        System.out.println("Средний возраст людей младше 18 равен: " + getPersonsAverageAge(personsUnder18List));
+        //noinspection OptionalGetWithoutIsPresent
+        System.out.println("Средний возраст людей младше 18 равен: " + getPersonsAverageAge(personsUnder18List).getAsDouble());
         System.out.println();
 
         System.out.println("Задача Г");
         System.out.println("При помощи группировки получить Map, в котором ключи – имена, а значения – средний возраст");
         System.out.println();
 
-        Map<String, Double> middleAgedName = getMiddleAgedName(personsList);
+        Map<String, Double> averageAgesByNames = getAverageAgesByNames(personsList);
 
         System.out.println("Группировка людей");
 
-        middleAgedName.forEach((name, averageAge) -> {
-            System.out.println(name + ": " + averageAge);
-        });
+        averageAgesByNames.forEach((name, averageAge) ->
+                System.out.println(name + ": " + averageAge)
+        );
 
         System.out.println();
 
@@ -80,17 +81,18 @@ public class Main {
                 .collect(Collectors.toList());
     }
 
-    private static Map<String, Double> getMiddleAgedName(List<Person> personsList) {
+    private static Map<String, Double> getAverageAgesByNames(List<Person> personsList) {
         return personsList.stream()
                 .collect(Collectors.groupingBy(Person::getName,
                         Collectors.averagingInt(Person::getAge)));
     }
 
-    private static double getPersonsAverageAge(List<Person> personsList) {
-        return personsList.stream()
-                .mapToInt(Person::getAge)
-                .average()
-                .orElse(0);
+    private static OptionalDouble getPersonsAverageAge(List<Person> personsList) {
+        OptionalDouble average = personsList.stream()
+                .mapToDouble(Person::getAge)
+                .average();
+
+        return OptionalDouble.of(average.orElse(0));
     }
 
     private static List<Person> getPersonsUnder18(List<Person> personsList) {
@@ -101,13 +103,7 @@ public class Main {
 
     private static String getNamesString(List<String> personsList) {
         if (personsList == null) {
-            throw new NullPointerException("Переданный списко имеет значение: null");
-        }
-
-        Set<String> personSet = new HashSet<>(personsList);
-
-        if (personSet.size() != personsList.size()) {
-            throw new NoSuchElementException("Список не содержит уникальные имена.");
+            throw new NullPointerException("Переданный список имеет значение: null");
         }
 
         return personsList.stream()
