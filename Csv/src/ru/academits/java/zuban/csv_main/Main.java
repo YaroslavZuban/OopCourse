@@ -2,6 +2,7 @@ package ru.academits.java.zuban.csv_main;
 
 import ru.academits.java.zuban.csv.Csv;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Main {
@@ -13,10 +14,11 @@ public class Main {
                 System.out.println("Пожалуйста, укажите два параметра: ");
                 System.out.println("Первый параметр - исходный файл (например, name_file.txt)");
                 System.out.println("Второй параметр - результирующий файл (например, name_file.csv)");
-                System.exit(0);
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("Файл не получилось открыть.");
+        } catch (IOException e) {
+            System.out.println("Ошибка работы программы.");
         }
     }
-}
+}q

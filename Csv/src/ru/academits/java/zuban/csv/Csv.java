@@ -1,11 +1,10 @@
 package ru.academits.java.zuban.csv;
 
 import java.io.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Csv {
-    private int quotesCount;
-    private boolean isOpenQuote;
-
     public void convertFileCsvToHtml(String csvFileName, String htmlFileName) throws IOException {
         if (csvFileName == null) {
             throw new NullPointerException("Путь к CSV файлу равен null");
@@ -28,8 +27,11 @@ public class Csv {
 
             String csvLine;
 
+            AtomicBoolean isOpenQuote = new AtomicBoolean(false);
+            AtomicInteger quotesCount = new AtomicInteger(0);
+
             while ((csvLine = csvReader.readLine()) != null) {
-                htmlWriter.write(replaceChars(csvLine));
+                htmlWriter.write(replaceChars(csvLine, quotesCount, isOpenQuote));
             }
 
             htmlWriter.println("</table>");
@@ -38,10 +40,10 @@ public class Csv {
         }
     }
 
-    private String replaceChars(String line) {
+    private String replaceChars(String line, AtomicInteger quotesCount, AtomicBoolean isOpenQuote) {
         StringBuilder htmlLine = new StringBuilder();
 
-        if (quotesCount == 0) {
+        if (quotesCount.get() == 0) {
             htmlLine.append("\t<tr>")
                     .append(System.lineSeparator())
                     .append("\t\t<td>")
@@ -49,16 +51,16 @@ public class Csv {
                     .append("\t\t\t");
         }
 
-        quotesCount += getQuotesCount(line);
+        quotesCount.addAndGet(getQuotesCount(line));
 
         for (int i = 0; i < line.length(); i++) {
             char symbol = line.charAt(i);
 
             if (symbol == '"' || (i + 1 < line.length() && symbol == ',' && line.charAt(i + 1) == '"')) {
-                isOpenQuote = true;
+                isOpenQuote.set(true);
             }
 
-            if (!isOpenQuote) {
+            if (!isOpenQuote.get()) {
                 if (symbol != ',') {
                     htmlLine.append(handleSpecialCharacters(symbol));
                 } else {
@@ -81,9 +83,9 @@ public class Csv {
                     i++;
 
                     htmlLine.append(createHtmlTableCellSeparator());
-                } else if (i + 1 < line.length() && symbol == '"' && line.charAt(i + 1) == ',') {
+                } else if (i + 1 < line.length() && symbol == '"' && line.charAt(i + 1) == ',' && i != 0) {
                     i++;
-                    isOpenQuote = false;
+                    isOpenQuote.set(false);
 
                     htmlLine.append(createHtmlTableCellSeparator());
                 } else if (symbol != '"') {
@@ -92,7 +94,7 @@ public class Csv {
             }
         }
 
-        if (quotesCount % 2 != 0) {
+        if (quotesCount.get() % 2 != 0) {
             htmlLine.append("<br/>");
         } else {
             htmlLine.append(System.lineSeparator())
@@ -101,8 +103,8 @@ public class Csv {
                     .append("\t</tr>")
                     .append(System.lineSeparator());
 
-            quotesCount = 0;
-            isOpenQuote = false;
+            quotesCount.set(0);
+            isOpenQuote.set(false);
         }
 
         return htmlLine.toString();
