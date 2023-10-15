@@ -18,7 +18,8 @@ public class ArrayList<E> implements List<E> {
 
     public ArrayList(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException("Невозможно создать ArrayList с вместимостью: " + size);
+            throw new IllegalArgumentException("Невозможно создать ArrayList с вместимостью: " + capacity +
+                    ". Значение должно быть больше или равное: " + 0);
         }
 
         //noinspection unchecked
@@ -141,7 +142,7 @@ public class ArrayList<E> implements List<E> {
         checkIsNotNull(c, "collection");
 
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + (size - 1) + "]");
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона от 0 до " + size);
         }
 
         if (c.isEmpty()) {
@@ -237,7 +238,7 @@ public class ArrayList<E> implements List<E> {
     @Override
     public void add(int index, E element) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + (size - 1) + "]");
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона от 0 до" + size);
         }
 
         if (size == elements.length) {
@@ -297,7 +298,7 @@ public class ArrayList<E> implements List<E> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона [0; " + size + "]");
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона от 0 до" + (size - 1));
         }
     }
 
@@ -308,13 +309,11 @@ public class ArrayList<E> implements List<E> {
     }
 
     private void increaseCapacity() {
-        int newCapacity = (elements.length == 0) ? 1 : elements.length * 2;
-
         if (elements.length == 0) {
             //noinspection unchecked
-            elements = (E[]) new Object[newCapacity];
+            elements = (E[]) new Object[1];
         } else {
-            elements = Arrays.copyOf(elements, newCapacity);
+            elements = Arrays.copyOf(elements, elements.length * 2);
         }
     }
 
