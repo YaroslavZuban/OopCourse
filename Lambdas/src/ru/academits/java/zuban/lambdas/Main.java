@@ -46,8 +46,12 @@ public class Main {
 
         personsUnder18List.forEach(System.out::println);
 
-        //noinspection OptionalGetWithoutIsPresent
-        System.out.println("Средний возраст людей младше 18 равен: " + getPersonsAverageAge(personsUnder18List).getAsDouble());
+        if(!personsUnder18List.isEmpty()) {
+            System.out.println("Средний возраст людей младше 18 равен: " + getPersonsAverageAge(personsUnder18List));
+        }else{
+            System.out.println("Средний возраст людей младше 18 равен: 0");
+        }
+
         System.out.println();
 
         System.out.println("Задача Г");
@@ -88,11 +92,13 @@ public class Main {
     }
 
     private static OptionalDouble getPersonsAverageAge(List<Person> personsList) {
-        OptionalDouble average = personsList.stream()
-                .mapToDouble(Person::getAge)
-                .average();
+        if (personsList.isEmpty()) {
+            return OptionalDouble.empty();
+        }
 
-        return OptionalDouble.of(average.orElse(0));
+        return personsList.stream()
+                .mapToInt(Person::getAge)
+                .average();
     }
 
     private static List<Person> getPersonsUnder18(List<Person> personsList) {
