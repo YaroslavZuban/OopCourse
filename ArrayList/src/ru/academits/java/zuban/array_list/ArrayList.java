@@ -19,7 +19,7 @@ public class ArrayList<E> implements List<E> {
     public ArrayList(int capacity) {
         if (capacity < 0) {
             throw new IllegalArgumentException("Невозможно создать ArrayList с вместимостью: " + capacity +
-                    ". Значение должно быть больше или равное: " + 0);
+                    ". Значение должно быть больше или равное: 0");
         }
 
         //noinspection unchecked
@@ -298,7 +298,7 @@ public class ArrayList<E> implements List<E> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона от 0 до" + (size - 1));
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона от 0 до " + (size - 1));
         }
     }
 
