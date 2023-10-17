@@ -46,10 +46,10 @@ public class Main {
 
         personsUnder18List.forEach(System.out::println);
 
-        if(!personsUnder18List.isEmpty()) {
-            System.out.println("Средний возраст людей младше 18 равен: " + getPersonsAverageAge(personsUnder18List));
-        }else{
-            System.out.println("Средний возраст людей младше 18 равен: 0");
+        if (!personsUnder18List.isEmpty()) {
+            System.out.println("Средний возраст людей младше 18 равен: " + getPersonsAverageAge(personsUnder18List).orElse(0));
+        } else {
+            System.out.println("Нет людей младше 18");
         }
 
         System.out.println();
@@ -92,10 +92,6 @@ public class Main {
     }
 
     private static OptionalDouble getPersonsAverageAge(List<Person> personsList) {
-        if (personsList.isEmpty()) {
-            return OptionalDouble.empty();
-        }
-
         return personsList.stream()
                 .mapToInt(Person::getAge)
                 .average();
