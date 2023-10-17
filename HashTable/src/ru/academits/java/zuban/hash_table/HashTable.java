@@ -3,7 +3,7 @@ package ru.academits.java.zuban.hash_table;
 import java.util.*;
 
 public class HashTable<E> implements Collection<E> {
-    private static final int INITIAL_LENGTH = 16;
+    private static final int ARRAY_INITIAL_LENGTH = 16;
 
     private ArrayList<E>[] lists;
     private int size;
@@ -11,7 +11,8 @@ public class HashTable<E> implements Collection<E> {
 
     public HashTable(int arrayLength) {
         if (arrayLength <= 0) {
-            throw new NoSuchElementException("Невозможно создать HashTable размерностью: " + arrayLength);
+            throw new IllegalArgumentException("Невозможно создать ArrayList с вместимостью: " + arrayLength +
+                    ". Значение должно быть больше: 0");
         }
 
         //noinspection unchecked
@@ -20,7 +21,7 @@ public class HashTable<E> implements Collection<E> {
 
     public HashTable() {
         //noinspection unchecked
-        lists = new ArrayList[INITIAL_LENGTH];
+        lists = new ArrayList[ARRAY_INITIAL_LENGTH];
     }
 
     @Override
@@ -44,8 +45,7 @@ public class HashTable<E> implements Collection<E> {
     public Object[] toArray() {
         Object[] array = new Object[size];
 
-        //noinspection unchecked
-        fillArray((E[]) array);
+        fillArray(array);
 
         return array;
     }
@@ -58,8 +58,7 @@ public class HashTable<E> implements Collection<E> {
             a = Arrays.copyOf(a, size);
         }
 
-        //noinspection unchecked
-        fillArray((E[]) a);
+        fillArray(a);
 
         if (a.length > size) {
             a[size] = null;
@@ -68,7 +67,7 @@ public class HashTable<E> implements Collection<E> {
         return a;
     }
 
-    private void fillArray(E[] array) {
+    private void fillArray(Object[] array) {
         int i = 0;
 
         for (List<E> list : lists) {
@@ -234,11 +233,7 @@ public class HashTable<E> implements Collection<E> {
 
         @Override
         public boolean hasNext() {
-            while (arrayIndex < lists.length && (lists[arrayIndex] == null || lists[arrayIndex].isEmpty())) {
-                arrayIndex++;
-            }
-
-            return arrayIndex < lists.length;
+            return arrayIndex < lists.length && passedElementsCount <= size;
         }
 
         @Override
@@ -249,6 +244,10 @@ public class HashTable<E> implements Collection<E> {
 
             if (!hasNext()) {
                 throw new NoSuchElementException("Коллекция закончилась.");
+            }
+
+            while (arrayIndex < lists.length && (lists[arrayIndex] == null || lists[arrayIndex].isEmpty())) {
+                arrayIndex++;
             }
 
             E result = lists[arrayIndex].get(listIndex);
