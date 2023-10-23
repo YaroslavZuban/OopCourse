@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Csv {
-    public void convertFileCsvToHtml(String csvFileName, String htmlFileName) throws IOException {
+    public static void convertFileCsvToHtml(String csvFileName, String htmlFileName) throws IOException {
         if (csvFileName == null) {
             throw new NullPointerException("Путь к CSV файлу равен null");
         }
@@ -40,7 +40,7 @@ public class Csv {
         }
     }
 
-    private String replaceChars(String line, AtomicInteger quotesCount, AtomicBoolean isOpenQuote) {
+    private static String replaceChars(String line, AtomicInteger quotesCount, AtomicBoolean isOpenQuote) {
         StringBuilder htmlLine = new StringBuilder();
 
         if (quotesCount.get() == 0) {
@@ -119,7 +119,7 @@ public class Csv {
                 "\t\t\t";
     }
 
-    private String handleSpecialCharacters(char symbol) {
+    private static String handleSpecialCharacters(char symbol) {
         if (symbol == '&') {
             return "&amp;";
         }
