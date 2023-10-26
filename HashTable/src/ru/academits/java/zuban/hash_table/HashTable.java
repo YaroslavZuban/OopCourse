@@ -11,7 +11,7 @@ public class HashTable<E> implements Collection<E> {
 
     public HashTable(int arrayLength) {
         if (arrayLength <= 0) {
-            throw new IllegalArgumentException("Невозможно создать ArrayList с вместимостью: " + arrayLength +
+            throw new IllegalArgumentException("Невозможно создать HashTable с вместимостью: " + arrayLength +
                     ". Значение должно быть больше: 0");
         }
 
@@ -55,7 +55,8 @@ public class HashTable<E> implements Collection<E> {
         checkArgumentNotNull(a, "a");
 
         if (a.length < size) {
-            a = Arrays.copyOf(a, size);
+            //noinspection unchecked
+            a = Arrays.copyOf(a, size, (Class<? extends T[]>) a.getClass());
         }
 
         fillArray(a);
@@ -233,7 +234,7 @@ public class HashTable<E> implements Collection<E> {
 
         @Override
         public boolean hasNext() {
-            return arrayIndex < lists.length && passedElementsCount <= size;
+            return passedElementsCount < size;
         }
 
         @Override
