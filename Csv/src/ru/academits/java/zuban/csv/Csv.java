@@ -1,8 +1,6 @@
 package ru.academits.java.zuban.csv;
 
 import java.io.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Csv {
     public static void convertFileCsvToHtml(String csvFileName, String htmlFileName) throws IOException {
